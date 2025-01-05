@@ -1,0 +1,2 @@
+extends RigidPolygonEntity
+class_name DestructibleEntity

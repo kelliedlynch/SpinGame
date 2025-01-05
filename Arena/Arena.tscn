@@ -1,7 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://wp1jq2yr7g3m"]
+[gd_scene load_steps=8 format=3 uid="uid://wp1jq2yr7g3m"]
 
 [ext_resource type="Script" path="res://Arena/Arena.gd" id="1_hcsty"]
-[ext_resource type="PackedScene" uid="uid://cn3e4epqj830t" path="res://Player/Player.tscn" id="2_2iwji"]
 [ext_resource type="Script" path="res://Arena/ArenaBorder.gd" id="2_6y0r2"]
 [ext_resource type="Shape2D" uid="uid://d1n3mjq0caimm" path="res://Arena/HorizWall.tres" id="4_076a3"]
 [ext_resource type="Script" path="res://Arena/ArenaPhysicsArea.gd" id="4_f2ls0"]
@@ -31,21 +30,17 @@ physics_material_override = SubResource("PhysicsMaterial_lc4jc")
 script = ExtResource("2_6y0r2")
 
 [node name="LeftWall" type="CollisionShape2D" parent="ArenaBorder"]
-position = Vector2(40.08, 970)
+position = Vector2(0.02, 1)
 shape = ExtResource("4_rbppl")
 
 [node name="RightWall" type="CollisionShape2D" parent="ArenaBorder"]
-position = Vector2(3967.92, 970)
+position = Vector2(1.98, 1)
 shape = ExtResource("4_rbppl")
 
 [node name="TopWall" type="CollisionShape2D" parent="ArenaBorder"]
-position = Vector2(2004, 40.08)
+position = Vector2(1, 0.02)
 shape = ExtResource("4_076a3")
 
 [node name="BottomWall" type="CollisionShape2D" parent="ArenaBorder"]
-position = Vector2(2004, 1899.92)
+position = Vector2(1, 1.98)
 shape = ExtResource("4_076a3")
-
-[node name="Player" parent="." instance=ExtResource("2_2iwji")]
-position = Vector2(174, 161)
-rotation = 6503.89
