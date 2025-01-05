@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://cn3e4epqj830t"]
+
+[ext_resource type="Script" path="res://Player/Player.gd" id="1_y3n6f"]
+[ext_resource type="Shape2D" uid="uid://ba2udc387l3hp" path="res://Player/PlayerCollisionShape.tres" id="2_objhu"]
+[ext_resource type="Script" path="res://Player/SawPolygon.gd" id="3_45yw4"]
+
+[node name="PlayerScene" type="Node2D"]
+rotation = 9591.05
+script = ExtResource("1_y3n6f")
+
+[node name="PlayerRigidBody" type="RigidBody2D" parent="."]
+physics_interpolation_mode = 2
+
+[node name="PlayerCollisionShape" type="CollisionShape2D" parent="PlayerRigidBody"]
+shape = ExtResource("2_objhu")
+
+[node name="DrawnPoly" type="Polygon2D" parent="."]
+rotation = 42.0999
+scale = Vector2(0.134953, 0.136612)
+offset = Vector2(-370.5, -366)
+polygon = PackedVector2Array(147, 173, 123, 149, 114, 115, 96, 124, 81, 156, 78, 190, 93, 222, 96, 257, 87, 292, 79, 326, 56, 344, 27, 327, 0, 316, 7, 351, 16, 385, 43, 407, 72, 428, 89, 458, 102, 491, 115, 524, 85, 539, 50, 538, 53, 557, 79, 581, 110, 595, 145, 591, 179, 598, 209, 617, 239, 636, 249, 663, 224, 686, 206, 708, 241, 712, 276, 714, 305, 695, 334, 674, 368, 667, 403, 665, 439, 663, 444, 696, 432, 729, 451, 732, 482, 715, 505, 690, 512, 655, 530, 625, 557, 602, 584, 579, 612, 578, 626, 609, 642, 633, 656, 601, 669, 568, 660, 535, 650, 501, 653, 467, 662, 432, 671, 398, 704, 403, 732, 425, 741, 407, 734, 373, 717, 343, 686, 326, 663, 300, 650, 267, 637, 234, 644, 206, 678, 203, 705, 196, 679, 172, 652, 150, 617, 148, 582, 147, 551, 133, 521, 114, 491, 95, 507, 65, 536, 45, 522, 31, 486, 27, 453, 35, 427, 59, 395, 73, 359, 75, 324, 77, 300, 62, 307, 28, 309, 0, 278, 17, 249, 36, 236, 69, 225, 102, 202, 128, 175, 150)
+script = ExtResource("3_45yw4")

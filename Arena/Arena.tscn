@@ -1,0 +1,51 @@
+[gd_scene load_steps=9 format=3 uid="uid://wp1jq2yr7g3m"]
+
+[ext_resource type="Script" path="res://Arena/Arena.gd" id="1_hcsty"]
+[ext_resource type="PackedScene" uid="uid://cn3e4epqj830t" path="res://Player/Player.tscn" id="2_2iwji"]
+[ext_resource type="Script" path="res://Arena/ArenaBorder.gd" id="2_6y0r2"]
+[ext_resource type="Shape2D" uid="uid://d1n3mjq0caimm" path="res://Arena/HorizWall.tres" id="4_076a3"]
+[ext_resource type="Script" path="res://Arena/ArenaPhysicsArea.gd" id="4_f2ls0"]
+[ext_resource type="Shape2D" uid="uid://cgdfruhjd17ih" path="res://Arena/VertWall.tres" id="4_rbppl"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7wluy"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_lc4jc"]
+friction = 0.0
+bounce = 1.0
+
+[node name="Arena" type="Node2D"]
+script = ExtResource("1_hcsty")
+
+[node name="ArenaPhysicsArea" type="Area2D" parent="."]
+gravity_space_override = 3
+gravity_point_center = Vector2(0, 0)
+gravity_direction = Vector2(0, 0)
+gravity = 0.0
+script = ExtResource("4_f2ls0")
+
+[node name="ArenaCollisionShape" type="CollisionShape2D" parent="ArenaPhysicsArea"]
+shape = SubResource("RectangleShape2D_7wluy")
+
+[node name="ArenaBorder" type="StaticBody2D" parent="."]
+physics_material_override = SubResource("PhysicsMaterial_lc4jc")
+script = ExtResource("2_6y0r2")
+
+[node name="LeftWall" type="CollisionShape2D" parent="ArenaBorder"]
+position = Vector2(40.08, 970)
+shape = ExtResource("4_rbppl")
+
+[node name="RightWall" type="CollisionShape2D" parent="ArenaBorder"]
+position = Vector2(3967.92, 970)
+shape = ExtResource("4_rbppl")
+
+[node name="TopWall" type="CollisionShape2D" parent="ArenaBorder"]
+position = Vector2(2004, 40.08)
+shape = ExtResource("4_076a3")
+
+[node name="BottomWall" type="CollisionShape2D" parent="ArenaBorder"]
+position = Vector2(2004, 1899.92)
+shape = ExtResource("4_076a3")
+
+[node name="Player" parent="." instance=ExtResource("2_2iwji")]
+position = Vector2(174, 161)
+rotation = 6503.89
