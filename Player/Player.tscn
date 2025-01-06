@@ -2,17 +2,20 @@
 
 [ext_resource type="PackedScene" uid="uid://4dnjjke1bfms" path="res://Entity/RigidPolygonEntity.tscn" id="1_r6rpq"]
 [ext_resource type="Script" path="res://Player/Player.gd" id="1_y3n6f"]
-[ext_resource type="Script" path="res://Player/SawPolygon.gd" id="3_b7o4q"]
+[ext_resource type="Script" path="res://Player/Destructor.gd" id="3_lq7fh"]
 
 [node name="Player" instance=ExtResource("1_r6rpq")]
-rotation = 926.421
+rotation = 2320.31
 script = ExtResource("1_y3n6f")
 
-[node name="Hitbox" parent="RigidBody" index="0"]
+[node name="Destructor" type="Area2D" parent="RigidBody" index="0"]
+script = ExtResource("3_lq7fh")
+
+[node name="DestructPolygon" type="CollisionPolygon2D" parent="RigidBody/Destructor" index="0"]
+polygon = PackedVector2Array(0, 51, 17.443, 47.9243, 32.7822, 39.0683, 44.1673, 25.5, 50.2252, 8.85606, 50.2252, -8.85606, 44.1673, -25.5, 32.7822, -39.0683, 17.443, -47.9243, 6.2457e-15, -51, -17.443, -47.9243, -32.7822, -39.0683, -44.1673, -25.5, -50.2252, -8.85606, -50.2252, 8.85606, -44.1673, 25.5, -32.7822, 39.0683, -17.443, 47.9243)
+
+[node name="Hitbox" parent="RigidBody" index="1"]
 polygon = PackedVector2Array(0, 50, 17.101, 46.9846, 32.1394, 38.3022, 43.3013, 25, 49.2404, 8.68241, 49.2404, -8.68241, 43.3013, -25, 32.1394, -38.3022, 17.101, -46.9846, 6.12323e-15, -50, -17.101, -46.9846, -32.1394, -38.3022, -43.3013, -25, -49.2404, -8.68241, -49.2404, 8.68241, -43.3013, 25, -32.1394, 38.3022, -17.101, 46.9846)
 
-[node name="VisibleObject" parent="." index="1"]
-rotation = 9250.39
-
-[node name="Polygon" parent="VisibleObject" index="0"]
-script = ExtResource("3_b7o4q")
+[node name="VisiblePolygon" parent="RigidBody" index="2"]
+rotation = 767.26

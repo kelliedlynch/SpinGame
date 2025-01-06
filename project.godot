@@ -11,8 +11,15 @@ config_version=5
 [application]
 
 config/name="Spin Game"
+run/main_scene="res://Playground/ArenaPlayground.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 config/icon="res://icon.svg"
+
+[physics]
+
+3d/default_gravity=0.0
+2d/default_gravity=0.0
+2d/default_gravity_vector=Vector2(0, 0)
 
 [rendering]
 

@@ -11,6 +11,6 @@ script = ExtResource("1_f4c2g")
 [node name="Arena" parent="." instance=ExtResource("1_ltik4")]
 
 [node name="Player" parent="." instance=ExtResource("1_a6cmn")]
-rotation = 2.90903
+rotation = 0.0
 
 [node name="Destructible" parent="." instance=ExtResource("4_3o3wk")]
