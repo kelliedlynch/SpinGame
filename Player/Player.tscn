@@ -1,12 +1,16 @@
-[gd_scene load_steps=4 format=3 uid="uid://dcegjhwlpbiit"]
+[gd_scene load_steps=5 format=3 uid="uid://dcegjhwlpbiit"]
 
 [ext_resource type="PackedScene" uid="uid://4dnjjke1bfms" path="res://Entity/RigidPolygonEntity.tscn" id="1_r6rpq"]
 [ext_resource type="Script" path="res://Player/Player.gd" id="1_y3n6f"]
 [ext_resource type="Script" path="res://Player/Destructor.gd" id="3_lq7fh"]
+[ext_resource type="Script" path="res://Player/PlayerRigidBody.gd" id="3_xfwtt"]
 
 [node name="Player" instance=ExtResource("1_r6rpq")]
 rotation = 2320.31
 script = ExtResource("1_y3n6f")
+
+[node name="RigidBody" parent="." index="0"]
+script = ExtResource("3_xfwtt")
 
 [node name="Destructor" type="Area2D" parent="RigidBody" index="0"]
 script = ExtResource("3_lq7fh")

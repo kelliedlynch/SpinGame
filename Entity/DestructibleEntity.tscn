@@ -1,15 +1,19 @@
-[gd_scene load_steps=4 format=3 uid="uid://da2vl1hvjvnlj"]
+[gd_scene load_steps=5 format=3 uid="uid://da2vl1hvjvnlj"]
 
 [ext_resource type="PackedScene" uid="uid://4dnjjke1bfms" path="res://Entity/RigidPolygonEntity.tscn" id="1_0k734"]
 [ext_resource type="Script" path="res://Entity/DestructibleEntity.gd" id="2_de7c5"]
 [ext_resource type="Script" path="res://Entity/DestructionArea.gd" id="3_2lp58"]
+[ext_resource type="Script" path="res://Entity/DestructibleRigidBody.gd" id="3_6vpli"]
 
 [node name="DestructibleEntity" instance=ExtResource("1_0k734")]
 script = ExtResource("2_de7c5")
+
+[node name="RigidBody" parent="." index="0"]
+script = ExtResource("3_6vpli")
 
 [node name="DestructionArea" type="Area2D" parent="RigidBody" index="2"]
 linear_damp_space_override = 3
 angular_damp_space_override = 3
 script = ExtResource("3_2lp58")
 
-[node name="Hitbox" type="CollisionPolygon2D" parent="RigidBody/DestructionArea" index="0"]
+[node name="DestructionPolygon" type="CollisionPolygon2D" parent="RigidBody/DestructionArea" index="0"]

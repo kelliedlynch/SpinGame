@@ -9,6 +9,7 @@ func _ready() -> void:
 	var rect = [Vector2(0, 0), Vector2(w, 0), Vector2(w, h), Vector2(0, h)]
 	$Destructible.body.load_polygons(rect)
 	$Destructible.body.position = Vector2(200,200)
+	$Destructible.body.mass = 10000
 
 	
 #func _physics_process(delta: float) -> void:

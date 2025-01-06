@@ -4,8 +4,9 @@ class_name Player
 var size: Vector2 = Vector2(100, 100)
 
 @onready var destructor: Area2D = $RigidBody/Destructor
+@onready var destructor_polygon: CollisionPolygon2D = $RigidBody/Destructor/DestructPolygon
 
-var spin_speed = 0.5
+var spin_speed = 0.75
 
 func _ready() -> void:
 	super._ready()
@@ -34,4 +35,4 @@ func _physics_process(delta: float) -> void:
 
 func scale_polygons(new_scale) -> void:
 	super.scale_polygons(new_scale)
-	#body.destructor_polygon.scale = new_scale
+	destructor_polygon.scale = new_scale
