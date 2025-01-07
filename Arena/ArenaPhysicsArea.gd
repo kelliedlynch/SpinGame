@@ -11,13 +11,6 @@ func _ready() -> void:
 	coll.shape = shape
 	coll.transform.origin = size / 2
 	#shape_owner_add_shape(0, shape)
-	add_child(coll)
-	
-	
+	add_child(coll)	
 	gravity = 0
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+	linear_damp = 6
