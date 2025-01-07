@@ -1,6 +1,8 @@
 extends Object
 class_name PolygonMath
 
+static var DEFAULT_POLYGON: PackedVector2Array = [Vector2(-100, -100), Vector2(100, -100), Vector2(100, 100), Vector2(-100, 100)]
+
 static func generate_circle_polygon(radius) -> PackedVector2Array:
 	var min_pts = 18
 	var max_pts = 36
@@ -14,11 +16,11 @@ static func generate_circle_polygon(radius) -> PackedVector2Array:
 	return vertices
 	
 # TODO: rework all these polymath functions to use packed arrays
-static func load_polygon(vertices: Array[Vector2]) -> Array[Vector2]:
+static func load_polygon(vertices: Array[Vector2]) -> PackedVector2Array:
 	var minpoint = vertices.reduce(min_point, vertices[0])
 	if minpoint == Vector2.ZERO: return vertices
 	var size = size_of_polygon(vertices)
-	var translated: Array[Vector2] = []
+	var translated: PackedVector2Array = []
 	for pt in vertices:
 		translated.append(Vector2(pt.x - minpoint.x - size.x / 2, pt.y - minpoint.y - size.y / 2))
 	return translated
@@ -160,3 +162,27 @@ static func simplify3(poly: PackedVector2Array, threshold = 10) -> PackedVector2
 		#print("skipping point because angle is ", angle)
 	if simplified.size() < 3: return poly
 	return simplified
+
+static func rotate_polygon(poly: PackedVector2Array, degrees: int) -> PackedVector2Array:
+	var rotated = PackedVector2Array()
+	var rads = deg_to_rad(degrees)
+	for v in poly:
+		var new_v = Vector2(v.x * sin(rads), v.y * cos(rads))
+		rotated.append(new_v)
+	return rotated
+
+# do we even want this available? I guess it would change the polygon's center point
+static func translate_polygon(poly: PackedVector2Array, vector: Vector2) -> PackedVector2Array:
+	var translated = PackedVector2Array()
+	for v in poly:
+		var new_v = v + vector
+		translated.append(new_v)
+	return translated
+
+# I don't know if this belongs here
+static func polygons_from_children(node: Node2D) -> Array[PackedVector2Array]:
+	var polys: Array[PackedVector2Array] = []
+	for child in node.get_children():
+		if child is CollisionPolygon2D or child is Polygon2D:
+			polys.append(child.polygon)
+	return polys

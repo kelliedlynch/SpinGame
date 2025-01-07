@@ -8,12 +8,14 @@ func _ready() -> void:
 	var w = 160
 	var h = 280
 	var rect = [Vector2(0, 0), Vector2(w, 0), Vector2(w, h), Vector2(0, h)]
-	$Destructible.body.load_polygons(rect)
-	#$Destructible.body.hitbox.polygon = []
-	#$Destructible/RigidBody.freeze_mode = RigidBody2D.FreezeMode.FREEZE_MODE_STATIC
-	$Destructible/RigidBody.collision_layer = 5
-	$Destructible.body.position = Vector2(200,400)
-	$Destructible.body.mass = 10000
+	var new_destructible = DestructibleNonPhysics.new()
+	add_child(new_destructible)
+	#$Destructible.body.load_polygons(rect)
+	##$Destructible.body.hitbox.polygon = []
+	##$Destructible/RigidBody.freeze_mode = RigidBody2D.FreezeMode.FREEZE_MODE_STATIC
+	#$Destructible/RigidBody.collision_layer = 5
+	#$Destructible.body.position = Vector2(400,300)
+	#$Destructible.body.mass = 10000
 	
 
 	

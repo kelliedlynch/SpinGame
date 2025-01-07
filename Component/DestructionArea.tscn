@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://ibumvvi4bj68"]
+
+[ext_resource type="Script" path="res://Component/DestructionArea.gd" id="1_bfuq6"]
+
+[node name="DestructionArea" type="Area2D"]
+script = ExtResource("1_bfuq6")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0)

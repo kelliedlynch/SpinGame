@@ -1,33 +1,32 @@
-extends RigidPolygonEntity
+extends SGEntityBase
 class_name Player
 
 var size: Vector2 = Vector2(100, 100)
 
-@onready var destructor: Area2D = $RigidBody/Destructor
-@onready var destructor_polygon: CollisionPolygon2D = $RigidBody/Destructor/DestructPolygon
+@onready var destructor: Area2D = $Destructor
 
 var max_spin_speed = 10
-var spin_speed = 1.75
+var spin_speed = 1.25
 var spin_accel = 3
 var max_speed = 1000
 
 func _ready() -> void:
 	super._ready()
-	body.lock_rotation = true
 	var saw = PolygonMath.load_polygon(PolygonVertexData.saw_blade)
 	var polysize = PolygonMath.size_of_polygon(saw)
 	var circle = PolygonMath.generate_circle_polygon(polysize.x / 2)
-	body.load_polygons(circle, saw)
-	var new_scale = size / polysize
-	scale_polygons(new_scale)
-	visible_polygon.color = Color.DODGER_BLUE
+	load_polygons([circle], [saw], [circle])
+	visible_area.color = Color.DODGER_BLUE
+	
+func load_polygons(poly: Array[PackedVector2Array], vis: Array[PackedVector2Array] = poly, destruct: Array[PackedVector2Array] = poly):
+	super.load_polygons(poly, vis)
+	destructor.polygons = destruct
 
 func _process(delta: float) -> void:
 	spin_speed += delta * spin_accel
 	spin_speed = clamp(spin_speed, 0, max_spin_speed)
-	visible_polygon.rotate(spin_speed * delta)
-	# TODO: change this to only affect when cuttin into a material
-	body.linear_damp = clamp(body.linear_damp - spin_speed / 10, -1, +1)
+	var r = spin_speed * delta
+	rotate(r)
 
 func _physics_process(delta: float) -> void:
 	var power = 30
@@ -40,9 +39,9 @@ func _physics_process(delta: float) -> void:
 		$RigidBody.apply_central_force(Vector2(0, -power / delta))
 	if Input.is_action_pressed("ui_down"):
 		$RigidBody.apply_central_force(Vector2(0, power / delta))
-	body.linear_velocity = body.linear_velocity.limit_length(max_speed)
+	#body.linear_velocity = body.linear_velocity.limit_length(max_speed)
 
 
-func scale_polygons(new_scale) -> void:
-	super.scale_polygons(new_scale)
-	destructor_polygon.scale = new_scale
+#func scale_polygons(new_scale) -> void:
+	#super.scale_polygons(new_scale)
+	#destructor_polygon.scale = new_scale

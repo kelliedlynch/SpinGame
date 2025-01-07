@@ -1,0 +1,12 @@
+[gd_scene load_steps=4 format=3 uid="uid://cfmkmtxbkfolc"]
+
+[ext_resource type="Script" path="res://Entity/SGEntityBase.gd" id="1_4pvlr"]
+[ext_resource type="PackedScene" uid="uid://kdo450higpgs" path="res://Component/HitboxArea.tscn" id="2_isv7h"]
+[ext_resource type="PackedScene" uid="uid://bndf6aamu7wp" path="res://Component/VisibleArea.tscn" id="3_2ewfh"]
+
+[node name="SgBaseEntity" type="Node2D"]
+script = ExtResource("1_4pvlr")
+
+[node name="HitboxArea" parent="." instance=ExtResource("2_isv7h")]
+
+[node name="VisibleArea" parent="." instance=ExtResource("3_2ewfh")]
