@@ -11,14 +11,16 @@ var polygons: Array[PackedVector2Array]:
 		_polygons = value
 		_queued_render_change = true
 
-static func create_new(poly: Array[PackedVector2Array]) -> RigidHitbox:
-	var n = RigidHitbox.new()
+static func create_new(poly: Array[PackedVector2Array]) -> VisibleArea:
+	var n = VisibleArea.new()
 	n.polygons = poly
 	return n
 
-
 func _ready() -> void:
 	_update_render_objects()
+
+func _on_scale_changed(s: Vector2):
+	scale = s
 
 func _update_render_objects():
 	for child in get_children():

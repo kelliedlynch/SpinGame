@@ -7,8 +7,8 @@
 [node name="Player" type="RigidBody2D"]
 script = ExtResource("1_y3n6f")
 
-[node name="Destructor" type="Area2D" parent="."]
-script = ExtResource("4_peewv")
-
 [node name="VisibleArea" type="Node2D" parent="."]
 script = ExtResource("3_y8ug1")
+
+[node name="Destructor" type="Area2D" parent="."]
+script = ExtResource("4_peewv")

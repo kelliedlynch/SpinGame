@@ -14,6 +14,8 @@ var polygons: Array[PackedVector2Array]:
 		_polygons = value
 		_queued_render_change = true
 
+var entity_scale: Vector2 = Vector2.ONE
+
 static func create_new(poly: Array[PackedVector2Array]) -> Destructor:
 	var n = Destructor.new()
 	n.polygons = poly
@@ -22,6 +24,12 @@ static func create_new(poly: Array[PackedVector2Array]) -> Destructor:
 func _ready() -> void:
 	_update_render_objects()
 
+func _on_scale_changed(s: Vector2):
+	scale = s
+	#for child in get_children():
+		#if child is CollisionPolygon2D:
+			#child.scale = s
+
 func _update_render_objects():
 	for child in get_children():
 		if child is CollisionPolygon2D:
@@ -29,6 +37,7 @@ func _update_render_objects():
 	for polygon in polygons:
 		var p = CollisionPolygon2D.new()
 		p.polygon = polygon
+		p.scale = entity_scale
 		add_child(p)
 	#polygons = poly
 
