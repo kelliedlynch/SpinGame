@@ -1,9 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://bndf6aamu7wp"]
-
-[ext_resource type="Script" path="res://Component/VisibleArea.gd" id="1_l6bfc"]
-
-[node name="VisibleArea" type="Area2D"]
-script = ExtResource("1_l6bfc")
-
-[node name="Polygon2D" type="Polygon2D" parent="."]
-polygon = PackedVector2Array(-100, -100, 100, -100, 100, 100, -100, 100)

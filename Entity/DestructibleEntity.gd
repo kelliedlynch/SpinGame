@@ -1,9 +1,11 @@
 extends SGEntityBase
 class_name DestructibleEntity
 
-@onready var destruction_area: DestructionArea = $DestructionArea
+#@onready var destruction_area: DestructionArea = $DestructionArea
 #@onready var destruction_polys: Array[PackedVector2Array] = PolygonMath.polygons_from_children($DestructionArea)
-
+@onready var destructible_area = $DestructibleArea
+@onready var visible_area = $VisibleArea
+@onready var hitbox = $StaticHitbox
 
 var clip_queue: Array[PackedVector2Array] = []
 var queued_clip: PackedVector2Array = []
@@ -21,52 +23,40 @@ var material_chunk_quantity = 20
 
 signal was_destroyed
 
-static func new(poly: Array[PackedVector2Array] = [], positions: PackedVector2Array = [Vector2.ZERO]) -> DestructibleNonPhysics:
+static func create_new(poly: Array[PackedVector2Array] = [], positions: PackedVector2Array = [Vector2.ZERO]) -> DestructibleEntity:
 	var new = preload("res://Entity/DestructibleEntity.tscn").instantiate()
 	var p = poly.size()
 	if p > 0:
-		# remove dummy children in scene
-		for child in new.destruction_area.get_children().filter(func (x): return x is CollisionPolygon2D):
-			new.destruction_area.remove_child(child)
-		for child in new.hitbox_polys_area.get_children().filter(func (x): return x is CollisionPolygon2D):
-			new.hitbox_polys_area.remove_child(child)
-		for child in new.display_node.get_children().filter(func (x): return x is Polygon2D):
-			new.display_node.remove_child(child)
-	for i in p:
-		var d_poly = CollisionPolygon2D.new()
-		d_poly.polygon = poly[i]
-		d_poly.position = positions[i]
-		new.destruction_area.add_child(d_poly)
-		var h_poly = CollisionPolygon2D.new()
-		h_poly.polygon = poly[i]
-		h_poly.position = positions[i]
-		new.hitbox_area.add_child(h_poly)
-		var v_poly = Polygon2D.new()
-		v_poly.polygon = poly[i]
-		v_poly.position = positions[i]
-		new.visible_node.add_child(v_poly)
+		new.hitbox.polygons = poly
+		new.visible_area.polygons = poly
+		new.destructible_area.polygons = poly
 	return new
 		
 
 func _ready() -> void:
 	super._ready()
-	hitbox_area.area_entered.connect(_on_hitbox_area_entered)
-	hitbox_area.area_exited.connect(_on_hitbox_area_exited)
-	destruction_area.area_entered.connect(_on_destruction_area_entered)
-	destruction_area.area_exited.connect(_on_destruction_area_exited)
+
+	hitbox.position = destructible_area.position
+	
+	destructible_area.area_entered.connect(_on_destruction_area_entered)
+	destructible_area.area_exited.connect(_on_destruction_area_exited)
 	was_destroyed.connect(_on_was_destroyed)
+	#destructible_area.queue_free()
 	
 func _on_was_destroyed():
 	queue_free()
 	
 func apply_destructor(destructor: Destructor):
-	var destructor_polys_relative_to_destruction_area = []
-	for poly in destructor.destruct_polygon.polygon:
-		destructor_polys_relative_to_destruction_area.append(destruction_area.to_local((destructor.to_global(poly))))
+	var translated_destructor_polys: Array[PackedVector2Array] = []
+	for poly in destructor.polygons:
+		var new_poly = []
+		for pt in poly:
+			new_poly.append(destructible_area.to_local((destructor.to_global(pt))))
+		translated_destructor_polys.append(new_poly)
 	
 	var polys_after_destruction: Array[PackedVector2Array] = []
-	for existing_poly in destruction_polys:
-		for destruct_poly in destructor_polys_relative_to_destruction_area:
+	for existing_poly in destructible_area.polygons:
+		for destruct_poly in translated_destructor_polys:
 			var overlap = Geometry2D.intersect_polygons(existing_poly, destruct_poly)
 			if overlap.is_empty(): continue
 
@@ -87,15 +77,9 @@ func apply_destructor(destructor: Destructor):
 		return
 	
 	for i in final_polys:
-		destruction_polys = polys_after_destruction.map(func (x): 
-			var p = CollisionPolygon2D.new()
-			p.polygon = x
-			return p )
-		hitbox_polys = destruction_polys
-		visible_polys = polys_after_destruction.map(func (x): 
-			var p = Polygon2D.new()
-			p.polygon = x
-			return p )
+		destructible_area.polygons = polys_after_destruction
+		hitbox.polygons = polys_after_destruction
+		visible_area.polygons = polys_after_destruction
 
 func _clip_queued(subject: CollisionPolygon2D, clip: PackedVector2Array):
 	subject.set_deferred("polygon", clip)

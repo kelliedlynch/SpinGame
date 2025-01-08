@@ -15,9 +15,8 @@ static func generate_circle_polygon(radius) -> PackedVector2Array:
 		vertices.append(pt)
 	return vertices
 	
-# TODO: rework all these polymath functions to use packed arrays
 static func load_polygon(vertices: Array[Vector2]) -> PackedVector2Array:
-	var minpoint = vertices.reduce(min_point, vertices[0])
+	var minpoint = min_point(vertices)
 	if minpoint == Vector2.ZERO: return vertices
 	var size = size_of_polygon(vertices)
 	var translated: PackedVector2Array = []
@@ -25,24 +24,26 @@ static func load_polygon(vertices: Array[Vector2]) -> PackedVector2Array:
 		translated.append(Vector2(pt.x - minpoint.x - size.x / 2, pt.y - minpoint.y - size.y / 2))
 	return translated
 
-static func size_of_polygon(vertices: Array[Vector2]) -> Vector2:
+static func size_of_polygon(vertices: PackedVector2Array) -> Vector2:
 	if vertices.size() == 0: return Vector2.ZERO
-	var minpoint = vertices.reduce(min_point, vertices[0])
-	var maxpoint = vertices.reduce(max_point, vertices[0])
+	var minpoint = min_point(vertices)
+	var maxpoint = max_point(vertices)
 	return Vector2(maxpoint.x - minpoint.x, maxpoint.y - minpoint.y)
 	
-static func min_point(accum: Vector2, point: Vector2) -> Vector2:
-	var minX = accum.x
-	var minY = accum.y
-	if point.x < minX: minX = point.x
-	if point.y < minY: minY = point.y
+static func min_point(vertices: PackedVector2Array) -> Vector2:
+	var minX = vertices[0].x
+	var minY = vertices[0].y
+	for point in vertices:
+		if point.x < minX: minX = point.x
+		if point.y < minY: minY = point.y
 	return Vector2(minX, minY)
 
-static func max_point(accum: Vector2, point: Vector2) -> Vector2:
-	var maxX = accum.x
-	var maxY = accum.y
-	if point.x > maxX: maxX = point.x
-	if point.y > maxY: maxY = point.y
+static func max_point(vertices: PackedVector2Array) -> Vector2:
+	var maxX = vertices[0].x
+	var maxY = vertices[0].y
+	for point in vertices:
+		if point.x > maxX: maxX = point.x
+		if point.y > maxY: maxY = point.y
 	return Vector2(maxX, maxY)
 	
 static func simplify_polygon(poly: PackedVector2Array, threshold = 3) -> PackedVector2Array:
