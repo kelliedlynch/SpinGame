@@ -168,7 +168,9 @@ static func rotate_polygon(poly: PackedVector2Array, degrees: int) -> PackedVect
 	var rotated = PackedVector2Array()
 	var rads = deg_to_rad(degrees)
 	for v in poly:
-		var new_v = Vector2(v.x * sin(rads), v.y * cos(rads))
+		var x = v.x * cos(rads) - v.y * sin(rads)
+		var y = v.x * sin(rads) + v.y * cos(rads)
+		var new_v = Vector2(x, y)
 		rotated.append(new_v)
 	return rotated
 

@@ -1,14 +1,18 @@
-[gd_scene load_steps=4 format=3 uid="uid://dmbienyglkltx"]
+[gd_scene load_steps=5 format=3 uid="uid://dmbienyglkltx"]
 
 [ext_resource type="Script" path="res://Player/Player.gd" id="1_y3n6f"]
+[ext_resource type="Script" path="res://Player/PlayerHitbox.gd" id="2_tc5g5"]
 [ext_resource type="Script" path="res://Component/VisibleArea.gd" id="3_y8ug1"]
 [ext_resource type="Script" path="res://Component/Destructor.gd" id="4_peewv"]
 
-[node name="Player" type="RigidBody2D"]
+[node name="Player" type="Node2D"]
 script = ExtResource("1_y3n6f")
 
-[node name="VisibleArea" type="Node2D" parent="."]
+[node name="RigidHitbox" type="RigidBody2D" parent="."]
+script = ExtResource("2_tc5g5")
+
+[node name="VisibleArea" type="Node2D" parent="RigidHitbox"]
 script = ExtResource("3_y8ug1")
 
-[node name="Destructor" type="Area2D" parent="."]
+[node name="Destructor" type="Area2D" parent="RigidHitbox"]
 script = ExtResource("4_peewv")
