@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://Player/Player.gd" id="1_y3n6f"]
 [ext_resource type="Script" path="res://Player/PlayerHitbox.gd" id="2_tc5g5"]
 [ext_resource type="Script" path="res://Component/VisibleArea.gd" id="3_y8ug1"]
-[ext_resource type="Script" path="res://Component/Destructor.gd" id="4_peewv"]
+[ext_resource type="Script" path="res://Component/Destructor/Destructor.gd" id="4_peewv"]
 
 [node name="Player" type="Node2D"]
 script = ExtResource("1_y3n6f")

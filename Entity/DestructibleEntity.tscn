@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Entity/DestructibleEntity.gd" id="2_de7c5"]
 [ext_resource type="Script" path="res://Component/VisibleArea.gd" id="2_f0jng"]
-[ext_resource type="Script" path="res://Component/DestructibleArea.gd" id="3_2lp58"]
+[ext_resource type="Script" path="res://Component/Destructible/DestructibleArea.gd" id="3_2lp58"]
 [ext_resource type="Script" path="res://Component/AnimatableHitbox.gd" id="4_gj014"]
 
 [node name="DestructibleEntity" type="Node2D"]

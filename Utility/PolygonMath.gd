@@ -189,3 +189,11 @@ static func polygons_from_children(node: Node2D) -> Array[PackedVector2Array]:
 		if child is CollisionPolygon2D or child is Polygon2D:
 			polys.append(child.polygon)
 	return polys
+
+static func area_of_polygon(poly: PackedVector2Array) -> float:
+	var a = 0
+	var b = 0
+	for i in poly.size() - 1:
+		a += poly[i].x * poly[i+1].y
+		b += poly[i].y * poly[i+1].x
+	return (a - b) / 2

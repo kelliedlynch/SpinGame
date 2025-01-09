@@ -4,6 +4,7 @@ class_name SGEntityBase
 # Base class for all game entities.
 
 var entity_scale: Vector2 = Vector2.ONE
+var color: Color = Color.WHITE
 
 func _ready() -> void:
 	if get_tree().get_root().get_children().has(self):
@@ -32,6 +33,8 @@ func update_polygons(component, polygons: Array[PackedVector2Array]) -> void:
 	for poly in polygons:
 		var n = ClassDB.instantiate(child_type)
 		n.polygon = poly
+		if child_type == "Polygon2D":
+			n.color = color
 		component.add_child(n)
 	_update_scale(self, entity_scale)
 
