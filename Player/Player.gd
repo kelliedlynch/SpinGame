@@ -11,6 +11,7 @@ var spin_speed = 1.25
 var spin_accel = 3
 
 #signal needs_push
+var linear_velocity = Vector2.ZERO
 
 func _ready() -> void:
 	#
@@ -20,6 +21,7 @@ func _ready() -> void:
 	var saw = PolygonMath.load_polygon(PolygonVertexData.saw_blade)
 	var polysize = PolygonMath.size_of_polygon(saw)
 	var circle = PolygonMath.generate_circle_polygon(polysize.x / 2)
+	#var circle2 = Geometry2D.offset_polygon(circle, 100)
 	update_polygons(hitbox, [circle])
 	update_polygons(visible_area, [saw])
 	update_polygons(destructor, [circle])
@@ -38,6 +40,9 @@ func _on_body_entered(node):
 func _on_body_shape_entered(body_rid: RID, body: Node, body_shape_index: int, local_shape_index: int):
 	print("body shape entered")
 	pass
+
+func cutting_power() -> float:
+	return linear_velocity.length() / 10 * destructor.power * sqrt(spin_speed)
 
 func _process(delta: float) -> void:
 	#super._process(delta)

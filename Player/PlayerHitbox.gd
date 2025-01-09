@@ -45,6 +45,8 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 		#pass
 	if state.linear_velocity.length() > max_speed:
 		state.linear_velocity = state.linear_velocity.clamp(Vector2(-max_speed, -max_speed), Vector2(max_speed, max_speed))
+	#if get_contact_count() == 0:
+		#get_parent().linear_velocity = state.linear_velocity
 	
 func _physics_process(delta: float) -> void:
 	var test = move_and_collide(linear_velocity * delta)
@@ -77,7 +79,8 @@ func _physics_process(delta: float) -> void:
 		#linear_velocity += Vector2(0, power)
 
 func _process(delta) -> void:
-	last_frame_velocity = linear_velocity
+	#last_frame_velocity = linear_velocity
+	get_parent().linear_velocity = linear_velocity
 	var power = 100000
 	if Input.is_action_pressed("ui_left"):
 		#linear_velocity += Vector2(-power * delta, 0)

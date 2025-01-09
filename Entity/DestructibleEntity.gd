@@ -23,6 +23,8 @@ var chunk_decay_size_threshold = 42
 # this is the maximum number of chunks that can break off when a destructor hits
 var material_chunk_quantity = 20
 
+var material_hardness = 10
+
 var active_destructors = {}
 
 signal fragments_created
@@ -133,6 +135,10 @@ func apply_destructor(destructor: Destructor):
 	update_polygons(destructible_area, polys_after_decay)
 	update_polygons(visible_area, polys_after_decay)
 	update_polygons(hitbox, polys_after_decay)
+	#update_polygons(destructible_area, polys_after_decay)
+	#print("foo")
+	#await get_tree().create_timer(0.5).timeout
+	#print("bar")
 	#call_deferred("update_polygons", destructible_area, polys_after_decay)
 	#call_deferred("update_polygons", visible_area, polys_after_decay)
 	#call_deferred("update_polygons", hitbox, polys_after_decay)
@@ -207,6 +213,16 @@ func _on_fragments_created(n: int, pos: Vector2):
 
 func _on_destruction_area_entered(node):
 	if !(node is Destructor): return
+	var a = node.get_parent().get_parent().cutting_power()
+	print("entered")
+	#hitbox.add_collision_exception_with(node.get_parent())
+	#active_destructors[node] = node
+	
+	#print(node.get_parent().linear_velocity.length())
+	#if node.get_parent().linear_velocity.length() > material_hardness:
+	#print("in ", node.get_parent().get_parent().cutting_power())
+	#if node.get_parent().get_parent().cutting_power() > material_hardness:
+		#print("in ", node.get_parent().get_parent().cutting_power())
 	hitbox.add_collision_exception_with(node.get_parent())
 	active_destructors[node] = node
 	
@@ -214,6 +230,7 @@ func _on_destruction_area_entered(node):
 func _on_destruction_area_exited(node):
 	if !(node is Destructor): return
 	#hitbox.remove_collision_exception_with(node.get_parent())
+	print("exited")
 	active_destructors.erase(node)
 
 func _on_hitbox_area_entered(_node):
@@ -225,3 +242,8 @@ func _on_hitbox_area_exited(_node):
 func _process(_delta: float) -> void:
 	for destructor in active_destructors:
 		apply_destructor(destructor)
+		#if destructor.get_parent().get_parent().cutting_power() < material_hardness:
+			##print("in ", node.get_parent().get_parent().cutting_power())
+			#hitbox.remove_collision_exception_with(destructor.get_parent())
+			#active_destructors.erase(destructor)
+		#hitbox.remove_collision_exception_with(destructor.get_parent())
