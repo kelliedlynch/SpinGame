@@ -47,11 +47,13 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 		state.linear_velocity = state.linear_velocity.clamp(Vector2(-max_speed, -max_speed), Vector2(max_speed, max_speed))
 	#if get_contact_count() == 0:
 		#get_parent().linear_velocity = state.linear_velocity
+	#get_parent().linear_velocity = state.linear_velocity
 	
 func _physics_process(delta: float) -> void:
-	var test = move_and_collide(linear_velocity * delta)
-	#if test == true:
-		#pass
+	var test = move_and_collide(linear_velocity * delta, true, 0.08, false)
+	if test != null:
+		get_parent().pre_collision_velocity = linear_velocity
+		pass
 	#last_frame_velocity = linear_velocity
 	
 	#var power = 100
@@ -80,7 +82,7 @@ func _physics_process(delta: float) -> void:
 
 func _process(delta) -> void:
 	#last_frame_velocity = linear_velocity
-	get_parent().linear_velocity = linear_velocity
+	#get_parent().linear_velocity = linear_velocity
 	var power = 100000
 	if Input.is_action_pressed("ui_left"):
 		#linear_velocity += Vector2(-power * delta, 0)

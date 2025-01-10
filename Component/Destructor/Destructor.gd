@@ -10,3 +10,4 @@ var power = 1
 	#return n
 func _ready() -> void:
 	monitorable = true
+	monitoring = false

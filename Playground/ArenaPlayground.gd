@@ -6,7 +6,7 @@ extends Node2D
 func _ready() -> void:
 	RenderingServer.set_default_clear_color(Color.BLACK)
 	#$Arena.remove_child($Arena/ArenaPhysicsArea)
-	var new_destructible = DestructibleEntity.create_new()
+	var new_destructible = preload("res://Entity/DestructibleEntity.tscn").instantiate()
 	new_destructible.position = Vector2(300, 400)
 	#new_destructible.update_polygons()
 	add_child(new_destructible)

@@ -5,11 +5,18 @@ class_name SGEntityBase
 
 var entity_scale: Vector2 = Vector2.ONE
 var color: Color = Color.WHITE
+var _initialized = false
+
+signal polygons_updated
+
+#func _init() -> void:
+	#update_all_polygons(PolygonMath.DEFAULT_POLYGON)
 
 func _ready() -> void:
 	if get_tree().get_root().get_children().has(self):
 		self.position = get_viewport_rect().size / 2
-	#update_all_polygons([PolygonMath.DEFAULT_POLYGON])
+	if _initialized == false:
+		update_all_polygons([PolygonMath.DEFAULT_POLYGON])
 
 
 func get_polygons(component) -> Array[PackedVector2Array]:
@@ -24,6 +31,7 @@ func update_all_polygons(polygons: Array[PackedVector2Array]) -> void:
 		update_polygons(child, polygons)
 
 func update_polygons(component, polygons: Array[PackedVector2Array]) -> void:
+	_initialized = true
 	var child_type = "CollisionPolygon2D"
 	if component is VisibleArea:
 		child_type = "Polygon2D"
@@ -37,6 +45,7 @@ func update_polygons(component, polygons: Array[PackedVector2Array]) -> void:
 			n.color = color
 		component.add_child(n)
 	_update_scale(self, entity_scale)
+	emit_signal("polygons_updated", component)
 
 func update_scale(s: Vector2) -> void:
 	_update_scale(self, s)

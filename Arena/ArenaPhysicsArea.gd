@@ -4,7 +4,8 @@ extends Area2D
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	var size = get_viewport_rect().size
-	
+	monitoring = false
+	monitorable = false
 	var coll = CollisionShape2D.new()
 	var shape = RectangleShape2D.new()
 	shape.size = size

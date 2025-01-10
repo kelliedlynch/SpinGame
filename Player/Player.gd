@@ -6,30 +6,28 @@ class_name Player
 @onready var visible_area: VisibleArea = $RigidHitbox/VisibleArea
 @onready var destructor: Destructor = $RigidHitbox/Destructor
 
-var max_spin_speed = 10
-var spin_speed = 1.25
-var spin_accel = 3
+var max_spin_speed = 6
+var spin_speed = .25
+var spin_accel = .7
 
 #signal needs_push
-var linear_velocity = Vector2.ZERO
+var pre_collision_velocity = Vector2.ZERO
+
+#func _init() -> void:
+	#var saw = PolygonVertexData.saw_blade
+	#var polysize = PolygonMath.size_of_polygon(saw)
+	#var circle = PolygonMath.generate_circle_polygon(polysize.x / 2)
+	#update_polygons(hitbox, [circle])
+	#update_polygons(visible_area, [saw])
+	#update_polygons(destructor, [circle])
 
 func _ready() -> void:
-	#
-	#if get_tree().get_root().get_children().has(self):
-		#self.position = get_viewport_rect().size / 2
-	
-	var saw = PolygonMath.load_polygon(PolygonVertexData.saw_blade)
+	var saw = PolygonVertexData.saw_blade
 	var polysize = PolygonMath.size_of_polygon(saw)
 	var circle = PolygonMath.generate_circle_polygon(polysize.x / 2)
-	#var circle2 = Geometry2D.offset_polygon(circle, 100)
 	update_polygons(hitbox, [circle])
 	update_polygons(visible_area, [saw])
 	update_polygons(destructor, [circle])
-	#hitbox.body_entered.connect(_on_body_entered)
-	#hitbox.body_shape_entered.connect(_on_body_shape_entered)
-	#needs_push.connect(_on_needs_push)
-	#scale_changed.connect(visible_area._on_scale_changed)
-	#scale_changed.connect(destructor._on_scale_changed)
 	super._ready()
 
 func _on_body_entered(node):
@@ -42,7 +40,7 @@ func _on_body_shape_entered(body_rid: RID, body: Node, body_shape_index: int, lo
 	pass
 
 func cutting_power() -> float:
-	return linear_velocity.length() / 10 * destructor.power * sqrt(spin_speed)
+	return pre_collision_velocity.length() / 10 * destructor.power * sqrt(spin_speed)
 
 func _process(delta: float) -> void:
 	#super._process(delta)
