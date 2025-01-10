@@ -97,7 +97,9 @@ func apply_destructor(destructor: Destructor):
 				clipped_original = remaining_chunks_of_original_after_clipping
 				if clipped_original.size() == 0:
 					pass
-				emit_signal("fragments_created", 1, destructible_area.to_global(overlap_vertices[i]))
+				#print(destructor.get_parent().linear_velocity)
+				var center = destructor.get_parent().to_global(destructor.position)
+				emit_signal("fragments_created", 1, destructible_area.to_global(overlap_vertices[i]), destructor.get_parent().linear_velocity, center)
 			polys_after_destruction.append_array(_simplify_and_prune(clipped_original))
 			if polys_after_destruction.size() == 0:
 				pass
@@ -117,6 +119,7 @@ func apply_destructor(destructor: Destructor):
 				local_poly.append(get_parent().to_local(destructible_area.to_global(vertex)))
 			
 			var frag = DebrisFragment.new()
+
 			frag.velocity = Vector2(randi_range(40, 60) * cos(randf_range(0, 6.2)), randi_range(40, 60) * sin(randf_range(0, 6.2)))
 			frag.rotate_speed = 0
 			frag.timeout *= 2
@@ -201,18 +204,34 @@ func _triangle_fragment(size: Vector2):
 	var triangle = PackedVector2Array([Vector2(0, -size.y / 2.0), Vector2(size.x / 2.0, size.y / 2.0), Vector2(-size.x / 2.0, size.y / 2.0)])
 	return triangle
 	
-func _on_fragments_created(n: int, pos: Vector2):
+func _on_fragments_created(n: int, pos: Vector2, travel_vec: Vector2, center: Vector2):
 	for i in n:
 		var frag = DebrisFragment.new()
 		frag.polygon = _get_fragment(Vector2(8, 8))
 		frag.color = Color.YELLOW
 		frag.position = pos
+		var vector_to_tan = pos - center
+		var angle_diff = vector_to_tan.angle_to(travel_vec)
+		var mult = -1 if angle_diff > 0 else 1
+		
+		var angle_vec = vector_to_tan.angle()
+		var rot = angle_vec + PI/2 * mult
+		var out_vec = Vector2.from_angle(rot)
+		#var travel_angle = travel_vec.angle()
+		#var to_pt_angle = to_pt.angle()
+		#var diff = to_pt_angle - travel_angle
+		
+
+
+		var speed = randi_range(160, 200)
+		#print(Vector2.from_angle(offset))
+		frag.velocity = out_vec * speed
 		add_sibling(frag)
 
 
 func _on_destructor_entered_destructible_area(node):
 	if !(node is Destructor): return
-	print("entered destructible area")
+	#print("entered destructible area")
 	var vel = node.get_parent().get_parent().pre_collision_velocity
 	#node.get_parent().apply_central_impulse(vel)
 	#var vel = node.get_parent(erial_override
@@ -238,7 +257,7 @@ func _on_destructor_exited_watch_area(node):
 func _on_destructor_exited_destructible_area(node):
 	if !(node is Destructor): return
 	#hitbox.remove_collision_exception_with(node.get_parent())
-	print("exited destructible area")
+	#print("exited destructible area")
 	active_destructors.erase(node)
 	
 	
