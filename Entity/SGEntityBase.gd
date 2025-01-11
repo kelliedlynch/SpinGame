@@ -38,18 +38,10 @@ func update_polygons(component, polygons: Array[PackedVector2Array]) -> void:
 	if component is VisibleArea:
 		child_type = "Polygon2D"
 	for child in component.get_children():
-		if component is Destructor:
-			_remove_if_real(child, component)
-		else:
-			if child.get_class() == child_type:
-				child.queue_free()
+		if child.get_class() == child_type:
+			child.queue_free()
 				#component.remove_child(child)
 	for poly in polygons:
-		var tri = Geometry2D.triangulate_polygon(poly)
-		if tri.is_empty():
-			pass
-		if Geometry2D.is_polygon_clockwise(poly) == true:
-			pass
 		_make_new_shape(poly, child_type, component)
 		#var n = ClassDB.instantiate(child_type)
 		#n.polygon = poly
@@ -66,6 +58,7 @@ func _make_new_shape(poly, child_type, component):
 		pass
 	if child_type == "Polygon2D":
 		n.color = color
+		#n.scale = entity_scale
 	component.add_child(n)
 	pass
 

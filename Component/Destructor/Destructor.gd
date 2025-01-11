@@ -39,7 +39,11 @@ func _on_child_removed(node: Node2D):
 		current.erase(next_frame)
 		#remove_child(next_frame)
 		next_frame.queue_free()
-		
+
+func _on_destroyed_material(d: Destructor, mat: DestructibleEntity):
+	await get_tree().physics_frame
+	parent.linear_velocity -= parent.linear_velocity * Vector2(mat.material_resistance, mat.material_resistance)
+	parent.get_parent().spin_speed -= mat.material_resistance
 
 func _physics_process(delta: float) -> void:
 	var spin = parent.get_parent().spin_speed

@@ -4,13 +4,8 @@ class_name DestructibleEntity
 #@onready var destructible_area: DestructionArea = $DestructionArea
 #@onready var destruction_polys: Array[PackedVector2Array] = PolygonMath.polygons_from_children($DestructionArea)
 @onready var destructible_area = $DestructibleArea
-#@onready var visible_area = $VisibleArea
+@onready var visible_area = $VisibleArea
 @onready var hitbox = $DestructibleHitbox
-
-var clip_queue: Array[PackedVector2Array] = []
-var queued_clip: PackedVector2Array = []
-var clip_timer = 3
-var clip_timer_elapsed = 0
 
 # TODO: these should probably not be an absolute size; should probably calculate based on rendered size
 #		because polygons can be any size and are scaled when rendered
@@ -23,13 +18,18 @@ var chunk_decay_size_threshold = 42
 # this is the maximum number of chunks that can break off when a destructor hits
 var material_chunk_quantity = 20
 
-var material_hardness = 10
+# TODO: have better cut start/stop detection, so that inertia can factor in. 
+const CUT_INERTIA = .5
+var material_hardness = 3
+var material_resistance = .02
+var material_max_cut_speed = 10
 
 var active_destructors = {}
 
 signal fragments_created
 signal was_destroyed
 signal destructible_area_clipped
+signal destructor_destroyed_material
 
 func _init():
 	#super._init()
@@ -37,31 +37,28 @@ func _init():
 	#polygons_updated.connect(_on_polygons_updated)
 
 func _ready() -> void:
-	polygons_updated.connect(destructible_area._on_polygons_updated)
-	super._ready()
 	#polygons_updated.connect(destructible_area._on_polygons_updated)
-	#destructible_area.update_watch_area()
-	#hitbox.position = destructible_area.position
-	#destructible_area_clipped.connect(destructible_area.update_slowdown_zone)
-	#destructible_area.area_entered.connect(_on_destructible_area_entered)
-	#destructible_area.area_exited.connect(_on_destructible_area_exited)
-	#destructible_area.area_entered.connect(_on_destructor_entered_destructible_area)
-	
-	#destructible_area.area_exited.connect(_on_destructor_exited_destructible_area)
-	#destructible_area.area_exited.connect(hitbox._on_destructor_exited_area)
+	super._ready()
+
 	was_destroyed.connect(_on_was_destroyed)
 	fragments_created.connect(_on_fragments_created)
 	#destructible_area.destructor_entered_watch_area.connect(_on_destructor_entered_watch_area)
 	destructible_area.destructor_entered_destructible_area.connect(_on_destructor_entered_destructible_area)
 	destructible_area.destructor_exited_destructible_area.connect(_on_destructor_exited_destructible_area)
 	destructible_area.destructor_exited_watch_area.connect(_on_destructor_exited_watch_area)
+	#destructible_area.body_entered.connect(_on_body_entered_test)
 	#destructible_area.queue_free()
 	#hitbox.collision_layer = 10
+
+func _on_body_entered_test(node):
+	print("body entered destructible area")
+
 	
 func _on_was_destroyed():
 	queue_free()
 	
 func apply_destructor(destructor: Destructor):
+	if destructor.get_parent().get_parent().cutting_power() < material_hardness: return
 	var translated_destructor_polys: Array[PackedVector2Array] = []
 	for poly in destructor.get_children():
 		if !(poly is CollisionPolygon2D) or destructor.next.has(poly): continue
@@ -133,18 +130,18 @@ func apply_destructor(destructor: Destructor):
 	var polys_after_decay: Array[PackedVector2Array] = []
 	for i in final_polys:
 		if _is_decayable(polys_after_destruction[i]) == true:
-			#var local_poly = []
-			#for vertex in polys_after_destruction[i]:
-				#local_poly.append(get_parent().to_local(destructible_area.to_global(vertex)))
-			#
-			#var frag = DebrisFragment.new()
-#
-			#frag.velocity = Vector2(randi_range(40, 60) * cos(randf_range(0, 6.2)), randi_range(40, 60) * sin(randf_range(0, 6.2)))
-			#frag.rotate_speed = 0
-			#frag.timeout *= 2
-			#frag.color = Color.STEEL_BLUE
-			#frag.polygon = local_poly
-			#add_sibling(frag)
+			var local_poly = []
+			for vertex in polys_after_destruction[i]:
+				local_poly.append(get_parent().to_local(destructible_area.to_global(vertex)))
+			
+			var frag = DebrisFragment.new()
+
+			frag.velocity = Vector2(randi_range(40, 60) * cos(randf_range(0, 6.2)), randi_range(40, 60) * sin(randf_range(0, 6.2)))
+			frag.rotate_speed = 0
+			frag.timeout *= 2
+			frag.color = Color.STEEL_BLUE
+			frag.polygon = local_poly
+			add_sibling(frag)
 			continue
 
 		polys_after_decay.append(polys_after_destruction[i])
@@ -160,18 +157,6 @@ func apply_destructor(destructor: Destructor):
 		return		
 	
 	holes_removed = PolygonMath.merge_recursive(holes_removed)
-
-
-	#update_polygons(destructible_area.slowdown_zone, polys_before_clipping)
-	#update_polygons(destructible_area, polys_after_decay)
-
-	#_update_next_frame(destructible_area, holes_removed)
-	#emit_signal("destructible_area_clipped", polys_after_decay)
-	#call_deferred("update_polygons", destructible_area.slowdown_zone, polys_after_decay)
-	#destructible_area.update_slowdown_zone(polys_after_decay)
-	#call_deferred("update_polygons", destructible_area, holes_removed)
-	#call_deferred("update_polygons", visible_area, polys_after_decay)
-	#call_deferred("update_polygons", hitbox, polys_after_decay)
 
 	for child in destructible_area.get_children():
 		if child is CollisionPolygon2D:
@@ -191,33 +176,20 @@ func apply_destructor(destructor: Destructor):
 		n.polygon = poly
 		hitbox.add_child(n)
 		
-	#var to_remove_again = []
-	#for child in hitbox.get_children():
-		#if child is CollisionPolygon2D:
-			#to_remove_again.append(child)
-	#_remove_next_frame(to_remove_again)
-	#for poly in holes_removed:
-		#var n = CollisionPolygon2D.new()
-		#n.polygon = poly
-		#hitbox.add_child(n)
-			
-	#_update_next_frame(visible_area, polys_after_decay)
-	#update_polygons(visible_area, holes_removed)
-	#_update_next_frame(hitbox, polys_after_decay)
-	#update_polygons(hitbox, holes_removed)
+	for child in visible_area.get_children():
+		if child is Polygon2D:
+			child.queue_free()
 
-func _remove_next_frame(nodes):
-	await get_tree().physics_frame
-	for node in nodes:
-		if node != null:
-			node.call_deferred("queue_free")
+	for poly in holes_removed:
+		var n = Polygon2D.new()
+		n.polygon = poly
+		n.scale = entity_scale
+		n.color = color
+		visible_area.add_child(n)
 	
-
-func _update_next_frame(node, polys):
-	#await get_tree().physics_frame
-	#update_polygons(node, polys)
-	call_deferred("update_polygons", node, polys)
-
+	emit_signal("destructor_destroyed_material", destructor, self)
+	destructor.get_parent().get_parent().spin_speed -= material_resistance
+	
 
 func _simplify_and_prune(poly: Array[PackedVector2Array]) -> Array[PackedVector2Array]:
 	var simplified_and_pruned: Array[PackedVector2Array] = []
@@ -277,7 +249,7 @@ func _triangle_fragment(size: Vector2):
 	return triangle
 	
 func _on_fragments_created(n: int, pos: Vector2, travel_vec: Vector2, center: Vector2):
-	return
+	#return
 	for i in n:
 		var frag = DebrisFragment.new()
 		frag.polygon = _get_fragment(Vector2(8, 8))
@@ -304,23 +276,25 @@ func _on_fragments_created(n: int, pos: Vector2, travel_vec: Vector2, center: Ve
 
 func _on_destructor_entered_destructible_area(node):
 	if !(node is Destructor): return
+	#print("destructor entered destructible area")
+	destructor_destroyed_material.connect(node._on_destroyed_material)
 	active_destructors[node] = node
 	pass
 
 func _on_destructor_entered_watch_area(node):
-	#destructible_area.destructor_exited_watch_area.connect(_on_destructor_exited_watch_area)
-	#hitbox.add_collision_exception_with(node.get_parent())
-	#active_destructors[node] = node
-	
+
 	pass
 	
 func _on_destructor_exited_watch_area(node):
 	#hitbox.remove_collision_exception_with(node.get_parent())
+	#print("destructor exited watch area")
+	#active_destructors.erase(node)
 	pass
 	
 func _on_destructor_exited_destructible_area(node):
 	if !(node is Destructor): return
 	#print("destructor exited destructible area")
+	destructor_destroyed_material.disconnect(node._on_destroyed_material)
 	#hitbox.remove_collision_exception_with(node.get_parent())
 	#print("exited destructible area")
 	active_destructors.erase(node)
