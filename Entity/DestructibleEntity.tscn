@@ -1,7 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://lao37d41bf1w"]
+[gd_scene load_steps=4 format=3 uid="uid://lao37d41bf1w"]
 
 [ext_resource type="Script" path="res://Entity/DestructibleEntity.gd" id="2_de7c5"]
-[ext_resource type="Script" path="res://Component/VisibleArea.gd" id="2_f0jng"]
 [ext_resource type="Script" path="res://Component/Destructible/DestructibleArea.gd" id="3_2lp58"]
 [ext_resource type="Script" path="res://Component/Destructible/DestructibleHitbox.gd" id="4_832lt"]
 
@@ -11,8 +10,5 @@ script = ExtResource("2_de7c5")
 [node name="DestructibleArea" type="Area2D" parent="."]
 script = ExtResource("3_2lp58")
 
-[node name="VisibleArea" type="Node2D" parent="."]
-script = ExtResource("2_f0jng")
-
-[node name="StaticHitbox" type="AnimatableBody2D" parent="."]
+[node name="DestructibleHitbox" type="AnimatableBody2D" parent="."]
 script = ExtResource("4_832lt")

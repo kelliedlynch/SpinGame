@@ -37,7 +37,9 @@ static func max_point(vertices: PackedVector2Array) -> Vector2:
 		if point.y > maxY: maxY = point.y
 	return Vector2(maxX, maxY)
 	
-static func simplify_polygon(poly: PackedVector2Array, threshold = 10) -> PackedVector2Array:
+static func simplify_polygon(poly: PackedVector2Array, threshold = .05) -> PackedVector2Array:
+	var size = size_of_polygon(poly)
+	threshold = max(size.x, size.y) * threshold
 	var simplified = PackedVector2Array()
 	var prev_pt = poly[-1]
 	poly.append(poly[0])
@@ -48,7 +50,7 @@ static func simplify_polygon(poly: PackedVector2Array, threshold = 10) -> Packed
 		if dist_ba < threshold and  dist_bc < threshold: 
 			#print("both distances under threshold, skipping point")
 			continue
-		elif dist_ba < threshold or dist_bc < threshold:
+		elif dist_ba > threshold and dist_bc > threshold:
 			simplified.append(poly[i])
 			#print("both distances over threshold, keeping point")
 			prev_pt = poly[i]
@@ -62,7 +64,11 @@ static func simplify_polygon(poly: PackedVector2Array, threshold = 10) -> Packed
 			prev_pt = poly[i]
 			continue
 		#print("skipping point because angle is ", angle)
+	
 	if simplified.size() < 3: return poly
+	#var simplified_again = simplify_polygon(simplified)
+	#if simplified == simplified_again: return simplified
+	#if simplified_again.size() < 3: return poly
 	return simplified
 
 static func rotate_polygon(poly: PackedVector2Array, degrees: int) -> PackedVector2Array:
@@ -100,11 +106,75 @@ static func area_of_polygon(poly: PackedVector2Array) -> float:
 	return (a - b) / 2
 	
 static func merge_recursive(polys: Array[PackedVector2Array]) -> Array[PackedVector2Array]:
-	var merged: Array[PackedVector2Array] = [polys[0]]
-	for poly in polys:
-		var new_merged: Array[PackedVector2Array] = []
-		for m in merged:
-			new_merged.append_array(Geometry2D.merge_polygons(poly, m))
-		merged = new_merged
-	if polys.size() == merged.size(): return polys
+	var orig_size = polys.size()
+	if orig_size == 1: return polys
+	var merged: Array[PackedVector2Array] = []
+	var remove_indices = []
+	
+	var i = 0
+	while i < orig_size - 1:
+		var this_merge = Geometry2D.merge_polygons(polys[i], polys[i+1])
+		var holes_removed: Array[PackedVector2Array] = []
+		for poly in this_merge:
+			if Geometry2D.is_polygon_clockwise(poly) == true:
+				#i += 2
+				continue
+			holes_removed.append(poly)
+		merged.append_array(holes_removed)
+		i += 2
+	if orig_size % 2 == 1:
+		merged.append(polys[-1])
+
+	var size_after = merged.size()
+	var matched = true
+	if size_after <= 1:
+		return merged
+
+	if orig_size == size_after:
+		for j in size_after:
+			var a = 0
+			var b = 0
+			if merged.has(polys[j]):
+				a = 1
+			else:
+				a = 2
+			if merged[j] == polys[j]:
+				b = 1
+			else:
+				b = 2
+			if a != b:
+				print("NOTE: HAS GOT DIFFERENT RESULTS THAN CHECKING BY INDEX")
+			if a == 1:
+				continue
+			matched = false
+				
+	if matched == true:
+		return polys
+	
 	return merge_recursive(merged)
+		
+	#var merged: Array[PackedVector2Array] = [polys[0]]
+	#for i in range(1, polys.size()):
+		#var new_merged: Array[PackedVector2Array] = []
+		#for m in merged:
+			#new_merged.append_array(Geometry2D.merge_polygons(polys[i], m))
+		#merged = new_merged
+	#var holes_removed: Array[PackedVector2Array] = []
+	#for poly in merged:
+		#if Geometry2D.is_polygon_clockwise(poly) == true:
+			#continue
+		#holes_removed.append(poly)
+	#
+	#
+	#
+	#if polys.size() == holes_removed.size():
+		#var are_identical = true
+		#for poly in holes_removed.size():
+			#if polys[0] == holes_removed[0]:
+				#continue
+			#are_identical = false
+			#break
+		#if are_identical == true: 
+			#return polys
+		
+	#return merge_recursive(merged)

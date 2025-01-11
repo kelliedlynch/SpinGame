@@ -11,6 +11,7 @@ func _ready() -> void:
 	max_contacts_reported = 3
 	#body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
+	lock_rotation = true
 	#collision_mask = 1 & 2
 	
 #func _on_body_entered(node):
@@ -24,14 +25,16 @@ func _on_body_exited(node):
 		pass
 		##needs_push = true
 
-func c (n): 
-	n.add_collision_exception_with(self)
-
 func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 	#print("linear velocity", linear_velocity, state.linear_velocity)
-	#var test = move_and_collide(state.linear_velocity * state.step, true, .08, false)
-	##print(state.transform)
-	#if test != null and test.get_collider() is AnimatableBody2D:
+	var test = move_and_collide(state.linear_velocity * state.step, true, .08, false)
+	###print(state.transform)
+	if test != null and test.get_collider() is DestructibleHitbox:
+		state.linear_velocity *= test.get_collider().get_parent().destructible_area.linear_damp / 1000
+		pass
+		#if test.get_collider() is DestructibleHitbox:
+			##state.total_linear_damp = test.get_collider().get_parent().linear_damp
+			#state.linear_velocity = state.linear_velocity.clamp(Vector2(-100, -100), Vector2(100, 100))
 		#call_deferred("c", test.get_collider())
 		#pass
 	
@@ -49,11 +52,11 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 		#get_parent().linear_velocity = state.linear_velocity
 	#get_parent().linear_velocity = state.linear_velocity
 	
-func _physics_process(delta: float) -> void:
-	var test = move_and_collide(linear_velocity * delta, true, 0.08, false)
-	if test != null:
-		get_parent().pre_collision_velocity = linear_velocity
-		pass
+#func _physics_process(delta: float) -> void:
+	#var test = move_and_collide(linear_velocity * delta, true, 0.08, false)
+	#if test != null:
+		#get_parent().pre_collision_velocity = linear_velocity
+		#pass
 	#last_frame_velocity = linear_velocity
 	
 	#var power = 100

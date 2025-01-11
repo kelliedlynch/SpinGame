@@ -32,20 +32,47 @@ func update_all_polygons(polygons: Array[PackedVector2Array]) -> void:
 
 func update_polygons(component, polygons: Array[PackedVector2Array]) -> void:
 	_initialized = true
+	if polygons.size() > 1:
+		pass
 	var child_type = "CollisionPolygon2D"
 	if component is VisibleArea:
 		child_type = "Polygon2D"
 	for child in component.get_children():
-		if child.get_class() == child_type:
-			component.remove_child(child)
+		if component is Destructor:
+			_remove_if_real(child, component)
+		else:
+			if child.get_class() == child_type:
+				child.queue_free()
+				#component.remove_child(child)
 	for poly in polygons:
-		var n = ClassDB.instantiate(child_type)
-		n.polygon = poly
-		if child_type == "Polygon2D":
-			n.color = color
-		component.add_child(n)
+		var tri = Geometry2D.triangulate_polygon(poly)
+		if tri.is_empty():
+			pass
+		if Geometry2D.is_polygon_clockwise(poly) == true:
+			pass
+		_make_new_shape(poly, child_type, component)
+		#var n = ClassDB.instantiate(child_type)
+		#n.polygon = poly
+		#if child_type == "Polygon2D":
+			#n.color = color
+		#component.add_child(n)
 	_update_scale(self, entity_scale)
 	emit_signal("polygons_updated", component)
+	
+func _make_new_shape(poly, child_type, component):
+	var n = ClassDB.instantiate(child_type)
+	n.polygon = poly
+	if Geometry2D.is_polygon_clockwise(poly) == true:
+		pass
+	if child_type == "Polygon2D":
+		n.color = color
+	component.add_child(n)
+	pass
+
+func _remove_if_real(node, component):
+	if (node is CollisionPolygon2D) and !node.is_in_group("PredictedMovement"):
+		#component.remove_child(node)
+		node.call_deferred("queue_free")
 
 func update_scale(s: Vector2) -> void:
 	_update_scale(self, s)

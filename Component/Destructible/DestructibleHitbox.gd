@@ -2,6 +2,7 @@ extends AnimatableBody2D
 class_name DestructibleHitbox
 
 func _ready() -> void:
+	#collision_layer = 2
 	pass
 
 func _on_hitbox_entered(node):
