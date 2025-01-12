@@ -10,8 +10,8 @@ class_name DestructibleEntity
 # TODO: these should probably not be an absolute size; should probably calculate based on rendered size
 #		because polygons can be any size and are scaled when rendered
 var material_chunk_size = Vector2(20, 20)
-# chunks smaller than this will just vanish
-var chunk_pruning_size_threshold = 16 
+# multiplier of polygon size; chunks smaller than this will just vanish
+var PRUNE_THRESHOLD = .005
 # chunks smaller than this will break off and decay
 var chunk_decay_size_threshold = 42
 
@@ -19,11 +19,11 @@ var chunk_decay_size_threshold = 42
 var material_chunk_quantity = 20
 
 # TODO: have better cut start/stop detection, so that inertia can factor in. 
-const CUT_INERTIA = .5
+const CUT_INERTIA = .1
 var material_hardness = 3
 var material_resistance = .1
 var material_max_cut_speed = 300
-var material_linear_damp = 40
+var material_linear_damp = 3
 
 var active_destructors = {}
 
@@ -53,19 +53,28 @@ func _on_body_entered_test(node):
 func _on_was_destroyed():
 	queue_free()
 	
-func destroyed_by_destructor():
+func update_destructed(polys: Array[PackedVector2Array]):
+	var screen_size = get_viewport_rect().size
+	var min_side_length = max(screen_size.x, screen_size.y) * .005 / min(entity_scale.x, entity_scale.y)
+	var simplified: Array[PackedVector2Array] = []
+	for poly in polys:
+		simplified.append(PolygonMath.simplify_polygon(poly, min_side_length))
+	var pruned: Array[PackedVector2Array] = []
+	
+	var prune_size = max(screen_size.x, screen_size.y) * PRUNE_THRESHOLD
+	for poly in simplified:
+		var poly_size = PolygonMath.size_of_polygon(poly) * entity_scale
+		if poly_size.x < prune_size and poly_size.y < prune_size:
+			continue
+		var area = prune_size * prune_size * 2
+		if poly_size.x < prune_size * 1.5 or poly_size.y < prune_size * 1.5:
+			if poly_size.x * poly_size.y < area:
+				continue
+		pruned.append(poly)
+	if pruned.size() > 1:
+		pass
+	call_deferred("update_all_polygons", pruned)
 	pass
-	
-func apply_destructor(destructor: Destructor):
-	var clipped_area = destructor.apply_destructor_to_destructible(self)
-	clipped_area = _simplify_and_prune(clipped_area)
-	var pruned = _simplify_and_prune(clipped_area)
-	var decayed = _decay_chunks(pruned)
-	if decayed.is_empty():
-		emit_signal("was_destroyed")
-	
-	for child in get_children():
-		update_polygons(child, decayed)
 
 	
 func _decay_chunks(polys: Array[PackedVector2Array]) -> Array[PackedVector2Array]:
@@ -89,15 +98,6 @@ func _spawn_debris(poly: Array[PackedVector2Array]):
 	frag.polygon = poly
 	add_sibling(frag)
 	
-
-func _simplify_and_prune(poly: Array[PackedVector2Array]) -> Array[PackedVector2Array]:
-	var simplified_and_pruned: Array[PackedVector2Array] = []
-	for shape in poly:
-		var simplified_chunk = PolygonMath.simplify_polygon(shape)
-		if chunk_is_prunable(simplified_chunk) == true:
-			continue
-		simplified_and_pruned.append(simplified_chunk)
-	return PolygonMath.merge_recursive(simplified_and_pruned)
 	
 func _is_decayable(poly: PackedVector2Array) -> bool:
 	var size = PolygonMath.size_of_polygon(poly)
@@ -106,15 +106,6 @@ func _is_decayable(poly: PackedVector2Array) -> bool:
 	if size.x < chunk_decay_size_threshold * 1.5 or size.y < chunk_decay_size_threshold * 1.5:
 		var area = PolygonMath.area_of_polygon(poly)
 		return area < pow(chunk_decay_size_threshold, 2)
-	return false
-
-func chunk_is_prunable(poly: PackedVector2Array) -> bool:
-	var size = PolygonMath.size_of_polygon(poly)
-	if size.x < chunk_pruning_size_threshold and size.y < chunk_pruning_size_threshold:
-		return true
-	if size.x < chunk_pruning_size_threshold * 1.5 or size.y < chunk_pruning_size_threshold * 1.5:
-		var area = PolygonMath.area_of_polygon(poly)
-		return area < pow(chunk_pruning_size_threshold, 2)
 	return false
 
 func _get_fragment():
@@ -153,8 +144,8 @@ func _on_fragments_created(n: int, pos: Vector2, travel_vec: Vector2, center: Ve
 
 func _on_destructor_entered_destructible_area(node):
 	if !(node is Destructor): return
-	node.cut_state = node.CutState.CUTTING
-	node.target = self
+	#node.cut_state = node.CutState.CUTTING
+	#node.target = self
 	#print("destructor entered destructible area")
 	#if node.cut_state == node.CutState.READY and node.last_cut_state != node.CutState.CUTTING:
 		#destructor_destroyed_material.connect(node._on_destroyed_material)
@@ -174,8 +165,8 @@ func _on_destructor_exited_watch_area(node):
 	
 func _on_destructor_exited_destructible_area(node):
 	if !(node is Destructor): return
-	node.cut_state = node.CutState.NOT_READY
-	node.target = null
+	#node.cut_state = node.CutState.NOT_READY
+	#node.target = null
 	#print("destructor exited destructible area")
 	#if destructor_destroyed_material.is_connected(node._on_destroyed_material):
 		#destructor_destroyed_material.disconnect(node._on_destroyed_material)

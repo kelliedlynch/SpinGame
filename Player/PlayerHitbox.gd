@@ -2,7 +2,7 @@ extends RigidHitbox
 class_name PlayerHitbox
 
 var max_speed = 2000
-var last_frame_velocity: Vector2 = Vector2.ZERO
+var begin_cut_velocity: Vector2 = Vector2.ZERO
 
 var needs_push = false
 
@@ -27,14 +27,15 @@ func _on_body_exited(node):
 func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 	state.linear_velocity += input_vector
 	input_vector = Vector2.ZERO
-	if state.linear_velocity.length() > max_speed:
-		state.linear_velocity = state.linear_velocity.clamp(Vector2(-max_speed, -max_speed), Vector2(max_speed, max_speed))
+	state.linear_velocity = state.linear_velocity.limit_length(max_speed)
+		
+	if destructor.cut_state == destructor.CutState.NOT_READY:
+		pass
+	
 	var test = move_and_collide(state.linear_velocity * state.step, true, .08, false)
 	###print(state.transform)
 	if test != null and test.get_collider() is DestructibleHitbox:
 		#print("before ", state.linear_velocity)
-		var destructor = $Destructor
-		
 		custom_integrator = true
 		var destructible = test.get_collider().get_parent()
 		var travel = test.get_travel()
@@ -44,33 +45,31 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 		var angle = travel.angle()
 		var vec = Vector2.from_angle(angle)
 		var safe_vec = safe_dist * vec
-		#state.linear_velocity = safe_vec
-		#var safe_x = max(abs(travel.x) - destructible.material_max_cut_speed - 1, 0)
-		#var safe_y = max(abs(travel.y) - destructible.material_max_cut_speed - 1, 0)
-		#safe_x *= -1 if travel.x < 0 else 1
-		#safe_y *= -1 if travel.y < 0 else 1
-		#state.integrate_forces()
-
 		move_and_collide(safe_vec, false, .08, false)
-
-		var max_speed = Vector2(destructible.material_max_cut_speed, destructible.material_max_cut_speed)
 		
-		state.linear_velocity -= state.linear_velocity * destructible.material_resistance
-		state.linear_velocity = state.linear_velocity.clamp(-max_speed, max_speed)
+		if destructor.cut_state == destructor.CutState.READY:
+			# TODO: see if inertia needs to apply to stopping cuts, too
+			var cut_threshold = destructible.material_hardness + destructible.CUT_INERTIA
+			if destructor.cutting_power() >= cut_threshold:
+				destructor.cut_state = destructor.CutState.CUTTING
+				destructor.target = destructible
+				begin_cut_velocity = state.linear_velocity
+		
+		if destructor.cut_state == destructor.CutState.CUTTING:
+			var destructed = destructor.apply_destructor_to_destructible(destructible)
+			destructible.update_destructed(destructed)
+			destructor.spin_speed -= destructible.material_resistance
+			begin_cut_velocity = begin_cut_velocity.limit_length(begin_cut_velocity.length() - destructible.material_linear_damp)
+			var material_limited_velocity = state.linear_velocity.limit_length(destructible.material_max_cut_speed)
+			state.linear_velocity = material_limited_velocity if material_limited_velocity.length() < begin_cut_velocity.length() else begin_cut_velocity
+			
+		state.linear_velocity =state.linear_velocity.limit_length(max_speed)
 		state.integrate_forces()
 
-		#var safe_x = max(abs(dist.x) * .95, abs(dist.x) - 2)
-		#var safe_y = max(abs(dist.y) * .95, abs(dist.y) - 2)
-		#safe_x *= -1 if dist.x < 0 else 1
-		#var safe_velocity = Vector2(safe_x, safe_y) / state.step
-		#state.linear_velocity = safe_velocity
-		#var max_cut = test.get_collider().get_parent().material_max_cut_speed
-		#state.linear_velocity = safe_velocity.clamp(-Vector2(max_cut, max_cut), Vector2(max_cut, max_cut))
-		#print("after ", state.linear_velocity)
-		#move_and_collide(Vector2(safe_x, safe_y), false, .08, false)
-		#linear_damp = destructible.material_linear_damp
 		pass
 	else:
+		destructor.cut_state = destructor.CutState.READY
+		begin_cut_velocity = Vector2.ZERO
 		custom_integrator = false
 		#if test.get_collider() is DestructibleHitbox:
 			##state.total_linear_damp = test.get_collider().get_parent().linear_damp
@@ -92,13 +91,13 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 		#get_parent().linear_velocity = state.linear_velocity
 	#get_parent().linear_velocity = state.linear_velocity
 	
-func _physics_process(delta: float) -> void:
-	if destructor.target != null:
-		print(get_parent().cutting_power())
-		pass
-	if destructor.target != null and destructor.cut_state == destructor.CutState.CUTTING and get_parent().cutting_power() > destructor.target.material_hardness:
-		destructor.target.apply_destructor(destructor)
-		parent.spin_speed -= delta * (parent.spin_accel + destructor.target.material_resistance)
+#func _physics_process(delta: float) -> void:
+	#if destructor.target != null:
+		#print(destructor.cutting_power())
+		#pass
+	#if destructor.target != null and destructor.cut_state == destructor.CutState.CUTTING and destructor.cutting_power() > destructor.target.material_hardness:
+		#destructor.apply_destructor_to_destructible(destructor.target)
+		#parent.spin_speed -= delta * (parent.spin_accel + destructor.target.material_resistance)
 
 #func _input(event: InputEvent) -> void:
 	#var power = 1000

@@ -53,6 +53,7 @@ func _make_new_shape(poly, child_type, component):
 	var n = ClassDB.instantiate(child_type)
 	n.polygon = poly
 	if Geometry2D.is_polygon_clockwise(poly) == true:
+		var a = Geometry2D.is_polygon_clockwise(n.polygon)
 		pass
 	if child_type == "Polygon2D":
 		n.color = color

@@ -37,38 +37,29 @@ static func max_point(vertices: PackedVector2Array) -> Vector2:
 		if point.y > maxY: maxY = point.y
 	return Vector2(maxX, maxY)
 	
-static func simplify_polygon(poly: PackedVector2Array, threshold = .05) -> PackedVector2Array:
+static func simplify_polygon(poly: PackedVector2Array, min_side_length, angle_threshold = .04) -> PackedVector2Array:
 	var size = size_of_polygon(poly)
-	threshold = max(size.x, size.y) * threshold
 	var simplified = PackedVector2Array()
 	var prev_pt = poly[-1]
 	poly.append(poly[0])
 	for i in range(poly.size() - 1):
-		#print("distance between points: ", poly[i].distance_to(prev_pt), " ", poly[i].distance_to(poly[i+1]))
 		var dist_ba = poly[i].distance_to(prev_pt)
 		var dist_bc = poly[i].distance_to(poly[i+1])
-		if dist_ba < threshold and  dist_bc < threshold: 
-			#print("both distances under threshold, skipping point")
+		if dist_ba < min_side_length and  dist_bc < min_side_length: 
 			continue
-		elif dist_ba > threshold and dist_bc > threshold:
+		elif dist_bc < min_side_length:
 			simplified.append(poly[i])
-			#print("both distances over threshold, keeping point")
 			prev_pt = poly[i]
 			continue
 		var ba = prev_pt - poly[i]
 		var bc = poly[i+1] - poly[i]
 		var angle = rad_to_deg(abs(ba.angle_to(bc)))
-		if (angle > 15 and angle < 165) or (angle > 195 and angle < 345):
+		var at = (360 * angle_threshold)
+		if (angle > at and angle < 180 - at) or (angle > 180 + at and angle < 360 - at):
 			simplified.append(poly[i])
-			#print("one value under threshold, keeping point because angle is ", int(angle))
 			prev_pt = poly[i]
-			continue
-		#print("skipping point because angle is ", angle)
-	
+			continue	
 	if simplified.size() < 3: return poly
-	#var simplified_again = simplify_polygon(simplified)
-	#if simplified == simplified_again: return simplified
-	#if simplified_again.size() < 3: return poly
 	return simplified
 
 static func rotate_polygon(poly: PackedVector2Array, degrees: int) -> PackedVector2Array:
@@ -88,14 +79,6 @@ static func translate_polygon(poly: PackedVector2Array, vector: Vector2) -> Pack
 		var new_v = v + vector
 		translated.append(new_v)
 	return translated
-
-# I don't know if this belongs here
-#static func polygons_from_children(node: Node2D) -> Array[PackedVector2Array]:
-	#var polys: Array[PackedVector2Array] = []
-	#for child in node.get_children():
-		#if child is CollisionPolygon2D or child is Polygon2D:
-			#polys.append(child.polygon)
-	#return polys
 
 static func area_of_polygon(poly: PackedVector2Array) -> float:
 	var a = 0
@@ -134,20 +117,12 @@ static func merge_recursive(polys: Array[PackedVector2Array]) -> Array[PackedVec
 		for j in size_after:
 			var a = 0
 			var b = 0
-			if merged.has(polys[j]):
-				a = 1
-			else:
-				a = 2
 			if merged[j] == polys[j]:
-				b = 1
-			else:
-				b = 2
-			if a != b:
-				print("NOTE: HAS GOT DIFFERENT RESULTS THAN CHECKING BY INDEX")
-			if a == 1:
 				continue
 			matched = false
-				
+			break
+	else:
+		matched = false
 	if matched == true:
 		return polys
 	

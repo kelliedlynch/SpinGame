@@ -31,9 +31,6 @@ func _ready() -> void:
 	update_polygons(destructor, [circle])
 	super._ready()
 
-func cutting_power() -> float:
-	return hitbox.linear_velocity.length() / 100 + spin_speed
-
 func _process(delta: float) -> void:
 	if destructor.cut_state != destructor.CutState.CUTTING:
 		spin_speed += delta * spin_accel
