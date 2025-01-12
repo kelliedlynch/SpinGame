@@ -6,10 +6,7 @@ class_name Player
 @onready var visible_area: VisibleArea = $RigidHitbox/VisibleArea
 @onready var destructor: Destructor = $RigidHitbox/Destructor
 
-var max_spin_speed = 10
-var min_spin_speed = .1
-var spin_speed = 1
-var spin_accel = .7
+
 
 #signal needs_push
 var pre_collision_velocity = Vector2.ZERO
@@ -28,12 +25,12 @@ func _ready() -> void:
 	var circle = PolygonMath.generate_circle_polygon(polysize.x / 2)
 	update_polygons(hitbox, [circle])
 	update_polygons(visible_area, [saw])
-	update_polygons(destructor, [circle])
+	var cap = PolygonMath.generate_capsule_shape(polysize.x, polysize.x / 2)
+	update_polygons(destructor, [cap])
+	
 	super._ready()
 
 func _process(delta: float) -> void:
-	if destructor.cut_state != destructor.CutState.CUTTING:
-		spin_speed += delta * spin_accel
-		spin_speed = clamp(spin_speed, min_spin_speed, max_spin_speed)
-	var r = spin_speed * delta
+
+	var r = destructor.spin_speed * delta / 4
 	visible_area.rotate(r)

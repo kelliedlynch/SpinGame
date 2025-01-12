@@ -20,7 +20,7 @@ var queued = {}
 
 func _ready() -> void:
 	monitoring = true
-	monitorable = true
+	monitorable = false
 	#linear_damp = 100
 	#linear_damp_space_override = SPACE_OVERRIDE_COMBINE
 	#slowdown_zone.linear_damp = 100

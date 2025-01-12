@@ -128,28 +128,17 @@ static func merge_recursive(polys: Array[PackedVector2Array]) -> Array[PackedVec
 	
 	return merge_recursive(merged)
 		
-	#var merged: Array[PackedVector2Array] = [polys[0]]
-	#for i in range(1, polys.size()):
-		#var new_merged: Array[PackedVector2Array] = []
-		#for m in merged:
-			#new_merged.append_array(Geometry2D.merge_polygons(polys[i], m))
-		#merged = new_merged
-	#var holes_removed: Array[PackedVector2Array] = []
-	#for poly in merged:
-		#if Geometry2D.is_polygon_clockwise(poly) == true:
-			#continue
-		#holes_removed.append(poly)
-	#
-	#
-	#
-	#if polys.size() == holes_removed.size():
-		#var are_identical = true
-		#for poly in holes_removed.size():
-			#if polys[0] == holes_removed[0]:
-				#continue
-			#are_identical = false
-			#break
-		#if are_identical == true: 
-			#return polys
-		
-	#return merge_recursive(merged)
+static func generate_capsule_shape(len, r) -> PackedVector2Array:
+	var polys: Array[PackedVector2Array] = [PackedVector2Array(), PackedVector2Array(), PackedVector2Array()]
+	var circle = generate_circle_polygon(r)
+	if len <= r * 2 + 10: return circle
+	for pt in circle:
+		polys[0].append(Vector2(pt.x - len / 2 + r, pt.y))
+		polys[2].append(Vector2(pt.x + len / 2 - r, pt.y))
+	var rect: PackedVector2Array = [Vector2(-(len / 2 - r), -r),\
+				Vector2(len / 2 - r, -r),\
+				Vector2(len / 2 - r, r),\
+				Vector2(-(len / 2 - r), r)]
+	polys[1] = rect
+	var merged = merge_recursive(polys)[0]
+	return merged

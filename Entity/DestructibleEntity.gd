@@ -20,8 +20,8 @@ var material_chunk_quantity = 20
 
 # TODO: have better cut start/stop detection, so that inertia can factor in. 
 const CUT_INERTIA = .1
-var material_hardness = 3
-var material_resistance = .1
+var material_hardness = 8
+var material_resistance = .05
 var material_max_cut_speed = 300
 var material_linear_damp = 3
 

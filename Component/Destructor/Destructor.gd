@@ -11,7 +11,6 @@ var current_for = {}
 var next_for = {}
 
 var cut_state = CutState.READY
-var last_cut_state = CutState.NOT_READY
 enum CutState{
 	CUTTING,
 	READY,
@@ -23,7 +22,10 @@ var target: DestructibleEntity = null
 
 # TODO: probably only Player destructor will be affected by spin; break out into
 #       separate class
+var max_spin_speed = 10
+var min_spin_speed = .1
 var spin_speed = 1
+var spin_accel = .7
 
 func _ready() -> void:
 	monitorable = true
@@ -60,24 +62,37 @@ func _on_destroyed_material(d: Destructor, mat: DestructibleEntity):
 	parent.get_parent().spin_speed -= mat.material_resistance
 
 func _physics_process(delta: float) -> void:
-	var spin = parent.get_parent().spin_speed
+	spin_speed += spin_accel * delta
+	spin_speed = clamp(spin_speed, min_spin_speed, max_spin_speed)
 	var velocity = parent.linear_velocity
-	last_cut_state = cut_state
-	if cut_state != CutState.NOT_READY and (spin < cut_spin_threshold or velocity.length() < cut_velocity_threshold):
-		#cut_state = CutState.NOT_READY
-		for current_frame in next_for:
-			next_for[current_frame].position = current_frame.position
-			next_for[current_frame].scale = current_frame.scale
-	else:
-		#if cut_state == CutState.NOT_READY and spin >= cut_spin_threshold and velocity.length() >= cut_velocity_threshold:
-			#cut_state = CutState.READY
-		var next_frame_transform = velocity * delta * (1 + spin / 10)
-		var next_frame_scale = parent.get_parent().entity_scale * (1 + spin / 100)
-		for current_frame in next_for:
-			var next_frame = next_for[current_frame]
-			#next_frame.position = current_frame.position + next_frame_transform
-			#next_frame.scale = next_frame_scale
-			next_frame.position = current_frame.position + velocity * delta
+	for current_frame in next_for:
+		var poly_size = PolygonMath.size_of_polygon(current_frame.polygon)
+		var length = poly_size.x + velocity.length() * delta
+		var capsule = PolygonMath.generate_capsule_shape(length, poly_size.x / 2)
+		var rotated = PolygonMath.rotate_polygon(capsule, rad_to_deg(velocity.angle()))
+		var translated = PackedVector2Array()
+		var offset = velocity * delta
+		for pt in rotated:
+			translated.append(pt + offset)
+		next_for[current_frame].polygon = translated
+		next_for[current_frame].position = current_frame.position
+		next_for[current_frame].scale = current_frame.scale
+		
+	#if cut_state != CutState.NOT_READY and (spin < cut_spin_threshold or velocity.length() < cut_velocity_threshold):
+		##cut_state = CutState.NOT_READY
+		#for current_frame in next_for:
+			#next_for[current_frame].position = current_frame.position
+			#next_for[current_frame].scale = current_frame.scale
+	#else:
+		##if cut_state == CutState.NOT_READY and spin >= cut_spin_threshold and velocity.length() >= cut_velocity_threshold:
+			##cut_state = CutState.READY
+		#var next_frame_transform = velocity * delta * (1 + spin / 10)
+		#var next_frame_scale = parent.get_parent().entity_scale * (1 + spin / 100)
+		#for current_frame in next_for:
+			#var next_frame = next_for[current_frame]
+			##next_frame.position = current_frame.position + next_frame_transform
+			##next_frame.scale = next_frame_scale
+			#next_frame.position = current_frame.position + velocity * delta
 
 func _translate_to_destructible_space(entity:DestructibleEntity) -> Array[PackedVector2Array]:
 	var translated: Array[PackedVector2Array] = []
@@ -91,6 +106,7 @@ func _translate_to_destructible_space(entity:DestructibleEntity) -> Array[Packed
 	return translated
 
 func apply_destructor_to_destructible(entity: DestructibleEntity) -> Array[PackedVector2Array]:
+	#print(cutting_power())
 	var translated = _translate_to_destructible_space(entity)
 	# TODO: look at physicsserver2d shapes for this instead. currently just expanding hitbox to ensure
 	#       player doesn't get trapped
@@ -148,4 +164,7 @@ func apply_destructor_to_destructible(entity: DestructibleEntity) -> Array[Packe
 	return PolygonMath.merge_recursive(clipped)
 
 func cutting_power() -> float:
-	return parent.linear_velocity.length() / 100 + spin_speed
+	var speed = spin_speed
+	if parent.linear_velocity.length() > 500:
+		speed += parent.linear_velocity.length() / 500
+	return speed
