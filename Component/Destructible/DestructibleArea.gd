@@ -21,8 +21,8 @@ var queued = {}
 func _ready() -> void:
 	monitoring = true
 	monitorable = false
-	linear_damp = 100
-	linear_damp_space_override = SPACE_OVERRIDE_COMBINE
+	#linear_damp = 100
+	#linear_damp_space_override = SPACE_OVERRIDE_COMBINE
 	#slowdown_zone.linear_damp = 100
 	#slowdown_zone.linear_damp_space_override = SPACE_OVERRIDE_COMBINE
 	
@@ -32,7 +32,7 @@ func _ready() -> void:
 
 	area_entered.connect(_on_area_entered)
 	area_exited.connect(_on_area_exited)
-	get_parent().polygons_updated.connect(_on_polygons_updated)
+	#get_parent().polygons_updated.connect(_on_polygons_updated)
 	active_watch_area.monitoring = true
 	active_watch_area.monitorable = false
 	active_watch_area.area_entered.connect(_on_watch_area_entered)
@@ -58,26 +58,10 @@ func _on_watch_area_entered(node):
 func _on_watch_area_exited(node):
 	if !(node is Destructor): return
 	emit_signal("destructor_exited_watch_area", node)
-	#print("DestructibleArea watch area exited")
-
 	
-func _on_polygons_updated(node):
-	if node == self:
-		#call_deferred("update_watch_area")
-		#update_slowdown_zone()
-		update_watch_area()
-
-#func update_slowdown_zone(polys):
-	#var prior_children = slowdown_zone.get_children()
-	#for poly in polys:
-		#var new_shape = CollisionPolygon2D.new()
-		#new_shape.polygon = poly
-		#slowdown_zone.add_child(new_shape)
-	#await get_tree().physics_frame
-	#for child in prior_children:
-		#if child != null:
-			#child.queue_free()
-	#pass
+#func _on_polygons_updated(node):
+	#if node == self:
+		#update_watch_area()
 		
 func update_watch_area():
 	#return
@@ -86,10 +70,6 @@ func update_watch_area():
 	for child in get_children():
 		if child is CollisionPolygon2D:
 			watch_polygons.append(child.polygon)
-			#var slow = CollisionPolygon2D.new()
-			#slow.polygon = child.polygon
-			#slowdown_zone.add_child(slow)
-			#child.call_deferred("queue_free")
 	if watch_polygons.is_empty() == true: return
 
 	var expanded: Array[PackedVector2Array] = []
@@ -106,29 +86,3 @@ func update_watch_area():
 	for child in prior_children:
 		if child is CollisionPolygon2D:
 			child.queue_free()
-			#print("call remove child deferred")
-			#active_watch_area.call_deferred("remove_child", child)
-			#print("queue remove child")
-			#queued[child] = child
-			
-	#for child in get_children():
-		#if child is CollisionPolygon2D:
-			#var new_poly = CollisionPolygon2D.new()
-			#new_poly.polygon = child.polygon
-			#slowdown_zone.add_child(new_poly)
-
-
-#func _physics_process(delta: float) -> void:
-	# watched shape children queued for removal
-	#for child in queued:
-		#if child != null:
-			#child.queue_free()
-	#queued.clear()
-	# check that destructors overlap with remaining watched area
-	#if destructors.size() == 0: return
-	#var overlap = active_watch_area.get_overlapping_areas()
-	#for destructor in destructors:
-		#if overlap.find(destructor) == -1:
-			## destructor no longer overlapping watch area
-			#destructors.erase(destructor)
-			#emit_signal("destructor_exited_watch_area", destructor)

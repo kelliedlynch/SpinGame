@@ -26,14 +26,12 @@ func get_polygons(component) -> Array[PackedVector2Array]:
 			p.append(child.polygon)
 	return p
 
-func update_all_polygons(polygons: Array[PackedVector2Array]) -> void:
+func update_all_polygons(polygons: Array) -> void:
 	for child in get_children():
 		update_polygons(child, polygons)
 
-func update_polygons(component, polygons: Array[PackedVector2Array]) -> void:
+func update_polygons(component, polygons: Array) -> void:
 	_initialized = true
-	if polygons.size() > 1:
-		pass
 	var child_type = "CollisionPolygon2D"
 	if component is VisibleArea:
 		child_type = "Polygon2D"
@@ -48,7 +46,7 @@ func update_polygons(component, polygons: Array[PackedVector2Array]) -> void:
 		#if child_type == "Polygon2D":
 			#n.color = color
 		#component.add_child(n)
-	_update_scale(self, entity_scale)
+	update_scale(entity_scale)
 	emit_signal("polygons_updated", component)
 	
 func _make_new_shape(poly, child_type, component):
@@ -62,15 +60,12 @@ func _make_new_shape(poly, child_type, component):
 	component.add_child(n)
 	pass
 
-func _remove_if_real(node, component):
-	if (node is CollisionPolygon2D) and !node.is_in_group("PredictedMovement"):
-		#component.remove_child(node)
-		node.call_deferred("queue_free")
-
 func update_scale(s: Vector2) -> void:
+	entity_scale = s
 	_update_scale(self, s)
 	
 func _update_scale(entity, s: Vector2):
+	
 	for child in entity.get_children():
 		if child is CollisionObject2D:
 			_update_scale(child, s)
@@ -78,3 +73,5 @@ func _update_scale(entity, s: Vector2):
 			child.scale = s
 		elif child is VisibleArea:
 			child.scale = s
+		else:
+			_update_scale(child, s)

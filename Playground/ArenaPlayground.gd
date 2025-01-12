@@ -8,7 +8,9 @@ func _ready() -> void:
 	#$Arena.remove_child($Arena/ArenaPhysicsArea)
 	var new_destructible = preload("res://Entity/DestructibleEntity.tscn").instantiate()
 	new_destructible.position = Vector2(300, 400)
-	#new_destructible.update_polygons()
+	
+	#new_destructible.entity_scale = Vector2(1.5, 1.5)
+	#new_destructible.update_all_polygons([PolygonMath.DEFAULT_POLYGON])
 	add_child(new_destructible)
 	var player = preload("res://Player/Player.tscn").instantiate()
 
@@ -17,7 +19,11 @@ func _ready() -> void:
 	player.entity_scale = Vector2(.1, .1)
 	add_child(player)
 	#player.entity_scale = Vector2(.2, .2)
-	player.update_scale(Vector2(.1, .1))
+	#player.update_scale(Vector2(.3, .3))
 
-func ping(node) -> void:
-	print("ping", node)
+
+func _process(delta: float) -> void:
+	if Input.is_action_just_pressed("ui_accept"):
+		var new_destructible = preload("res://Entity/DestructibleEntity.tscn").instantiate()
+		new_destructible.position = Vector2(300, 400)
+		add_child(new_destructible)

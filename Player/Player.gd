@@ -6,8 +6,8 @@ class_name Player
 @onready var visible_area: VisibleArea = $RigidHitbox/VisibleArea
 @onready var destructor: Destructor = $RigidHitbox/Destructor
 
-var max_spin_speed = 6
-var min_spin_speed = .5
+var max_spin_speed = 10
+var min_spin_speed = .1
 var spin_speed = 1
 var spin_accel = .7
 
@@ -32,10 +32,11 @@ func _ready() -> void:
 	super._ready()
 
 func cutting_power() -> float:
-	return hitbox.linear_velocity.length() / 1000 + spin_speed
+	return hitbox.linear_velocity.length() / 100 + spin_speed
 
 func _process(delta: float) -> void:
-	spin_speed += delta * spin_accel
-	spin_speed = clamp(spin_speed, min_spin_speed, max_spin_speed)
+	if destructor.cut_state != destructor.CutState.CUTTING:
+		spin_speed += delta * spin_accel
+		spin_speed = clamp(spin_speed, min_spin_speed, max_spin_speed)
 	var r = spin_speed * delta
 	visible_area.rotate(r)
