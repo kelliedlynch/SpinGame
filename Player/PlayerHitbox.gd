@@ -29,7 +29,7 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 	input_vector = Vector2.ZERO
 	state.linear_velocity = state.linear_velocity.limit_length(max_speed)
 
-	var test = move_and_collide(state.linear_velocity * state.step, true, .08, true)
+	var test = move_and_collide(state.linear_velocity * state.step, true, .08, false)
 	###print(state.transform)
 	if test != null and test.get_collider() is DestructibleHitbox:
 		#print("before ", state.linear_velocity)
@@ -46,7 +46,6 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 				custom_integrator = false
 		
 		if destructor.cut_state == destructor.CutState.CUTTING:
-
 			if destructor.cutting_power() >= destructible.material_hardness - destructible.CUT_INERTIA:
 				var travel = test.get_travel()
 				var dist = travel.length()
@@ -58,7 +57,7 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 				move_and_collide(safe_vec, false, .08, false)
 				var destructed = destructor.apply_destructor_to_destructible(destructible)
 				destructible.update_destructed(destructed)
-				destructor.spin_speed -= destructible.material_resistance
+				
 				begin_cut_velocity = begin_cut_velocity.limit_length(begin_cut_velocity.length() - destructible.material_linear_damp)
 				var material_limited_velocity = state.linear_velocity.limit_length(destructible.material_max_cut_speed)
 				state.linear_velocity = material_limited_velocity if material_limited_velocity.length() < begin_cut_velocity.length() else begin_cut_velocity

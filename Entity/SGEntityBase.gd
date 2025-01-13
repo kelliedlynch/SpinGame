@@ -3,7 +3,6 @@ class_name SGEntityBase
 
 # Base class for all game entities.
 
-var entity_scale: Vector2 = Vector2.ONE
 var color: Color = Color.WHITE
 var _initialized = false
 
@@ -46,7 +45,6 @@ func update_polygons(component, polygons: Array) -> void:
 		#if child_type == "Polygon2D":
 			#n.color = color
 		#component.add_child(n)
-	update_scale(entity_scale)
 	emit_signal("polygons_updated", component)
 	
 func _make_new_shape(poly, child_type, component):
@@ -60,19 +58,3 @@ func _make_new_shape(poly, child_type, component):
 		#n.scale = entity_scale
 	component.add_child(n)
 	pass
-
-func update_scale(s: Vector2) -> void:
-	entity_scale = s
-	_update_scale(self, s)
-	
-func _update_scale(entity, s: Vector2):
-	
-	for child in entity.get_children():
-		if child is CollisionObject2D:
-			_update_scale(child, s)
-		elif child is CollisionPolygon2D:
-			child.scale = s
-		elif child is VisibleArea:
-			child.scale = s
-		else:
-			_update_scale(child, s)

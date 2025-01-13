@@ -23,9 +23,11 @@ var target: DestructibleEntity = null
 # TODO: probably only Player destructor will be affected by spin; break out into
 #       separate class
 var max_spin_speed = 10
-var min_spin_speed = .1
-var spin_speed = 1
+var min_spin_speed = 1
+var spin_speed = 3
 var spin_accel = .7
+
+var ENLARGE_CUT = .01
 
 func _ready() -> void:
 	monitorable = true
@@ -65,10 +67,15 @@ func _physics_process(delta: float) -> void:
 	spin_speed += spin_accel * delta
 	spin_speed = clamp(spin_speed, min_spin_speed, max_spin_speed)
 	var velocity = parent.linear_velocity
+	var speed = velocity.length()
 	for current_frame in next_for:
 		var poly_size = PolygonMath.size_of_polygon(current_frame.polygon)
-		var length = poly_size.x + velocity.length() * delta
-		var capsule = PolygonMath.generate_capsule_shape(length, poly_size.x / 2)
+		var length = poly_size.x + speed * delta
+		var applied_speed = speed + parent.input_vector.length()
+		if applied_speed > 1:
+			
+			length += min(5, 100/speed) * applied_speed * delta
+		var capsule = PolygonMath.generate_capsule_shape(length * (1 + ENLARGE_CUT), poly_size.x / 2 * (1 + ENLARGE_CUT / 2))
 		var rotated = PolygonMath.rotate_polygon(capsule, rad_to_deg(velocity.angle()))
 		var translated = PackedVector2Array()
 		var offset = velocity * delta
@@ -76,23 +83,6 @@ func _physics_process(delta: float) -> void:
 			translated.append(pt + offset)
 		next_for[current_frame].polygon = translated
 		next_for[current_frame].position = current_frame.position
-		next_for[current_frame].scale = current_frame.scale
-		
-	#if cut_state != CutState.NOT_READY and (spin < cut_spin_threshold or velocity.length() < cut_velocity_threshold):
-		##cut_state = CutState.NOT_READY
-		#for current_frame in next_for:
-			#next_for[current_frame].position = current_frame.position
-			#next_for[current_frame].scale = current_frame.scale
-	#else:
-		##if cut_state == CutState.NOT_READY and spin >= cut_spin_threshold and velocity.length() >= cut_velocity_threshold:
-			##cut_state = CutState.READY
-		#var next_frame_transform = velocity * delta * (1 + spin / 10)
-		#var next_frame_scale = parent.get_parent().entity_scale * (1 + spin / 100)
-		#for current_frame in next_for:
-			#var next_frame = next_for[current_frame]
-			##next_frame.position = current_frame.position + next_frame_transform
-			##next_frame.scale = next_frame_scale
-			#next_frame.position = current_frame.position + velocity * delta
 
 func _translate_to_destructible_space(entity:DestructibleEntity) -> Array[PackedVector2Array]:
 	var translated: Array[PackedVector2Array] = []
@@ -148,13 +138,17 @@ func apply_destructor_to_destructible(entity: DestructibleEntity) -> Array[Packe
 				if after_clip.is_empty():
 					pass
 			var final_merged = PolygonMath.merge_recursive(after_clip)
-			#var final_merged = PolygonMath.merge_recursive(final)
+			if !final_merged.is_empty():
+				var pt = overlap_vertices[randi_range(0, overlap_vertices.size() - 1)]
+				var loc = entity.to_global(pt)
+				var center = parent.get_parent().to_global(parent.position)
+				entity.generate_fragments(1, loc, parent.linear_velocity, center)
 			clipped.append_array(final_merged)
 
 	if any_overlap == false: 
 		# TODO: Figure out what we actually do when there's no overlap. Sparks?
 		return destructible
-	
+	spin_speed -= entity.material_resistance
 	#var merged: Array[PackedVector2Array] = [clipped[0]]	
 	#for poly in clipped:
 		#var new_merged: Array[PackedVector2Array] = []

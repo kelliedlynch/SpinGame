@@ -16,7 +16,6 @@ func _ready() -> void:
 
 	player.position = get_viewport_rect().size / 2
 	#player.position = $Arena.spawn_point
-	player.entity_scale = Vector2(.1, .1)
 	add_child(player)
 	#player.entity_scale = Vector2(.2, .2)
 	#player.update_scale(Vector2(.3, .3))

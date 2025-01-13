@@ -37,7 +37,7 @@ static func max_point(vertices: PackedVector2Array) -> Vector2:
 		if point.y > maxY: maxY = point.y
 	return Vector2(maxX, maxY)
 	
-static func simplify_polygon(poly: PackedVector2Array, min_side_length, angle_threshold = .04) -> PackedVector2Array:
+static func simplify_polygon(poly: PackedVector2Array, min_side_length, angle_threshold = .05) -> PackedVector2Array:
 	var size = size_of_polygon(poly)
 	var simplified = PackedVector2Array()
 	var prev_pt = poly[-1]
@@ -55,10 +55,12 @@ static func simplify_polygon(poly: PackedVector2Array, min_side_length, angle_th
 		var bc = poly[i+1] - poly[i]
 		var angle = rad_to_deg(abs(ba.angle_to(bc)))
 		var at = (360 * angle_threshold)
-		if (angle > at and angle < 180 - at) or (angle > 180 + at and angle < 360 - at):
-			simplified.append(poly[i])
-			prev_pt = poly[i]
-			continue	
+		#if (angle > at and angle < 180 - at) or (angle > 180 + at and angle < 360 - at):
+			#simplified.append(poly[i])
+			#prev_pt = poly[i]
+			#continue	
+		simplified.append(poly[i])
+		prev_pt = poly[i]
 	if simplified.size() < 3: return poly
 	return simplified
 

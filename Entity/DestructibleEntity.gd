@@ -9,21 +9,22 @@ class_name DestructibleEntity
 
 # TODO: these should probably not be an absolute size; should probably calculate based on rendered size
 #		because polygons can be any size and are scaled when rendered
-var material_chunk_size = Vector2(20, 20)
-# multiplier of polygon size; chunks smaller than this will just vanish
+var material_chunk_size = Vector2(8, 8)
+# multiplier based on screen size; min length of side when simplifying polygon
+var SIMPLIFY_THRESHOLD = .005
+# multiplier based on screen size; chunks smaller than this will just vanish
 var PRUNE_THRESHOLD = .005
 # chunks smaller than this will break off and decay
-var chunk_decay_size_threshold = 42
+var DECAY_THRESHOLD = .02
 
 # this is the maximum number of chunks that can break off when a destructor hits
 var material_chunk_quantity = 20
 
-# TODO: have better cut start/stop detection, so that inertia can factor in. 
 const CUT_INERTIA = .1
 var material_hardness = 8
 var material_resistance = .05
 var material_max_cut_speed = 300
-var material_linear_damp = 3
+var material_linear_damp = 20
 
 var active_destructors = {}
 
@@ -39,7 +40,6 @@ func _init():
 
 func _ready() -> void:
 	was_destroyed.connect(_on_was_destroyed)
-	fragments_created.connect(_on_fragments_created)
 	#destructible_area.destructor_entered_watch_area.connect(_on_destructor_entered_watch_area)
 	destructible_area.destructor_entered_destructible_area.connect(_on_destructor_entered_destructible_area)
 	destructible_area.destructor_exited_destructible_area.connect(_on_destructor_exited_destructible_area)
@@ -55,15 +55,15 @@ func _on_was_destroyed():
 	
 func update_destructed(polys: Array[PackedVector2Array]):
 	var screen_size = get_viewport_rect().size
-	var min_side_length = max(screen_size.x, screen_size.y) * .005 / min(entity_scale.x, entity_scale.y)
 	var simplified: Array[PackedVector2Array] = []
+	var min_side_length = max(screen_size.x, screen_size.y) * SIMPLIFY_THRESHOLD
 	for poly in polys:
 		simplified.append(PolygonMath.simplify_polygon(poly, min_side_length))
 	var pruned: Array[PackedVector2Array] = []
 	
 	var prune_size = max(screen_size.x, screen_size.y) * PRUNE_THRESHOLD
 	for poly in simplified:
-		var poly_size = PolygonMath.size_of_polygon(poly) * entity_scale
+		var poly_size = PolygonMath.size_of_polygon(poly)
 		if poly_size.x < prune_size and poly_size.y < prune_size:
 			continue
 		var area = prune_size * prune_size * 2
@@ -71,17 +71,18 @@ func update_destructed(polys: Array[PackedVector2Array]):
 			if poly_size.x * poly_size.y < area:
 				continue
 		pruned.append(poly)
-	if pruned.size() > 1:
-		pass
-	call_deferred("update_all_polygons", pruned)
-	pass
+	var after_decay = _decay_chunks(pruned)
+	
+	call_deferred("update_all_polygons", after_decay)
+	
+	
 
 	
 func _decay_chunks(polys: Array[PackedVector2Array]) -> Array[PackedVector2Array]:
 	var decayed: Array[PackedVector2Array] = []
 	for i in polys.size():
 		if _is_decayable(polys[i]) == true:
-			var local_poly = []
+			var local_poly = PackedVector2Array()
 			for vertex in polys[i]:
 				local_poly.append(get_parent().to_local(destructible_area.to_global(vertex)))
 			_spawn_debris(local_poly)
@@ -89,7 +90,7 @@ func _decay_chunks(polys: Array[PackedVector2Array]) -> Array[PackedVector2Array
 		decayed.append(polys[i])
 	return decayed
 
-func _spawn_debris(poly: Array[PackedVector2Array]):
+func _spawn_debris(poly: PackedVector2Array):
 	var frag = DebrisFragment.new()
 	frag.velocity = Vector2(randi_range(40, 60) * cos(randf_range(0, 6.2)), randi_range(40, 60) * sin(randf_range(0, 6.2)))
 	frag.rotate_speed = 0
@@ -101,11 +102,13 @@ func _spawn_debris(poly: Array[PackedVector2Array]):
 	
 func _is_decayable(poly: PackedVector2Array) -> bool:
 	var size = PolygonMath.size_of_polygon(poly)
-	if size.x < chunk_decay_size_threshold and size.y < chunk_decay_size_threshold:
+	var screen = get_viewport_rect().size
+	var decay_size = max(screen.x, screen.y) * DECAY_THRESHOLD
+	if size.x < decay_size and size.y < decay_size:
 		return true
-	if size.x < chunk_decay_size_threshold * 1.5 or size.y < chunk_decay_size_threshold * 1.5:
+	if size.x < decay_size * 1.5 or size.y < decay_size * 1.5:
 		var area = PolygonMath.area_of_polygon(poly)
-		return area < pow(chunk_decay_size_threshold, 2)
+		return area < pow(decay_size, 2)
 	return false
 
 func _get_fragment():
@@ -116,7 +119,7 @@ func _triangle_fragment(size: Vector2):
 	var triangle = PackedVector2Array([Vector2(0, -size.y / 2.0), Vector2(size.x / 2.0, size.y / 2.0), Vector2(-size.x / 2.0, size.y / 2.0)])
 	return triangle
 	
-func _on_fragments_created(n: int, pos: Vector2, travel_vec: Vector2, center: Vector2):
+func generate_fragments(n: int, pos: Vector2, travel_vec: Vector2, center: Vector2):
 	#return
 	for i in n:
 		var frag = DebrisFragment.new()
@@ -125,18 +128,22 @@ func _on_fragments_created(n: int, pos: Vector2, travel_vec: Vector2, center: Ve
 		frag.position = pos
 		var vector_to_tan = pos - center
 		var angle_diff = vector_to_tan.angle_to(travel_vec)
-		var mult = -1 if angle_diff > 0 else 1
+		#var mult = -1 if angle_diff > 0 else 1
 		
 		var angle_vec = vector_to_tan.angle()
-		var rot = angle_vec + PI/2 * mult
+		var rot = angle_vec + PI/2 
+		#var a = travel_vec.angle()
+		#
+		#var angle = rad_to_deg(travel_vec.angle())
+		#angle += 120
+		#angle += randi_range(0, 40)
+		#var out_vec = Vector2.from_angle(deg_to_rad(angle))
+
 		var out_vec = Vector2.from_angle(rot)
-		#var travel_angle = travel_vec.angle()
-		#var to_pt_angle = to_pt.angle()
-		#var diff = to_pt_angle - travel_angle
 		
 
 
-		var speed = randi_range(160, 200)
+		var speed = randi_range(300, 600)
 		#print(Vector2.from_angle(offset))
 		frag.velocity = out_vec * speed
 		add_sibling(frag)
