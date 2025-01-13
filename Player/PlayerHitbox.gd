@@ -11,14 +11,13 @@ var input_vector := Vector2.ZERO
 
 @onready var parent: Player = get_parent()
 @onready var destructor: Destructor = $Destructor
+@onready var visible_area: VisibleArea = $VisibleArea
 
 func _ready() -> void:
 	contact_monitor = true
-	max_contacts_reported = 3
-	#body_entered.connect(_on_body_entered)
+	max_contacts_reported = 5
 	body_exited.connect(_on_body_exited)
 	lock_rotation = true
-
 #
 func _on_body_exited(node):
 	if node is AnimatableBody2D:
@@ -29,7 +28,7 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 	input_vector = Vector2.ZERO
 	state.linear_velocity = state.linear_velocity.limit_length(max_speed)
 
-	var test = move_and_collide(state.linear_velocity * state.step, true, .08, false)
+	var test = move_and_collide(state.linear_velocity * state.step, true, .08, true)
 	###print(state.transform)
 	if test != null and test.get_collider() is DestructibleHitbox:
 		#print("before ", state.linear_velocity)
@@ -47,30 +46,37 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 		
 		if destructor.cut_state == destructor.CutState.CUTTING:
 			if destructor.cutting_power() >= destructible.material_hardness - destructible.CUT_INERTIA:
+				print(begin_cut_velocity.length())
 				var travel = test.get_travel()
 				var dist = travel.length()
-				var safe_dist = max(abs(dist) - destructible.material_max_cut_speed * state.step - 1, 0)
+				#var safe_dist = max(abs(dist) - destructible.material_max_cut_speed * state.step - 1, 0)
 				
 				var angle = travel.angle()
 				var vec = Vector2.from_angle(angle)
-				var safe_vec = safe_dist * vec
-				move_and_collide(safe_vec, false, .08, false)
-				var destructed = destructor.apply_destructor_to_destructible(destructible)
-				destructible.update_destructed(destructed)
-				
+				#var safe_vec = safe_dist * vec
+				move_and_collide(travel.limit_length(dist - 1), false, .08, false)
 				begin_cut_velocity = begin_cut_velocity.limit_length(begin_cut_velocity.length() - destructible.material_linear_damp)
 				var material_limited_velocity = state.linear_velocity.limit_length(destructible.material_max_cut_speed)
+				var next_frame_shape = destructor.get_next_frame_destructor(material_limited_velocity, state.step)
+				var destructed = destructor.apply_destructor_to_destructible(destructible, next_frame_shape)
+				destructible.update_destructed(destructed)
+				
+				
 				state.linear_velocity = material_limited_velocity if material_limited_velocity.length() < begin_cut_velocity.length() else begin_cut_velocity
 				state.linear_velocity = state.linear_velocity.limit_length(max_speed)
 				state.integrate_forces()
+				return
 			else:
 				#move_and_collide(state.linear_velocity * state.step)
 				destructor.cut_state = destructor.CutState.READY
-				state.linear_velocity = begin_cut_velocity
+				var exit_speed = max(destructor.target.material_max_cut_speed, begin_cut_velocity.length())
+				state.linear_velocity = Vector2.from_angle(state.linear_velocity.angle()) * exit_speed
 				begin_cut_velocity = Vector2.ZERO
 				custom_integrator = false
-	else:
+	elif test == null and destructor.cut_state == destructor.CutState.CUTTING:
 		destructor.cut_state = destructor.CutState.READY
+		var exit_speed = max(destructor.target.material_max_cut_speed, begin_cut_velocity.length())
+		state.linear_velocity = Vector2.from_angle(state.linear_velocity.angle()) * exit_speed
 		begin_cut_velocity = Vector2.ZERO
 		custom_integrator = false
 

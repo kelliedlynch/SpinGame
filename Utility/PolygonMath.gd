@@ -53,8 +53,8 @@ static func simplify_polygon(poly: PackedVector2Array, min_side_length, angle_th
 			continue
 		var ba = prev_pt - poly[i]
 		var bc = poly[i+1] - poly[i]
-		var angle = rad_to_deg(abs(ba.angle_to(bc)))
-		var at = (360 * angle_threshold)
+		#var angle = rad_to_deg(abs(ba.angle_to(bc)))
+		#var at = (360 * angle_threshold)
 		#if (angle > at and angle < 180 - at) or (angle > 180 + at and angle < 360 - at):
 			#simplified.append(poly[i])
 			#prev_pt = poly[i]
@@ -88,14 +88,15 @@ static func area_of_polygon(poly: PackedVector2Array) -> float:
 	for i in poly.size() - 1:
 		a += poly[i].x * poly[i+1].y
 		b += poly[i].y * poly[i+1].x
+	a += poly[-1].x * poly[0].y
+	b += poly[-1].y * poly[0].x
 	return (a - b) / 2
 	
 static func merge_recursive(polys: Array[PackedVector2Array]) -> Array[PackedVector2Array]:
 	var orig_size = polys.size()
 	if orig_size == 1: return polys
 	var merged: Array[PackedVector2Array] = []
-	var remove_indices = []
-	
+
 	var i = 0
 	while i < orig_size - 1:
 		var this_merge = Geometry2D.merge_polygons(polys[i], polys[i+1])
@@ -117,8 +118,6 @@ static func merge_recursive(polys: Array[PackedVector2Array]) -> Array[PackedVec
 
 	if orig_size == size_after:
 		for j in size_after:
-			var a = 0
-			var b = 0
 			if merged[j] == polys[j]:
 				continue
 			matched = false
@@ -130,17 +129,17 @@ static func merge_recursive(polys: Array[PackedVector2Array]) -> Array[PackedVec
 	
 	return merge_recursive(merged)
 		
-static func generate_capsule_shape(len, r) -> PackedVector2Array:
+static func generate_capsule_shape(capsule_length, r) -> PackedVector2Array:
 	var polys: Array[PackedVector2Array] = [PackedVector2Array(), PackedVector2Array(), PackedVector2Array()]
 	var circle = generate_circle_polygon(r)
-	if len <= r * 2 + 10: return circle
+	if capsule_length <= r * 2 + 10: return circle
 	for pt in circle:
-		polys[0].append(Vector2(pt.x - len / 2 + r, pt.y))
-		polys[2].append(Vector2(pt.x + len / 2 - r, pt.y))
-	var rect: PackedVector2Array = [Vector2(-(len / 2 - r), -r),\
-				Vector2(len / 2 - r, -r),\
-				Vector2(len / 2 - r, r),\
-				Vector2(-(len / 2 - r), r)]
+		polys[0].append(Vector2(pt.x - capsule_length / 2 + r, pt.y))
+		polys[2].append(Vector2(pt.x + capsule_length / 2 - r, pt.y))
+	var rect: PackedVector2Array = [Vector2(-(capsule_length / 2 - r), -r),\
+				Vector2(capsule_length / 2 - r, -r),\
+				Vector2(capsule_length / 2 - r, r),\
+				Vector2(-(capsule_length / 2 - r), r)]
 	polys[1] = rect
 	var merged = merge_recursive(polys)[0]
 	return merged

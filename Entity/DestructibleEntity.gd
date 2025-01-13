@@ -9,20 +9,20 @@ class_name DestructibleEntity
 
 # TODO: these should probably not be an absolute size; should probably calculate based on rendered size
 #		because polygons can be any size and are scaled when rendered
-var material_chunk_size = Vector2(8, 8)
+var material_chunk_size = Vector2(16, 16)
 # multiplier based on screen size; min length of side when simplifying polygon
 var SIMPLIFY_THRESHOLD = .005
 # multiplier based on screen size; chunks smaller than this will just vanish
 var PRUNE_THRESHOLD = .005
 # chunks smaller than this will break off and decay
-var DECAY_THRESHOLD = .02
+var DECAY_THRESHOLD = .025
 
 # this is the maximum number of chunks that can break off when a destructor hits
 var material_chunk_quantity = 20
 
 const CUT_INERTIA = .1
 var material_hardness = 8
-var material_resistance = .05
+var material_resistance = .1
 var material_max_cut_speed = 300
 var material_linear_damp = 20
 
@@ -34,22 +34,12 @@ signal destructible_area_clipped
 signal destructor_destroyed_material
 
 func _init():
-	#super._init()
 	color = Color.DODGER_BLUE
-	#polygons_updated.connect(_on_polygons_updated)
 
 func _ready() -> void:
 	was_destroyed.connect(_on_was_destroyed)
-	#destructible_area.destructor_entered_watch_area.connect(_on_destructor_entered_watch_area)
-	destructible_area.destructor_entered_destructible_area.connect(_on_destructor_entered_destructible_area)
-	destructible_area.destructor_exited_destructible_area.connect(_on_destructor_exited_destructible_area)
-	destructible_area.destructor_exited_watch_area.connect(_on_destructor_exited_watch_area)
 	super._ready()
 
-func _on_body_entered_test(node):
-	print("body entered destructible area")
-
-	
 func _on_was_destroyed():
 	queue_free()
 	
@@ -99,15 +89,17 @@ func _spawn_debris(poly: PackedVector2Array):
 	frag.polygon = poly
 	add_sibling(frag)
 	
-	
 func _is_decayable(poly: PackedVector2Array) -> bool:
+	# TODO: this should happen after a cut ends, instead of immediately
 	var size = PolygonMath.size_of_polygon(poly)
 	var screen = get_viewport_rect().size
 	var decay_size = max(screen.x, screen.y) * DECAY_THRESHOLD
 	if size.x < decay_size and size.y < decay_size:
 		return true
-	if size.x < decay_size * 1.5 or size.y < decay_size * 1.5:
-		var area = PolygonMath.area_of_polygon(poly)
+	var area = PolygonMath.area_of_polygon(poly)
+	if area < pow(decay_size, 1.5):
+		return true
+	if size.x < decay_size * 2 or size.y < decay_size * 2:
 		return area < pow(decay_size, 2)
 	return false
 
@@ -147,60 +139,3 @@ func generate_fragments(n: int, pos: Vector2, travel_vec: Vector2, center: Vecto
 		#print(Vector2.from_angle(offset))
 		frag.velocity = out_vec * speed
 		add_sibling(frag)
-
-
-func _on_destructor_entered_destructible_area(node):
-	if !(node is Destructor): return
-	#node.cut_state = node.CutState.CUTTING
-	#node.target = self
-	#print("destructor entered destructible area")
-	#if node.cut_state == node.CutState.READY and node.last_cut_state != node.CutState.CUTTING:
-		#destructor_destroyed_material.connect(node._on_destroyed_material)
-		#active_destructors[node] = node
-		#node.cut_state = node.CutState.CUTTING
-	pass
-
-func _on_destructor_entered_watch_area(node):
-
-	pass
-	
-func _on_destructor_exited_watch_area(node):
-	#hitbox.remove_collision_exception_with(node.get_parent())
-	#print("destructor exited watch area")
-	#active_destructors.erase(node)
-	pass
-	
-func _on_destructor_exited_destructible_area(node):
-	if !(node is Destructor): return
-	#node.cut_state = node.CutState.NOT_READY
-	#node.target = null
-	#print("destructor exited destructible area")
-	#if destructor_destroyed_material.is_connected(node._on_destroyed_material):
-		#destructor_destroyed_material.disconnect(node._on_destroyed_material)
-	#active_destructors.erase(node)
-	#if node.cut_state == node.CutState.CUTTING:
-		#node.cut_state = node.CutState.NOT_READY
-	
-	
-
-
-#func _physics_process(_delta: float) -> void:
-	##print(hitbox.sleeping)
-	#for destructor in active_destructors:
-		##print("player velocity ", destructor.get_parent().linear_velocity)
-		#if destructor.cut_state == destructor.CutState.CUTTING:
-			#apply_destructor(destructor)
-		#elif destructor.last_cut_state == destructor.CutState.CUTTING:
-			#if destructor_destroyed_material.is_connected(destructor._on_destroyed_material):
-				#destructor_destroyed_material.disconnect(destructor._on_destroyed_material)
-			#active_destructors.erase(destructor)
-		#print(active_destructors.size())
-		#if destructor.get_parent().get_parent().cutting_power() < material_hardness:
-			##print("in ", node.get_parent().get_parent().cutting_power())
-			#hitbox.remove_collision_exception_with(destructor.get_parent())
-			#active_destructors.erase(destructor)
-		#hitbox.remove_collision_exception_with(destructor.get_parent())
-
-	#for ex in collision_exceptions:
-		#hitbox.add_collision_exception_with(ex)
-	#collision_exceptions.clear()
