@@ -53,5 +53,6 @@ func _make_new_shape(poly, child_type, component):
 	if child_type == "Polygon2D":
 		n.color = color
 		#n.scale = entity_scale
-	component.add_child(n)
+	#component.add_child(n)
+	component.call_deferred("add_child", n)
 	pass

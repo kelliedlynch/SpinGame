@@ -22,7 +22,7 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("ui_accept"):
 		spawn_destructible()
 
-func spawn_destructible():
+func spawn_destructible(_node = null):
 	var new_destructible = preload("res://Entity/DestructibleEntity.tscn").instantiate()
 	var spawn_loc = Vector2(randi_range(180, 480), randi_range(180, 520))
 	if spawn_side == true:

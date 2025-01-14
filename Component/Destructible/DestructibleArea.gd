@@ -19,8 +19,8 @@ var destructors = {}
 var queued = {}
 
 func _ready() -> void:
-	monitoring = true
-	monitorable = false
+	#monitoring = true
+	#monitorable = false
 	#linear_damp = 100
 	#linear_damp_space_override = SPACE_OVERRIDE_COMBINE
 	#slowdown_zone.linear_damp = 100
@@ -33,8 +33,7 @@ func _ready() -> void:
 	area_entered.connect(_on_area_entered)
 	area_exited.connect(_on_area_exited)
 	#get_parent().polygons_updated.connect(_on_polygons_updated)
-	active_watch_area.monitoring = true
-	active_watch_area.monitorable = false
+
 	active_watch_area.area_entered.connect(_on_watch_area_entered)
 	active_watch_area.area_exited.connect(_on_watch_area_exited)
 	

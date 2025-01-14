@@ -37,7 +37,10 @@ static func max_point(vertices: PackedVector2Array) -> Vector2:
 		if point.y > maxY: maxY = point.y
 	return Vector2(maxX, maxY)
 	
-static func simplify_polygon(poly: PackedVector2Array, min_side_length, angle_threshold = .05) -> PackedVector2Array:
+static func simplify_polygon(polygon: PackedVector2Array, min_side_length, angle_threshold = .05) -> PackedVector2Array:
+	if polygon.size() <= 3: 
+		return polygon
+	var poly = polygon.duplicate()
 	var size = size_of_polygon(poly)
 	var simplified = PackedVector2Array()
 	var prev_pt = poly[-1]
@@ -61,7 +64,8 @@ static func simplify_polygon(poly: PackedVector2Array, min_side_length, angle_th
 			#continue	
 		simplified.append(poly[i])
 		prev_pt = poly[i]
-	if simplified.size() < 3: return poly
+	if simplified.size() < 3: 
+		return polygon
 	return simplified
 
 static func rotate_polygon(poly: PackedVector2Array, degrees: int) -> PackedVector2Array:
@@ -92,9 +96,66 @@ static func area_of_polygon(poly: PackedVector2Array) -> float:
 	b += poly[-1].y * poly[0].x
 	return (a - b) / 2
 	
+static func clip_multiple(base: Array[PackedVector2Array], clipper: Array[PackedVector2Array]) -> Array[PackedVector2Array]:
+	if base.is_empty() or clipper.is_empty(): 
+		return base
+	var after_clip: Array[PackedVector2Array] = []
+	for b in base:
+		var clipped_b: Array[PackedVector2Array] = []
+		for c in clipper:
+			var clipped = Geometry2D.clip_polygons(b, c)
+			for cc in clipped:
+				if Geometry2D.is_polygon_clockwise(cc) == false:
+					clipped_b.append(cc)
+					continue
+				pass
+		var reconstituted_b = intersect_group(clipped_b)
+		if reconstituted_b.is_empty():
+			pass
+		after_clip.append_array(reconstituted_b)
+		
+	for poly in after_clip:
+		if Geometry2D.is_polygon_clockwise(poly) == true:
+			continue
+	if after_clip.is_empty(): 
+		return []
+	return merge_recursive(after_clip)
+
+static func intersect_group(polys: Array[PackedVector2Array]) -> Array[PackedVector2Array]:
+	var after_intersect: Array[PackedVector2Array] = [polys[0].duplicate()]
+	for i in range(1, polys.size()):
+		if Geometry2D.is_polygon_clockwise(polys[i]) == true:
+			continue
+		for inter in after_intersect:
+			if Geometry2D.is_polygon_clockwise(inter) == true:
+				continue
+			var this_intersection = Geometry2D.intersect_polygons(polys[i], inter)
+			if this_intersection.is_empty() == true:
+				after_intersect.clear()
+				return after_intersect
+			after_intersect = this_intersection
+	return after_intersect
+
+static func intersect_multiple(poly1: Array[PackedVector2Array], poly2: Array[PackedVector2Array]) -> Array[PackedVector2Array]:
+	if poly1.is_empty() or poly2.is_empty(): 
+		var new_p = poly1.duplicate()
+		new_p.append_array(poly2)
+		return new_p
+	var after_intersect: Array[PackedVector2Array] = []
+	for b in poly1:
+		var new_b: Array[PackedVector2Array] = []
+		for c in poly2:
+			var intersection = Geometry2D.intersect_polygons(b, c)
+			if intersection.is_empty():
+				continue
+			new_b.append_array(intersection)
+		after_intersect.append_array(merge_recursive(new_b))
+	if after_intersect.is_empty(): return []
+	return merge_recursive(after_intersect)
+	
 static func merge_recursive(polys: Array[PackedVector2Array]) -> Array[PackedVector2Array]:
 	var orig_size = polys.size()
-	if orig_size == 1: return polys
+	if orig_size <= 1: return polys
 	var merged: Array[PackedVector2Array] = []
 
 	var i = 0
@@ -118,16 +179,52 @@ static func merge_recursive(polys: Array[PackedVector2Array]) -> Array[PackedVec
 
 	if orig_size == size_after:
 		for j in size_after:
-			if merged[j] == polys[j]:
+			if merged.has(polys[j]) and polys.has(merged[j]):
 				continue
 			matched = false
-			break
 	else:
 		matched = false
 	if matched == true:
 		return polys
 	
 	return merge_recursive(merged)
+	
+#static func intersect_recursive(polys: Array[PackedVector2Array]) -> Array[PackedVector2Array]:
+	#var orig_size = polys.size()
+	#if orig_size <= 1: return polys
+	#var intersected: Array[PackedVector2Array] = []
+#
+	#var i = 0
+	#while i < orig_size - 1:
+		#var this_intersedt = Geometry2D.intersect_polygons(polys[i], polys[i+1])
+		#var holes_removed: Array[PackedVector2Array] = []
+		#for poly in this_intersedt:
+			#if Geometry2D.is_polygon_clockwise(poly) == true:
+				##i += 2
+				#continue
+			#holes_removed.append(poly)
+		#intersected.append_array(holes_removed)
+		#i += 2
+	#if orig_size % 2 == 1:
+		#intersected.append(polys[-1])
+#
+	#var size_after = intersected.size()
+	#var matched = true
+	#if size_after <= 1:
+		#return intersected
+#
+	#if orig_size == size_after:
+		#for j in size_after:
+			#if intersected[j] == polys[j]:
+				#continue
+			#matched = false
+			#break
+	#else:
+		#matched = false
+	#if matched == true:
+		#return polys
+	#
+	#return intersect_recursive(intersected)
 		
 static func generate_capsule_shape(capsule_length, r) -> PackedVector2Array:
 	var polys: Array[PackedVector2Array] = [PackedVector2Array(), PackedVector2Array(), PackedVector2Array()]
