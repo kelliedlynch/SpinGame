@@ -64,77 +64,121 @@ func apply_destructor(destruct_area: Array[PackedVector2Array]) -> bool:
 		if any_clipped == true: break
 	if any_clipped == false: return any_clipped
 	
-	var hitbox_after_destruct = PolygonMath.clip_multiple(before_destruct, destruct_area_to_local, true)
+	#var hitbox_after_destruct = PolygonMath.clip_multiple(before_destruct, destruct_area_to_local, true)
+	var hitbox_after_destruct: Array[PackedVector2Array] = []
+	for i in before_destruct.size():
+		var clipped_i: Array[PackedVector2Array] = []
+		for j in destruct_area_to_local.size():
+			var clipped = Geometry2D.clip_polygons(before_destruct[i], destruct_area_to_local[j])
+			if clipped.is_empty():
+				continue
+			clipped_i.append_array(clipped)
+		var size = clipped_i.size()
+		if size == 0:
+			continue
+		hitbox_after_destruct.append_array(clipped_i)
+	
 	if hitbox_after_destruct.is_empty():
 		emit_signal("was_destroyed", self)
 		return any_clipped
 	
-	
-	var jagged_edges: Array[PackedVector2Array] = []
+	for i in hitbox_after_destruct.size():
+		# TODO: CHECK HOW MUCH THIS AFFECTS PERFORMANCE
+		hitbox_after_destruct[i] = PolygonMath.simplify_polygon(hitbox_after_destruct[i], min_side_length)
+
+	var visible_destructor_shape: Array[PackedVector2Array] = []
 	var frag_shape = _get_fragment()
 	for poly in destruct_area_to_local:
-		for i in range(randi_range(0, 2), poly.size()):
+		var size = poly.size()
+		# TODO: this probably shouldn't be strictly based on material chunk qty, because it'll make 
+		#		too many chunks if there are multiple destructor polygons
+		var step = max(int(size / material_chunk_quantity), 0)
+		var merged = poly
+		for i in size:
 			var rotated = PolygonMath.rotate_polygon(frag_shape, randi_range(0, 360))
 			for j in rotated.size():
 				rotated[j] += poly[i]
-			jagged_edges.append(rotated)
-			i += randi_range(0, 2)
-	jagged_edges.append_array(destruct_area_to_local)
-	var visible_destructor_shape = PolygonMath.merge_recursive(jagged_edges)
-
+			merged = Geometry2D.merge_polygons(merged, rotated)[0]
+			i += step
+		visible_destructor_shape.append(merged)
+	#jagged_edges.append_array(destruct_area_to_local)
+	#var visible_destructor_shape = PolygonMath.merge_group(jagged_edges)
+	#for shape in jagged_edges:
+		#var p = Polygon2D.new()
+		#p.polygon = shape
+		#p.color = Color.CHARTREUSE
+		#add_child(p)
+	
 	var old_visible = get_polygons(visible_area)
 	var visible_inside_new_hitbox: Array[PackedVector2Array] = []
-	var new_hitbox_inside_visible: Array[PackedVector2Array] = []
+	#var new_hitbox_inside_visible: Array[PackedVector2Array] = []
 	for i in hitbox_after_destruct.size():
 		var intersected = PolygonMath.intersect_multiple([hitbox_after_destruct[i]], old_visible)
 		if intersected.is_empty():
 			continue
+		#var simp = PolygonMath.simplify_polygon(intersected, min_side_length)
+		# TODO: IS SIMPLIFYING NEEDED HERE?
 		visible_inside_new_hitbox.append_array(intersected)
-		new_hitbox_inside_visible.append_array(intersected)
+		#new_hitbox_inside_visible.append_array(simp)
 	
-	if new_hitbox_inside_visible.is_empty():
+	assert(visible_inside_new_hitbox.size() == hitbox_after_destruct.size())
+	
+	if visible_inside_new_hitbox.is_empty():
 		emit_signal("was_destroyed", self)
 		return any_clipped
 	
-	var visible_after_destruct: Array[PackedVector2Array] = []
+	#var visible_after_destruct: Array[PackedVector2Array] = []
 	for i in visible_inside_new_hitbox.size():
-		var clipped = PolygonMath.clip_multiple([visible_inside_new_hitbox[i]], visible_destructor_shape, true)
-		var size =  clipped.size()
+		#var clipped = PolygonMath.clip_multiple([visible_inside_new_hitbox[i]], visible_destructor_shape, true)
+		var clipped_i: Array[PackedVector2Array] = []
+		for j in visible_destructor_shape.size():
+			var clipped = Geometry2D.clip_polygons(visible_inside_new_hitbox[i], visible_destructor_shape[j])
+			if clipped.is_empty():
+				continue
+			clipped_i.append_array(clipped)
+		var size = clipped_i.size()
+		if size == 0:
+			continue
+		#visible_after_destruct.append_array(clipped_i)
+			
+			
 		if size != 1:
 			visible_inside_new_hitbox[i].clear()
-			new_hitbox_inside_visible[i].clear()
+			hitbox_after_destruct[i].clear()
 		if size > 1:
-			visible_inside_new_hitbox.append_array(clipped)
-			new_hitbox_inside_visible.append_array(clipped)
+			for j in clipped_i.size():
+				var new_chunk = PolygonMath.simplify_polygon(clipped_i[j], min_side_length)
+				visible_inside_new_hitbox.append(new_chunk)
+				hitbox_after_destruct.append(new_chunk)
 		elif size == 1:
-			visible_inside_new_hitbox[i] = clipped[0]
-			new_hitbox_inside_visible[i] = clipped[0]
+			visible_inside_new_hitbox[i] = PolygonMath.simplify_polygon(clipped_i[0], min_side_length)
+			#hitbox_after_destruct[i] = clipped[0]
 	
-	var simplified_hitbox: Array[PackedVector2Array] = []
-	var simplified_visible: Array[PackedVector2Array] = []
-	for i in new_hitbox_inside_visible.size():
-		if new_hitbox_inside_visible[i].is_empty() == true:
-			continue
-		simplified_hitbox.append(PolygonMath.simplify_polygon(new_hitbox_inside_visible[i], min_side_length))
-		simplified_visible.append(PolygonMath.simplify_polygon(visible_inside_new_hitbox[i], min_side_length))
-	
-	assert(!simplified_hitbox.is_empty())
+	#var simplified_hitbox: Array[PackedVector2Array] = []
+	#var simplified_visible: Array[PackedVector2Array] = []
+	#for i in hitbox_after_destruct.size():
+		#if hitbox_after_destruct[i].is_empty() == true:
+			#continue
+		#simplified_hitbox.append(PolygonMath.simplify_polygon(hitbox_after_destruct[i], min_side_length))
+		#simplified_visible.append(PolygonMath.simplify_polygon(visible_inside_new_hitbox[i], min_side_length))
+	#
+	#assert(!simplified_hitbox.is_empty())
 		
-	for i in simplified_hitbox.size():
-		if _is_prunable(simplified_hitbox[i]) == true or _is_prunable(simplified_visible[i]) == true:
-			simplified_hitbox[i].clear()
-			simplified_visible[i].clear()
+	for i in hitbox_after_destruct.size():
+		if _is_prunable(hitbox_after_destruct[i]) == true or _is_prunable(visible_inside_new_hitbox[i]) == true:
+			hitbox_after_destruct[i].clear()
+			visible_inside_new_hitbox[i].clear()
 
 	var decayed_hitbox: Array[PackedVector2Array] = []
 	var decayed_visible: Array[PackedVector2Array] = []
-	for i in simplified_hitbox.size():
-		if simplified_hitbox[i].is_empty() == true:
+	for i in hitbox_after_destruct.size():
+		if hitbox_after_destruct[i].is_empty() == true:
 			continue
-		if _is_decayable(simplified_hitbox[i]) == true or _is_decayable(simplified_visible[i]) == true:
-			_decay_chunk(simplified_visible[i])
+		if _is_decayable(hitbox_after_destruct[i]) == true or _is_decayable(visible_inside_new_hitbox[i]) == true:
+			_decay_chunk(visible_inside_new_hitbox[i])
 			continue
-		decayed_hitbox.append(simplified_hitbox[i])
-		decayed_visible.append(simplified_visible[i])
+		decayed_hitbox.append(hitbox_after_destruct[i])
+		decayed_visible.append(visible_inside_new_hitbox[i])
 
 	if decayed_hitbox.is_empty():
 		emit_signal("was_destroyed", self)

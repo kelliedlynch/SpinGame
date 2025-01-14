@@ -25,97 +25,63 @@ func _on_body_exited(node):
 		pass
 
 func _on_destroyed_destructible(node):
-	destructor.cut_state = CutState.READY
+	#destructor.cut_state = CutState.READY
+	destructor.set_deferred("cut_state", CutState.READY)
 	node.was_destroyed.disconnect(_on_destroyed_destructible)
 
-func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
-	state.linear_velocity += input_vector
-	input_vector = Vector2.ZERO
-	state.linear_velocity = state.linear_velocity.limit_length(max_speed)
+func _try_clip_destructible(state: PhysicsDirectBodyState2D) -> bool:
+	if destructor.target == null:
+		return false
+	var material_limited_velocity = state.linear_velocity.limit_length(destructor.target.material_max_cut_speed)
+	#state.linear_velocity = material_limited_velocity
+	var travel = material_limited_velocity * state.step
+	var next_frame_shape = destructor.get_next_frame_destructor(travel)
+	var destructor_hit = destructor.target.apply_destructor(next_frame_shape)
+	return destructor_hit
+	
 
+func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
+	#state.linear_velocity += input_vector
+	#input_vector = Vector2.ZERO
+	#state.linear_velocity = state.linear_velocity.limit_length(max_speed)
+
+
+	if destructor.cut_state == CutState.BEGIN_CUT:
+		var clip = _try_clip_destructible(state)
+		if clip == true:
+			#destructor.cut_state = CutState.END_CUT
+			destructor.cut_state = CutState.CUTTING
+
+	elif destructor.cut_state == CutState.CUTTING:
+		var clip = _try_clip_destructible(state)
+		if clip == false:
+			destructor.cut_state = CutState.END_CUT
+	elif destructor.cut_state == CutState.END_CUT:
+		pass
+	
+func _physics_process(delta: float) -> void:
+	linear_velocity += input_vector
+	input_vector = Vector2.ZERO
+	linear_velocity = linear_velocity.limit_length(max_speed)
+	
 	if destructor.cut_state == CutState.READY:
-		var test = move_and_collide(state.linear_velocity * state.step, true, .08, true)
-		if test != null and test.get_collider() is DestructibleHitbox:
-			#custom_integrator = true
-			var destructible = test.get_collider().get_parent()
+		var destructible = _destructible_in_path(linear_velocity, delta)
+		if destructible != null:
 			if destructor.cutting_power() >= destructible.material_hardness + destructible.CUT_INERTIA:
 				destructor.cut_state = CutState.BEGIN_CUT
 				destructible.was_destroyed.connect(_on_destroyed_destructible)
-				destructible.hitbox.add_collision_exception_with(self)
+				#destructible.hitbox.add_collision_exception_with(self)
 				destructor.target = destructible
-				begin_cut_speed = state.linear_velocity.length()
-				apply_central_impulse(-test.get_remainder())
-				state.integrate_forces()
-				pass
-			#else:
-				#custom_integrator = false
-		#else:
-			#custom_integrator = false
-	elif destructor.cut_state == CutState.BEGIN_CUT:
-		destructor.cut_state = CutState.CUTTING
-		var destructible = destructor.target
-		if destructible == null:
-			destructor.cut_state = CutState.READY
-			return
-		begin_cut_speed = max(begin_cut_speed - destructible.material_linear_damp, 0)
-		var material_limited_velocity = state.linear_velocity.limit_length(begin_cut_speed)
-		state.linear_velocity = material_limited_velocity
-		var travel = state.linear_velocity * state.step
-		var next_frame_shape = destructor.get_next_frame_destructor(travel)
-		var destructor_hit = destructible.apply_destructor(next_frame_shape)
-		if destructor_hit == false:
-			destructor.cut_state = CutState.END_CUT
-	elif destructor.cut_state == CutState.CUTTING:
-		var destructible = destructor.target
-		if destructible == null:
-			destructor.cut_state = CutState.READY
-			return
-		begin_cut_speed = max(begin_cut_speed - destructible.material_linear_damp, 0)
-		var material_limited_velocity = state.linear_velocity.limit_length(begin_cut_speed)
-		state.linear_velocity = material_limited_velocity
-		var travel = state.linear_velocity * state.step
-		var next_frame_shape = destructor.get_next_frame_destructor(travel)
-		var destructor_hit = destructible.apply_destructor(next_frame_shape)
-		if destructor_hit == false:
-			destructor.cut_state = CutState.END_CUT
-	elif destructor.cut_state == CutState.END_CUT:
-		var destructible = destructor.target
-		if destructible == null:
-			destructor.cut_state = CutState.READY
-			return
-		begin_cut_speed = max(begin_cut_speed - destructible.material_linear_damp, 0)
-		var material_limited_velocity = state.linear_velocity.limit_length(begin_cut_speed)
-		state.linear_velocity = material_limited_velocity
-		var travel = state.linear_velocity * state.step
-		var next_frame_shape = destructor.get_next_frame_destructor(travel)
-		var destructor_hit = destructible.apply_destructor(next_frame_shape)
-		if destructor_hit == true:
-			destructor.cut_state = CutState.CUTTING
-		else:
-			destructor.cut_state = CutState.READY
-			destructible.was_destroyed.disconnect(_on_destroyed_destructible)
-			destructible.hitbox.remove_collision_exception_with(self)
-			if material_limited_velocity.length() < begin_cut_speed:
-				state.linear_velocity = state.linear_velocity.limit_length(begin_cut_speed)
-				begin_cut_speed = 0
-				destructor.target = null
-	
-func _physics_process(delta: float) -> void:
-	if destructor.cut_state == CutState.READY:
-		var destructible = _destructible_in_path(linear_velocity, delta)
-		if destructor.cutting_power() >= destructible.material_hardness + destructible.CUT_INERTIA:
-			destructor.cut_state = CutState.BEGIN_CUT
-			destructible.was_destroyed.connect(_on_destroyed_destructible)
-			#destructible.hitbox.add_collision_exception_with(self)
-			destructor.target = destructible
-			#begin_cut_speed = linear_velocity.length()
-			#apply_central_impulse(-test.get_remainder())
+				#begin_cut_speed = linear_velocity.length()
+				#apply_central_impulse(-test.get_remainder())
 	elif destructor.cut_state == CutState.BEGIN_CUT:
 		pass
 	elif destructor.cut_state == CutState.CUTTING:
 		pass
 	elif destructor.cut_state == CutState.END_CUT:
-		pass
+		destructor.target.was_destroyed.disconnect(_on_destroyed_destructible)
+		destructor.target = null
+		destructor.cut_state = CutState.READY
 	elif destructor.cut_state == CutState.NOT_READY:
 		pass
 				

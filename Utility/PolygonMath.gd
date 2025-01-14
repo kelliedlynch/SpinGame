@@ -120,7 +120,7 @@ static func clip_multiple(base: Array[PackedVector2Array], clipper: Array[Packed
 	
 	if after_clip.is_empty():
 		return after_clip
-	return merge_recursive(after_clip, remove_holes)
+	return merge_group(after_clip, remove_holes)
 
 static func intersect_group(polys: Array[PackedVector2Array]) -> Array[PackedVector2Array]:
 	var after_intersect: Array[PackedVector2Array] = [polys[0].duplicate()]
@@ -151,25 +151,46 @@ static func intersect_multiple(poly1: Array[PackedVector2Array], poly2: Array[Pa
 			new_b.append_array(intersection)
 		if new_b.is_empty():
 			return new_b
-		var merged_b = merge_recursive(new_b)
+		var merged_b = merge_group(new_b)
 		after_intersect.append_array(merged_b)
 	if after_intersect.is_empty(): 
 		return after_intersect
-	return merge_recursive(after_intersect)
+	return merge_group(after_intersect)
 	
-static func merge_recursive(polys: Array[PackedVector2Array], remove_holes = false) -> Array[PackedVector2Array]:
+static func merge_group(polys: Array[PackedVector2Array], remove_holes = false) -> Array[PackedVector2Array]:
 	var orig_size = polys.size()
 	if orig_size <= 1: return polys
 	var merged: Array[PackedVector2Array] = [polys[0]]
 
 	for i in range(1, orig_size):
-		#var new_merged: Array[PackedVector2Array] = []
+		var new_merged: Array[PackedVector2Array] = []
+		var no_polys_touched = true
 		for poly in merged:
 			var this_merge = Geometry2D.merge_polygons(polys[i], poly)
 			if this_merge.is_empty():
-				merged.append(polys[i])
+				#new_merged.append(polys[i])
 				continue
-			merged = this_merge
+			new_merged.append_array(this_merge)
+			no_polys_touched = false
+		if no_polys_touched == true:
+			merged.append(polys[i])
+		else:
+			merged = new_merged
+		#if new_merged.is_empty():
+			#merged.append(polys[i])
+			#continue
+		#merged = new_merged
+	#var f = 0
+	#var b = polys.size() - 1
+	#while f < b:
+		#var new_merged = Geometry2D.merge_polygons(polys[f], polys[b])
+		#merged.append_array(new_merged)
+		#f += 1
+		#b -= 1
+		#if f == b:
+			#merged.append(polys[f])
+			#break
+		
 
 	var size_after = merged.size()
 	var matched = true
@@ -193,7 +214,7 @@ static func merge_recursive(polys: Array[PackedVector2Array], remove_holes = fal
 			holes_removed.append(poly)
 		merged = holes_removed
 	
-	return merge_recursive(merged, remove_holes) if matched == false else merged
+	return merged
 	
 #static func intersect_recursive(polys: Array[PackedVector2Array]) -> Array[PackedVector2Array]:
 	#var orig_size = polys.size()
@@ -244,7 +265,7 @@ static func generate_capsule_shape(capsule_length, r) -> PackedVector2Array:
 				Vector2(capsule_length / 2 - r, r),\
 				Vector2(capsule_length / 2 - r, -r)]
 	polys[1] = rect
-	var merged = merge_recursive(polys, true)
+	var merged = merge_group(polys, true)
 	if merged.size() != 1:
 		# something went wrong
 		pass
