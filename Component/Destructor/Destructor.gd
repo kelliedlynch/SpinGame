@@ -10,14 +10,8 @@ var current_for = {}
 # if next has key, shape is the actual destructor
 var next_for = {}
 
-var cut_state = CutState.READY
-enum CutState{
-	CUTTING,
-	READY,
-	NOT_READY,
-	BEGIN_CUT,
-	END_CUT
-}
+var cut_state = PlayerHitbox.CutState.READY
+
 var cut_spin_threshold: float = 1
 var cut_velocity_threshold: float = 80
 var target: DestructibleEntity = null
@@ -88,10 +82,10 @@ func get_next_frame_destructor(travel: Vector2) -> Array[PackedVector2Array]:
 				translated.append(to_global(pt + offset))
 				vis_translated.append(pt + offset)
 			next.append(translated)
-			var vis = Polygon2D.new()
-			vis.polygon = vis_translated
-			vis.color = Color(.7, .9, .1, .4)
-			parent.add_child(vis)
+			#var vis = Polygon2D.new()
+			#vis.polygon = vis_translated
+			#vis.color = Color(.7, .9, .1, .4)
+			#parent.add_child(vis)
 	return next
 			
 
