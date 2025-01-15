@@ -25,11 +25,16 @@ func _ready():
 	hitbox.body_entered.connect(_on_body_entered)
 	hitbox.area_entered.connect(_on_body_entered)
 	in_world = true
-	duration = 3
-	update_all_polygons([PolygonMath.generate_circle_polygon(10)])
-	for child in visible_area.get_children():
-		if child is Polygon2D:
-			child.color = Color.LIME_GREEN
+	duration = 5
+	color = Color.LIME_GREEN
+	update_all_polygons([PolygonMath.generate_circle_polygon(12)])
+	var tween = create_tween()
+	tween.tween_property(visible_area, "scale", Vector2(1.5, 1.5), .5)
+	tween.tween_property(visible_area, "scale", Vector2(1, 1), .5)
+	tween.set_loops()
+	#for child in visible_area.get_children():
+		#if child is Polygon2D:
+			#child.color = Color.LIME_GREEN
 	
 func _on_body_entered(node):
 	if node is PlayerHitbox:
@@ -43,10 +48,24 @@ func _collect(node):
 		child.queue_free()
 	
 func _on_collect():
+	for child in target.visible_area.get_children():
+		var color_before = Color(child.color)
+		var mask = Color(color)
+		mask.a = .5
+		var to_color = Color(color_before).blend(mask)
+		var tween = create_tween()
+		var blink_interval = .25
+		tween.tween_property(child, "modulate", to_color, blink_interval)
+		tween.tween_property(child, "modulate", color, blink_interval)
+		tween.set_loops(duration / (blink_interval * 2) - 1)
+		tween.connect("finished", child.set_modulate.bind(color_before))
+		#tween.tween_property(child, "modulate", color_before, 0)
+		
+		
 	prev_speed = target.destructor.spin_speed
 	target.destructor.spin_speed += 10
 	target.destructor.max_spin_speed += 2
-	target.destructor.spin_accel += 2
+	target.destructor.spin_accel += 3
 	ticking_down = true
 	
 func _on_process(delta):
@@ -59,7 +78,7 @@ func _on_process(delta):
 func _on_expire():
 	target.destructor.spin_speed = prev_speed
 	target.destructor.max_spin_speed -= 2
-	target.destructor.spin_accel -= 2
+	target.destructor.spin_accel -= 3
 	queue_free()
 
 func _process(delta: float) -> void:

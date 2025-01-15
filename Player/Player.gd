@@ -18,7 +18,7 @@ func _ready() -> void:
 	
 	super._ready()
 
-#func _process(delta: float) -> void:
-#
-	#var r = pow(destructor.spin_speed, 2) * delta / 10
-	#visible_area.rotate(r)
+func _process(delta: float) -> void:
+
+	var r = log(pow(destructor.spin_speed, 4)) * delta
+	visible_area.rotate(r)

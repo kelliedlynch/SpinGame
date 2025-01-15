@@ -20,7 +20,7 @@ var target: DestructibleEntity = null
 #       separate class
 var max_spin_speed = 10
 var min_spin_speed = 1
-var spin_speed = 9
+var spin_speed = 3
 var spin_accel = 1.7
 
 # extra margin added to destructor shape to prevent it getting stuck
@@ -29,36 +29,6 @@ var EXPAND_CAPSULE = .03
 func _ready() -> void:
 	monitorable = true
 	monitoring = false
-	#child_entered_tree.connect(_on_child_added)
-	#child_exiting_tree.connect(_on_child_removed)
-	#collision_mask = 1 & 10
-
-#func _on_child_added(node: Node2D):
-	#if node is CollisionPolygon2D and !current_for.has(node):
-		#var next_frame = node.duplicate()
-		#next_for[node] = next_frame
-		#current_for[next_frame] = node
-		##var shape = CollisionShape2D.new()
-		##var next_frame = CapsuleShape2D.new()
-		##next_frame.height = 400
-		##next_frame.radius = 50
-		##shape.shape = next_frame
-		#add_child(next_frame)
-#
-#func _on_child_removed(node: Node2D):
-	#if node is CollisionPolygon2D and !current_for.has(node):
-		#var next_frame = next_for[node]
-		#next_for.erase(node)
-		#current_for.erase(next_frame)
-		##remove_child(next_frame)
-		#next_frame.queue_free()
-
-#func _on_destroyed_material(d: Destructor, mat: DestructibleEntity):
-	#await get_tree().physics_frame
-	#var pre_velocity = parent.linear_velocity
-	#parent.linear_velocity -= parent.linear_velocity * Vector2(mat.material_resistance, mat.material_resistance)
-	#var velocity = parent.linear_velocity
-	#parent.get_parent().spin_speed -= mat.material_resistance
 	
 func get_next_frame_destructor(travel: Vector2) -> Array[PackedVector2Array]:
 	# returns a polygon in global coordinates
@@ -92,25 +62,6 @@ func get_next_frame_destructor(travel: Vector2) -> Array[PackedVector2Array]:
 func _physics_process(delta: float) -> void:
 	spin_speed += spin_accel * delta
 	spin_speed = clamp(spin_speed, min_spin_speed, max_spin_speed)
-	#var velocity = parent.linear_velocity
-	#var speed = velocity.length()
-	#for current_frame in next_for:
-		#var travel_angle = velocity.angle()
-		#var poly_size = PolygonMath.size_of_polygon(current_frame.polygon)
-		#var length = poly_size.x + 8
-		#if speed > 1000:
-			#pass
-		##var applied_speed = speed + parent.input_vector.length()
-		##if applied_speed > 1:
-			##length += min(3, 10/applied_speed) * speed * delta
-		#var capsule = PolygonMath.generate_capsule_shape(length, poly_size.x / 2 + 1)
-		#var rotated = PolygonMath.rotate_polygon(capsule, rad_to_deg(travel_angle))
-		#var translated = PackedVector2Array()
-		#var offset = (Vector2.from_angle(travel_angle) * speed).limit_length(length - poly_size.x)
-		#for pt in rotated:
-			#translated.append(pt + offset)
-		#next_for[current_frame].polygon = translated
-		#next_for[current_frame].position = current_frame.position
 
 func _translate_to_destructible_space(entity:DestructibleEntity, polys: Array[PackedVector2Array] = []) -> Array[PackedVector2Array]:
 	if polys.is_empty():
@@ -163,6 +114,6 @@ func _translate_to_destructible_space(entity:DestructibleEntity, polys: Array[Pa
 
 func cutting_power() -> float:
 	var speed = spin_speed
-	#if parent.linear_velocity.length() > 500:
-		#speed += parent.linear_velocity.length() / 500
+	if parent.linear_velocity.length() > 500:
+		speed += parent.linear_velocity.length() / 500
 	return speed

@@ -32,31 +32,64 @@ func _on_destroyed_destructible(node):
 func _try_clip_destructible(state: PhysicsDirectBodyState2D) -> bool:
 	if destructor.target == null:
 		return false
+	var pow = destructor.cutting_power()
+	if destructor.cut_state == CutState.CUTTING:
+		pow += destructor.target.CUT_INERTIA
+	if pow < destructor.target.material_hardness:
+		return false
 	var material_limited_velocity = state.linear_velocity.limit_length(destructor.target.material_max_cut_speed)
 	#state.linear_velocity = material_limited_velocity
 	var travel = material_limited_velocity * state.step
 	var next_frame_shape = destructor.get_next_frame_destructor(travel)
 	var destructor_hit = destructor.target.apply_destructor(next_frame_shape)
+	if destructor_hit:
+		#var size = PolygonMath.size_of_polygon(next_frame_shape)
+		var angle = travel.angle()
+		angle += randf_range(-.5, .5)
+		var spark_vector = Vector2.from_angle(angle) * material_limited_velocity.length()
+		var min_dist = 1000000
+		var closest_vertex
+		var center = to_global(Vector2.ZERO)
+		# TODO: make this work with multiple destructor shapes
+		for vertex in next_frame_shape[0]:
+			var pt = Geometry2D.get_closest_point_to_segment(vertex, center, center + spark_vector)
+			var dist = pt.distance_to(vertex)
+			if dist < min_dist:
+				closest_vertex = vertex
+				min_dist = dist
+		var size = PolygonMath.size_of_polygon(next_frame_shape[0])
+		destructor.target.generate_fragment(closest_vertex, material_limited_velocity, center)
+		
 	return destructor_hit
-	
+
+func _apply_destructible_forces(state: PhysicsDirectBodyState2D):
+	state.linear_velocity.limit_length(state.linear_velocity.length() - destructor.target.material_linear_damp)
+	#var a = state.linear_velocity.length()
+	#var b = destructor.target.material_max_cut_speed
+	state.linear_velocity = state.linear_velocity.limit_length(destructor.target.material_max_cut_speed)
+	destructor.spin_speed -= destructor.target.material_resistance
+	#return state
 
 func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 	#state.linear_velocity += input_vector
 	#input_vector = Vector2.ZERO
 	#state.linear_velocity = state.linear_velocity.limit_length(max_speed)
 
-
 	if destructor.cut_state == CutState.BEGIN_CUT:
 		var clip = _try_clip_destructible(state)
+		_apply_destructible_forces(state)
 		if clip == true:
 			#destructor.cut_state = CutState.END_CUT
 			destructor.cut_state = CutState.CUTTING
-
+			
+			pass
 	elif destructor.cut_state == CutState.CUTTING:
 		var clip = _try_clip_destructible(state)
+		_apply_destructible_forces(state)
 		if clip == false:
 			destructor.cut_state = CutState.END_CUT
 	elif destructor.cut_state == CutState.END_CUT:
+		_try_clip_destructible(state)
 		pass
 	
 func _physics_process(delta: float) -> void:

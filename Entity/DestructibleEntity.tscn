@@ -6,7 +6,7 @@
 [ext_resource type="Script" path="res://Component/Destructible/DestructibleHitbox.gd" id="4_832lt"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_5elrg"]
-bounce = 0.25
+bounce = 0.08
 
 [node name="DestructibleEntity" type="Node2D"]
 script = ExtResource("2_de7c5")

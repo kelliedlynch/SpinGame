@@ -10,6 +10,7 @@ class_name DestructibleEntity
 # TODO: these should probably not be an absolute size; should probably calculate based on rendered size
 #		because polygons can be any size and are scaled when rendered
 var material_chunk_size = Vector2(20, 20)
+var spark_size = Vector2(8, 8)
 # multiplier based on screen size; min length of side when simplifying polygon
 var SIMPLIFY_THRESHOLD = .005
 # multiplier based on screen size; chunks smaller than this will just vanish
@@ -21,10 +22,10 @@ var DECAY_THRESHOLD = .025
 var material_chunk_quantity = 6
 
 const CUT_INERTIA = .1
-var material_hardness = 8
-var material_resistance = .1
-var material_max_cut_speed = 300
-var material_linear_damp = 20
+var material_hardness = 2
+var material_resistance = .2
+var material_max_cut_speed = 200
+var material_linear_damp = 30
 
 var active_destructors = {}
 
@@ -64,8 +65,9 @@ func apply_destructor(destruct_area: Array[PackedVector2Array]) -> bool:
 		if any_clipped == true: break
 	if any_clipped == false: return any_clipped
 	
+	
 	#var hitbox_after_destruct = PolygonMath.clip_multiple(before_destruct, destruct_area_to_local, true)
-	var hitbox_after_destruct: Array[PackedVector2Array] = []
+	var hitbox_after_initial_destruct: Array[PackedVector2Array] = []
 	for i in before_destruct.size():
 		var clipped_i: Array[PackedVector2Array] = []
 		for j in destruct_area_to_local.size():
@@ -76,16 +78,22 @@ func apply_destructor(destruct_area: Array[PackedVector2Array]) -> bool:
 		var size = clipped_i.size()
 		if size == 0:
 			continue
-		hitbox_after_destruct.append_array(clipped_i)
+		hitbox_after_initial_destruct.append_array(clipped_i)
+	
+	if hitbox_after_initial_destruct.is_empty():
+		emit_signal("was_destroyed", self)
+		return any_clipped
+	
+	var hitbox_after_destruct: Array[PackedVector2Array] = []
+	for i in hitbox_after_initial_destruct.size():
+		if _is_prunable(hitbox_after_initial_destruct[i]):
+			continue
+		hitbox_after_destruct.append(hitbox_after_initial_destruct[i])
 	
 	if hitbox_after_destruct.is_empty():
 		emit_signal("was_destroyed", self)
 		return any_clipped
-	
-	for i in hitbox_after_destruct.size():
-		# TODO: CHECK HOW MUCH THIS AFFECTS PERFORMANCE
-		hitbox_after_destruct[i] = PolygonMath.simplify_polygon(hitbox_after_destruct[i], min_side_length)
-
+		
 	var visible_destructor_shape: Array[PackedVector2Array] = []
 	var frag_shape = _get_fragment()
 	for poly in destruct_area_to_local:
@@ -118,7 +126,11 @@ func apply_destructor(destruct_area: Array[PackedVector2Array]) -> bool:
 			continue
 		#var simp = PolygonMath.simplify_polygon(intersected, min_side_length)
 		# TODO: IS SIMPLIFYING NEEDED HERE?
-		visible_inside_new_hitbox.append_array(intersected)
+		for poly in intersected:
+			if _is_prunable(poly):
+				continue
+			visible_inside_new_hitbox.append(poly)
+		#visible_inside_new_hitbox.append_array(intersected)
 		#new_hitbox_inside_visible.append_array(simp)
 	
 	assert(visible_inside_new_hitbox.size() == hitbox_after_destruct.size())
@@ -230,39 +242,38 @@ func _is_decayable(poly: PackedVector2Array) -> bool:
 		return area < pow(decay_size, 2)
 	return false
 
-func _get_fragment():
+func _get_fragment(size: Vector2 = material_chunk_size):
 	# TODO: this will return different fragment shapes depending on material
-	return _triangle_fragment(material_chunk_size)	
+	return _triangle_fragment(size)	
 
 func _triangle_fragment(size: Vector2):
 	var triangle = PackedVector2Array([Vector2(0, -size.y / 2.0), Vector2(size.x / 2.0, size.y / 2.0), Vector2(-size.x / 2.0, size.y / 2.0)])
 	return triangle
 	
-func generate_fragments(n: int, pos: Vector2, travel_vec: Vector2, center: Vector2):
-	#return
-	for i in n:
-		var frag = DebrisFragment.new()
-		frag.polygon = _get_fragment()
-		frag.color = Color.YELLOW
-		frag.position = pos
-		var vector_to_tan = pos - center
-		var angle_diff = vector_to_tan.angle_to(travel_vec)
-		#var mult = -1 if angle_diff > 0 else 1
+func generate_fragment(pos: Vector2, travel_vec: Vector2, center: Vector2):
+
+	var frag = DebrisFragment.new()
+	frag.polygon = _get_fragment(spark_size)
+	frag.color = Color.YELLOW
+	frag.position = pos
+	var vector_to_tan = pos - center
+	var angle_diff = vector_to_tan.angle_to(travel_vec)
+	#var mult = -1 if angle_diff > 0 else 1
+	
+	var angle_vec = vector_to_tan.angle()
+	var rot = angle_vec + PI/2 
+	#var a = travel_vec.angle()
+	#
+	#var angle = rad_to_deg(travel_vec.angle())
+	#angle += 120
+	#angle += randi_range(0, 40)
+	#var out_vec = Vector2.from_angle(deg_to_rad(angle))
+
+	var out_vec = Vector2.from_angle(rot)
 		
-		var angle_vec = vector_to_tan.angle()
-		var rot = angle_vec + PI/2 
-		#var a = travel_vec.angle()
-		#
-		#var angle = rad_to_deg(travel_vec.angle())
-		#angle += 120
-		#angle += randi_range(0, 40)
-		#var out_vec = Vector2.from_angle(deg_to_rad(angle))
-
-		var out_vec = Vector2.from_angle(rot)
-		
 
 
-		var speed = randi_range(300, 600)
-		#print(Vector2.from_angle(offset))
-		frag.velocity = out_vec * speed
-		add_sibling(frag)
+	var speed = randi_range(300, 600)
+	#print(Vector2.from_angle(offset))
+	frag.velocity = out_vec * speed
+	add_sibling(frag)

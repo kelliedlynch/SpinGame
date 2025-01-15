@@ -7,3 +7,37 @@
 script = ExtResource("1_f4c2g")
 
 [node name="Arena" parent="." instance=ExtResource("2_snwc1")]
+
+[node name="Label" type="Label" parent="."]
+offset_left = 1340.0
+offset_top = 87.0
+offset_right = 1460.0
+offset_bottom = 169.0
+text = "Spin Speed:
+Move Speed:
+Cut Power:"
+horizontal_alignment = 2
+
+[node name="SpinSpeedLabel" type="Label" parent="."]
+offset_left = 1469.0
+offset_top = 86.0
+offset_right = 1532.0
+offset_bottom = 110.0
+text = "0"
+horizontal_alignment = 2
+
+[node name="MoveSpeedLabel" type="Label" parent="."]
+offset_left = 1469.0
+offset_top = 112.0
+offset_right = 1532.0
+offset_bottom = 135.0
+text = "0"
+horizontal_alignment = 2
+
+[node name="CutPowerLabel" type="Label" parent="."]
+offset_left = 1469.0
+offset_top = 139.0
+offset_right = 1532.0
+offset_bottom = 168.0
+text = "0"
+horizontal_alignment = 2
