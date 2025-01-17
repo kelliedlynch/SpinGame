@@ -31,7 +31,7 @@ func _ready():
 	var tween = create_tween()
 	tween.tween_property(visible_area, "scale", Vector2(1.5, 1.5), .5)
 	tween.tween_property(visible_area, "scale", Vector2(1, 1), .5)
-	tween.set_loops()
+	tween.set_loops(200)
 	#for child in visible_area.get_children():
 		#if child is Polygon2D:
 			#child.color = Color.LIME_GREEN

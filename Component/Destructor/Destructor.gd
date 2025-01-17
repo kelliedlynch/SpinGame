@@ -19,7 +19,7 @@ var target: SGCollPoly = null
 # TODO: probably only Player destructor will be affected by spin; break out into
 #       separate class
 var max_spin_speed = 10
-var min_spin_speed = 1
+var min_spin_speed = 10
 var spin_speed = 3
 var spin_accel = 1.7
 

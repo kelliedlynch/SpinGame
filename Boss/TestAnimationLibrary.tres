@@ -1,4 +1,159 @@
-[gd_resource type="AnimationLibrary" load_steps=2 format=3 uid="uid://big34j5uxesj8"]
+[gd_resource type="AnimationLibrary" load_steps=5 format=3 uid="uid://big34j5uxesj8"]
+
+[sub_resource type="Animation" id="Animation_7km3x"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("remote_hitbox/Skeleton2D/body_bone:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("remote_hitbox/Skeleton2D/body_bone:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.30053]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("remote_hitbox/Skeleton2D/body_bone/left_upper_bone:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.185005]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("remote_hitbox/Skeleton2D/body_bone/left_upper_bone/left_lower_bone:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-0.61103]
+}
+
+[sub_resource type="Animation" id="Animation_wj7qt"]
+resource_name = "jump_landing"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("remote_hitbox/Skeleton2D/body_bone:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.166667, 0.2, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(151.799, -50.6057), Vector2(-16.154, 2.01241), Vector2(0.648174, -1.25693), Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("remote_hitbox/Skeleton2D/body_bone:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.166667, 0.2, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [1.40444, 1.1957, 1.27841, 1.30053]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("remote_hitbox/Skeleton2D/body_bone/left_upper_bone:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.166667, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [-0.122881, -0.00929534, 0.185005]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("remote_hitbox/Skeleton2D/body_bone/left_upper_bone/left_lower_bone:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.166667, 0.333333, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [0.218404, 2.27803, -0.443784, -0.61103]
+}
+
+[sub_resource type="Animation" id="Animation_g56qv"]
+resource_name = "jump_up"
+length = 0.35
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("remote_hitbox/Skeleton2D/body_bone:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.166667, 0.333333),
+"transitions": PackedFloat32Array(1, 1, 0.233258, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(-11.735, 2.7), Vector2(-11.735, 2.7), Vector2(151.799, -50.6057)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("remote_hitbox/Skeleton2D/body_bone:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.166667, 0.333333),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [1.30053, 1.24875, 1.24875, 1.40444]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("remote_hitbox/Skeleton2D/body_bone/left_upper_bone:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.166667, 0.333333),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [0.185005, 0.612748, 0.612748, -0.122881]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("remote_hitbox/Skeleton2D/body_bone/left_upper_bone/left_lower_bone:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.166667, 0.333333),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [-0.61103, -0.972001, -0.972001, 0.218404]
+}
 
 [sub_resource type="Animation" id="Animation_1bsfj"]
 resource_name = "wave_arm"
@@ -6,7 +161,7 @@ length = 2.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Skeleton2D/body_bone/left_upper_bone/left_lower_bone:rotation")
+tracks/0/path = NodePath("remote_hitbox/Skeleton2D/body_bone/left_upper_bone/left_lower_bone:rotation")
 tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -18,7 +173,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Skeleton2D/body_bone/left_upper_bone:rotation")
+tracks/1/path = NodePath("remote_hitbox/Skeleton2D/body_bone/left_upper_bone:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -30,7 +185,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Skeleton2D/body_bone:rotation")
+tracks/2/path = NodePath("remote_hitbox/Skeleton2D/body_bone:rotation")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -42,7 +197,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Skeleton2D/body_bone/left_upper_bone:position")
+tracks/3/path = NodePath("remote_hitbox/Skeleton2D/body_bone/left_upper_bone:position")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -54,5 +209,8 @@ tracks/3/keys = {
 
 [resource]
 _data = {
+"RESET": SubResource("Animation_7km3x"),
+"jump_landing": SubResource("Animation_wj7qt"),
+"jump_up": SubResource("Animation_g56qv"),
 "wave_arm": SubResource("Animation_1bsfj")
 }

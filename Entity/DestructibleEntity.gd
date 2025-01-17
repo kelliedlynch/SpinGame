@@ -1,3 +1,4 @@
+@tool
 extends SGEntityBase
 class_name DestructibleEntity
 
@@ -14,15 +15,15 @@ var spark_size = Vector2(8, 8)
 # multiplier based on screen size; min length of side when simplifying polygon
 var SIMPLIFY_THRESHOLD = .005
 # multiplier based on screen size; chunks smaller than this will just vanish
-var PRUNE_THRESHOLD = .005
+var PRUNE_THRESHOLD = .007
 # chunks smaller than this will break off and decay
-var DECAY_THRESHOLD = .025
+var DECAY_THRESHOLD = .015
 
 # this is the maximum number of chunks that can break off when a destructor hits
 var material_chunk_quantity = 6
 
 const CUT_INERTIA = .1
-var material_hardness = 8
+var material_hardness = 3
 var material_resistance = .2
 var material_max_cut_speed = 200
 var material_linear_damp = 30
@@ -35,20 +36,35 @@ signal shape_was_destroyed
 
 
 #func _init():
+	#notification(NOTIFICATION_SCENE_INSTANTIATED).connect(_on_instantiated)
 	#color = Color.DODGER_BLUE
+#func _notification(what):
+	#if what == NOTIFICATION_SCENE_INSTANTIATED:
+		#for child in hitbox.get_children():
+			#if child is SGCollPoly:
+				##child.tree_exiting.connect(_on_shape_was_destroyed.bind(child))
+				#child.visible_polygon.polygon = child.visible_polygon.uv
+				#child.polygon = child.visible_polygon.uv
+	#pass
 
 func _ready() -> void:
 	was_destroyed.connect(_on_was_destroyed)
-	shape_was_destroyed.connect(_on_shape_was_destroyed)
+	#shape_was_destroyed.connect(_on_shape_was_destroyed)
+	for child in hitbox.get_children():
+		if child is SGCollPoly:
+			child.tree_exiting.connect(_on_shape_was_destroyed.bind(child))
+			child.visible_polygon.polygon = child.visible_polygon.uv
+			child.polygon = child.visible_polygon.polygon
+			
 	#super._ready()
 
 func _on_was_destroyed(_node):
 	queue_free()
 
 func _on_shape_was_destroyed(node):
-	node.queue_free()
+	#node.queue_free()
 	if hitbox.get_child_count() == 0:
-		emit_signal("was_destroyed")
+		emit_signal("was_destroyed", node)
 	
 func _try_clip(poly: PackedVector2Array, clipper: Array[PackedVector2Array]) -> Array[PackedVector2Array]:
 	var clipped: Array[PackedVector2Array] = []
@@ -101,117 +117,128 @@ func apply_destructor(collision_poly: SGCollPoly, destruct_area: Array[PackedVec
 			new_poly.append(collision_poly.to_local(pt))
 		destruct_area_to_local.append(new_poly)
 	
-	var hitbox_after_initial_destruct = _try_clip(collision_poly.polygon, destruct_area_to_local)
+	#var hitbox_after_initial_destruct = _try_clip(collision_poly.polygon, destruct_area_to_local)
+	#
+	#if hitbox_after_initial_destruct.is_empty():
+		##emit_signal("shape_was_destroyed", collision_poly)
+		#collision_poly.queue_free()
+		#return true
+	#elif hitbox_after_initial_destruct.size() == 1 and hitbox_after_initial_destruct[0] == collision_poly.polygon:
+		#return false
 	
-	if hitbox_after_initial_destruct.is_empty():
-		emit_signal("shape_was_destroyed", collision_poly)
+	var chunkified_destructor = _chunkify_destructor(destruct_area_to_local)
+	#var visible_after_destruct: Array[PackedVector2Array] = []
+	#for i in visible_inside_new_hitbox.size():
+		#var clipped = PolygonMath.clip_multiple([visible_inside_new_hitbox[i]], visible_destructor_shape, true)
+	var polys_after_destruct: Array[PackedVector2Array] = []
+	for i in chunkified_destructor.size():
+		var clipped_hitbox = Geometry2D.clip_polygons(collision_poly.polygon, chunkified_destructor[i])
+		#var clipped_visible = Geometry2D.clip_polygons(collision_poly.visible_polygon.polygon, chunkified_destructor[i])
+		if clipped_hitbox.is_empty():
+			collision_poly.queue_free()
+			return true
+		polys_after_destruct.append_array(clipped_hitbox)
+	#var size = clipped_i.size()
+	#if size == 0:
+		#continue
+	
+	for i in range(polys_after_destruct.size() - 1, -1, -1):
+		if _is_prunable(polys_after_destruct[i]):
+			polys_after_destruct.remove_at(i)
+		i -= 1
+	if polys_after_destruct.is_empty():
+		#emit_signal("shape_was_destroyed", collision_poly)
+		collision_poly.queue_free()
 		return true
-	elif hitbox_after_initial_destruct.size() == 1 and hitbox_after_initial_destruct[0] == collision_poly.polygon:
+	if polys_after_destruct.size() == 1 and polys_after_destruct[0] == collision_poly.polygon:
 		return false
 	
-	var hitbox_after_destruct: Array[PackedVector2Array] = []
-	for i in hitbox_after_initial_destruct.size():
-		if _is_prunable(hitbox_after_initial_destruct[i]):
-			continue
-		hitbox_after_destruct.append(hitbox_after_initial_destruct[i])
-	
-	if hitbox_after_destruct.is_empty():
-		emit_signal("shape_was_destroyed", collision_poly)
-		return true
-	
-	var old_visible = collision_poly.visible_polygon.polygon
-	var visible_inside_new_hitbox: Array[PackedVector2Array] = []
-	#var new_hitbox_inside_visible: Array[PackedVector2Array] = []
-	for i in hitbox_after_destruct.size():
-		var intersected = Geometry2D.intersect_polygons(hitbox_after_destruct[i], old_visible)
-		if intersected.is_empty():
-			continue
-		#var simp = PolygonMath.simplify_polygon(intersected, min_side_length)
-		# TODO: IS SIMPLIFYING NEEDED HERE?
-		for poly in intersected:
-			if _is_prunable(poly):
-				continue
-			visible_inside_new_hitbox.append(poly)
+	#var old_visible = collision_poly.visible_polygon.polygon
+	#var visible_inside_new_hitbox: Array[PackedVector2Array] = []
+	##var new_hitbox_inside_visible: Array[PackedVector2Array] = []
+	#for i in hitbox_after_destruct.size():
+		#var intersected = Geometry2D.intersect_polygons(hitbox_after_destruct[i], old_visible)
+		#if intersected.is_empty():
+			#continue
+		##var simp = PolygonMath.simplify_polygon(intersected, min_side_length)
+		## TODO: IS SIMPLIFYING NEEDED HERE?
+		#for poly in intersected:
+			#if _is_prunable(poly):
+				#continue
+			#visible_inside_new_hitbox.append(poly)
 		#visible_inside_new_hitbox.append_array(intersected)
 		#new_hitbox_inside_visible.append_array(simp)
 	
-	assert(visible_inside_new_hitbox.size() == hitbox_after_destruct.size())
+	#assert(visible_inside_new_hitbox.size() == hitbox_after_destruct.size())
 	
-	if visible_inside_new_hitbox.is_empty():
-		emit_signal("shape_was_destroyed", collision_poly)
-		return true
+	#if visible_inside_new_hitbox.is_empty():
+		#collision_poly.queue_free()
+		#return true
 	
-	var visible_destructor_shape = _chunkify_destructor(destruct_area_to_local)
-	#var visible_after_destruct: Array[PackedVector2Array] = []
-	for i in visible_inside_new_hitbox.size():
-		#var clipped = PolygonMath.clip_multiple([visible_inside_new_hitbox[i]], visible_destructor_shape, true)
-		var clipped_i: Array[PackedVector2Array] = []
-		for j in visible_destructor_shape.size():
-			var clipped = Geometry2D.clip_polygons(visible_inside_new_hitbox[i], visible_destructor_shape[j])
-			if clipped.is_empty():
-				continue
-			clipped_i.append_array(clipped)
-		var size = clipped_i.size()
-		if size == 0:
-			continue
+
 		#visible_after_destruct.append_array(clipped_i)
 			
 			
-		if size != 1:
-			visible_inside_new_hitbox[i].clear()
-			hitbox_after_destruct[i].clear()
-		if size > 1:
-			for j in clipped_i.size():
-				var new_chunk = PolygonMath.simplify_polygon(clipped_i[j], min_side_length)
-				visible_inside_new_hitbox.append(new_chunk)
-				hitbox_after_destruct.append(new_chunk)
-		elif size == 1:
-			visible_inside_new_hitbox[i] = PolygonMath.simplify_polygon(clipped_i[0], min_side_length)
+		#if size != 1:
+			#visible_inside_new_hitbox[i].clear()
+			#hitbox_after_destruct[i].clear()
+		#if size > 1:
+			#for j in clipped_i.size():
+				#var new_chunk = PolygonMath.simplify_polygon(clipped_i[j], min_side_length)
+				#visible_inside_new_hitbox.append(new_chunk)
+				#hitbox_after_destruct.append(new_chunk)
+		#elif size == 1:
+			#visible_inside_new_hitbox[i] = PolygonMath.simplify_polygon(clipped_i[0], min_side_length)
 			#hitbox_after_destruct[i] = clipped[0]
 	
-	var simplified_hitbox: Array[PackedVector2Array] = []
-	var simplified_visible: Array[PackedVector2Array] = []
-	for i in hitbox_after_destruct.size():
-		if hitbox_after_destruct[i].is_empty() == true:
-			continue
-		simplified_hitbox.append(PolygonMath.simplify_polygon(hitbox_after_destruct[i], min_side_length))
-		simplified_visible.append(PolygonMath.simplify_polygon(visible_inside_new_hitbox[i], min_side_length))
+	#var simplified_hitbox: Array[PackedVector2Array] = []
+	var simplified_polygons: Array[PackedVector2Array] = []
+	for i in polys_after_destruct.size():
+		#if hitbox_after_destruct[i].is_empty() == true:
+			#continue
+		var simp = PolygonMath.simplify_polygon(polys_after_destruct[i], min_side_length)
+		simplified_polygons.append(simp)
 	
-	assert(!simplified_hitbox.is_empty())
+	assert(!simplified_polygons.is_empty())
 		
-	for i in simplified_hitbox.size():
-		if _is_prunable(simplified_hitbox[i]) == true or _is_prunable(simplified_visible[i]) == true:
-			simplified_hitbox[i].clear()
-			simplified_visible[i].clear()
+	for i in range(simplified_polygons.size() - 1, -1, -1):
+		if _is_prunable(simplified_polygons[i]) == true:
+			simplified_polygons.remove_at(i)
 
-	var decayed_hitbox: Array[PackedVector2Array] = []
-	var decayed_visible: Array[PackedVector2Array] = []
-	for i in simplified_hitbox.size():
-		if simplified_hitbox[i].is_empty() == true:
+	#var decayed_hitbox: Array[PackedVector2Array] = []
+	var decayed_polygons: Array[PackedVector2Array] = []
+	for i in simplified_polygons.size():
+		if _is_decayable(simplified_polygons[i]) == true:
+			_decay_chunk(simplified_polygons[i], collision_poly)
 			continue
-		if _is_decayable(simplified_hitbox[i]) == true or _is_decayable(simplified_visible[i]) == true:
-			_decay_chunk(simplified_visible[i])
-			continue
-		decayed_hitbox.append(simplified_hitbox[i])
-		decayed_visible.append(simplified_visible[i])
+		decayed_polygons.append(simplified_polygons[i])
 
-	if decayed_hitbox.is_empty():
-		emit_signal("shape_was_destroyed", collision_poly)
+	if decayed_polygons.is_empty():
+		#emit_signal("shape_was_destroyed", collision_poly)
+		collision_poly.queue_free()
 		return true
 		
-	if decayed_hitbox.size() >= 1:
-		collision_poly.set_deferred("polygon", decayed_hitbox[0])
-		collision_poly.visible_polygon.set_deferred("polygon", decayed_visible[0])
+	if decayed_polygons.size() >= 1:
+		collision_poly.set_deferred("polygon", decayed_polygons[0])
+		collision_poly.visible_polygon.set_deferred("polygon", decayed_polygons[0])
 	
-	if decayed_hitbox.size() > 1:
-		for i in range(1, decayed_hitbox.size()):
+	if decayed_polygons.size() > 1:
+		for i in range(1, decayed_polygons.size()):
 			var new_coll = collision_poly.duplicate()
-			new_coll.polygon = decayed_hitbox[i]
-			var new_vis = collision_poly.visible_polygon.duplicate()
-			new_vis.polygon = decayed_visible[i]
-			new_coll.visible_polygon = new_vis
-			new_coll.add_child(new_vis)
-			add_child(new_coll)
+			new_coll.polygon = decayed_polygons[i]
+			#var new_vis = collision_poly.visible_polygon.duplicate()
+			#new_vis.polygon = decayed_visible[i]
+			var vis = new_coll.get_children()[0]
+			vis.polygon = new_coll.polygon
+			#new_coll.add_child(new_vis)
+			hitbox.add_child(new_coll)
+			var old_remote = collision_poly.find_remote_transform()
+			var new_remote = old_remote.duplicate()
+			#new_coll.remote_transform = new_remote
+			#var a = collision_poly.remote_transform.scene_file_path
+			#new_remote.scene_file_path = .rsplit("/", false, 1)[0].path_join(new_remote.name)
+			old_remote.add_sibling(new_remote)
+			new_remote.remote_path = new_remote.get_path_to(new_coll)
 			
 	
 
@@ -233,10 +260,10 @@ func _is_prunable(poly: PackedVector2Array) -> bool:
 			return true
 	return false
 	
-func _decay_chunk(poly: PackedVector2Array):
+func _decay_chunk(poly: PackedVector2Array, collision_poly: SGCollPoly):
 	var local_poly = PackedVector2Array()
 	for vertex in poly:
-		local_poly.append(get_parent().to_local(to_global(vertex)))
+		local_poly.append(get_parent().to_local(collision_poly.to_global(vertex)))
 	_spawn_debris(local_poly)
 
 func _spawn_debris(poly: PackedVector2Array):
@@ -296,3 +323,9 @@ func generate_fragment(pos: Vector2, _travel_vec: Vector2, center: Vector2):
 	#print(Vector2.from_angle(offset))
 	frag.velocity = out_vec * speed
 	add_sibling(frag)
+	
+func _process(delta: float) -> void:
+	pass
+	#for child in hitbox.get_children():
+		##child.visible_polygon.polygon = child.visible_polygon.uv
+		#child.polygon = child.visible_polygon.uv

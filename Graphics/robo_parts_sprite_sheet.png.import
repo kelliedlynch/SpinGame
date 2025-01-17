@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cs354vmwwtq3a"
-path="res://.godot/imported/wood_01.jpg-37b7172c77a5663eaf7b080f91ca288b.ctex"
+uid="uid://dl8h3mfcqqnep"
+path="res://.godot/imported/robo_parts_sprite_sheet.png-2dcac6df97f288d2f7b4a1bb0b5b2ea7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://wood_01.jpg"
-dest_files=["res://.godot/imported/wood_01.jpg-37b7172c77a5663eaf7b080f91ca288b.ctex"]
+source_file="res://Graphics/robo_parts_sprite_sheet.png"
+dest_files=["res://.godot/imported/robo_parts_sprite_sheet.png-2dcac6df97f288d2f7b4a1bb0b5b2ea7.ctex"]
 
 [params]
 
