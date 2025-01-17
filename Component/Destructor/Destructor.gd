@@ -14,7 +14,7 @@ var cut_state = PlayerHitbox.CutState.READY
 
 var cut_spin_threshold: float = 1
 var cut_velocity_threshold: float = 80
-var target: DestructibleEntity = null
+var target: SGCollPoly = null
 
 # TODO: probably only Player destructor will be affected by spin; break out into
 #       separate class
@@ -44,7 +44,7 @@ func get_next_frame_destructor(travel: Vector2) -> Array[PackedVector2Array]:
 			radius += r_expansion
 			var length = (travel.length() + max(poly_size.x, poly_size.y)) - r_expansion * 2
 			var capsule = PolygonMath.generate_capsule_shape(length, radius)
-			var rotated = PolygonMath.rotate_polygon(capsule, rad_to_deg(travel_angle))
+			var rotated = PolygonMath.rotate_polygon(capsule, int(rad_to_deg(travel_angle)))
 			var translated = PackedVector2Array()
 			var offset = Vector2.from_angle(travel_angle) * ((length - poly_size.x) / 2)
 			var vis_translated = PackedVector2Array()

@@ -37,7 +37,7 @@ func _process(delta: float) -> void:
 		powerup_timer += delta
 
 func spawn_destructible(_node = null):
-	destructible = preload("res://Entity/DestructibleEntity.tscn").instantiate()
+	destructible = preload("res://Boss/BossMonsterWithPhysics.tscn").instantiate()
 	var spawn_loc = Vector2(randi_range(180, 480), randi_range(180, 520))
 	if spawn_side == true:
 		spawn_loc = Vector2(spawn_loc.x + 940, spawn_loc.y)

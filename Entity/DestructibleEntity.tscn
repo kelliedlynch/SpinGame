@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://lao37d41bf1w"]
+[gd_scene load_steps=7 format=3 uid="uid://lao37d41bf1w"]
 
 [ext_resource type="Script" path="res://Entity/DestructibleEntity.gd" id="2_de7c5"]
 [ext_resource type="Script" path="res://Component/VisibleArea.gd" id="2_f0jng"]
 [ext_resource type="Script" path="res://Component/Destructible/DestructibleArea.gd" id="3_2lp58"]
 [ext_resource type="Script" path="res://Component/Destructible/DestructibleHitbox.gd" id="4_832lt"]
+[ext_resource type="Texture2D" uid="uid://cs354vmwwtq3a" path="res://wood_01.jpg" id="5_yv7w7"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_5elrg"]
 bounce = 0.08
@@ -22,3 +23,6 @@ script = ExtResource("4_832lt")
 
 [node name="VisibleArea" type="Node2D" parent="."]
 script = ExtResource("2_f0jng")
+
+[node name="Polygon2D" type="Polygon2D" parent="VisibleArea"]
+texture = ExtResource("5_yv7w7")

@@ -27,21 +27,22 @@ func _on_body_exited(node):
 func _on_destroyed_destructible(node):
 	#destructor.cut_state = CutState.READY
 	destructor.set_deferred("cut_state", CutState.READY)
-	node.was_destroyed.disconnect(_on_destroyed_destructible)
+	node.get_parent().get_parent().shape_was_destroyed.disconnect(_on_destroyed_destructible)
 
 func _try_clip_destructible(state: PhysicsDirectBodyState2D) -> bool:
 	if destructor.target == null:
 		return false
-	var pow = destructor.cutting_power()
+	var destructible = destructor.target.get_parent().get_parent()
+	var power = destructor.cutting_power()
 	if destructor.cut_state == CutState.CUTTING:
-		pow += destructor.target.CUT_INERTIA
-	if pow < destructor.target.material_hardness:
+		power += destructible.CUT_INERTIA
+	if power < destructible.material_hardness:
 		return false
-	var material_limited_velocity = state.linear_velocity.limit_length(destructor.target.material_max_cut_speed)
+	var material_limited_velocity = state.linear_velocity.limit_length(destructible.material_max_cut_speed)
 	#state.linear_velocity = material_limited_velocity
 	var travel = material_limited_velocity * state.step
 	var next_frame_shape = destructor.get_next_frame_destructor(travel)
-	var destructor_hit = destructor.target.apply_destructor(next_frame_shape)
+	var destructor_hit = destructible.apply_destructor(destructor.target, next_frame_shape)
 	if destructor_hit:
 		#var size = PolygonMath.size_of_polygon(next_frame_shape)
 		var angle = travel.angle()
@@ -57,17 +58,18 @@ func _try_clip_destructible(state: PhysicsDirectBodyState2D) -> bool:
 			if dist < min_dist:
 				closest_vertex = vertex
 				min_dist = dist
-		var size = PolygonMath.size_of_polygon(next_frame_shape[0])
-		destructor.target.generate_fragment(closest_vertex, material_limited_velocity, center)
+		#var size = PolygonMath.size_of_polygon(next_frame_shape[0])
+		destructible.generate_fragment(closest_vertex, material_limited_velocity, center)
 		
 	return destructor_hit
 
 func _apply_destructible_forces(state: PhysicsDirectBodyState2D):
-	state.linear_velocity.limit_length(state.linear_velocity.length() - destructor.target.material_linear_damp)
+	var destructible = destructor.target.get_parent().get_parent()
+	state.linear_velocity.limit_length(state.linear_velocity.length() - destructible.material_linear_damp)
 	#var a = state.linear_velocity.length()
 	#var b = destructor.target.material_max_cut_speed
-	state.linear_velocity = state.linear_velocity.limit_length(destructor.target.material_max_cut_speed)
-	destructor.spin_speed -= destructor.target.material_resistance
+	state.linear_velocity = state.linear_velocity.limit_length(destructible.material_max_cut_speed)
+	destructor.spin_speed -= destructible.material_resistance
 	#return state
 
 func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
@@ -81,8 +83,8 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 		if clip == true:
 			#destructor.cut_state = CutState.END_CUT
 			destructor.cut_state = CutState.CUTTING
-			
-			pass
+		else:
+			destructor.cut_state = CutState.READY
 	elif destructor.cut_state == CutState.CUTTING:
 		var clip = _try_clip_destructible(state)
 		_apply_destructible_forces(state)
@@ -98,13 +100,19 @@ func _physics_process(delta: float) -> void:
 	linear_velocity = linear_velocity.limit_length(max_speed)
 	
 	if destructor.cut_state == CutState.READY:
-		var destructible = _destructible_in_path(linear_velocity, delta)
-		if destructible != null:
+		var test = move_and_collide(linear_velocity * delta, true, .08, true)
+		if test != null and test.get_collider() is DestructibleHitbox:
+			#var destructor: Destructor = test.get_collider()
+
+			var destructible = test.get_collider().get_parent()
+			var destructible_shape: SGCollPoly = test.get_collider_shape()
+			
 			if destructor.cutting_power() >= destructible.material_hardness + destructible.CUT_INERTIA:
 				destructor.cut_state = CutState.BEGIN_CUT
-				destructible.was_destroyed.connect(_on_destroyed_destructible)
+				destructible.shape_was_destroyed.connect(_on_destroyed_destructible)
 				#destructible.hitbox.add_collision_exception_with(self)
-				destructor.target = destructible
+				destructor.target = destructible_shape
+				pass
 				#begin_cut_speed = linear_velocity.length()
 				#apply_central_impulse(-test.get_remainder())
 	elif destructor.cut_state == CutState.BEGIN_CUT:
@@ -112,13 +120,13 @@ func _physics_process(delta: float) -> void:
 	elif destructor.cut_state == CutState.CUTTING:
 		pass
 	elif destructor.cut_state == CutState.END_CUT:
-		destructor.target.was_destroyed.disconnect(_on_destroyed_destructible)
+		destructor.target.get_parent().get_parent().shape_was_destroyed.disconnect(_on_destroyed_destructible)
 		destructor.target = null
 		destructor.cut_state = CutState.READY
 	elif destructor.cut_state == CutState.NOT_READY:
 		pass
 				
-func _destructible_in_path(vel: Vector2, delta: float) -> DestructibleEntity:
+func _destructible_in_path(delta: float) -> DestructibleEntity:
 	var test = move_and_collide(linear_velocity * delta, true, .08, true)
 	if test != null and test.get_collider() is DestructibleHitbox:
 		return test.get_collider().get_parent()

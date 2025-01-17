@@ -42,7 +42,7 @@ func _on_body_entered(node):
 		_collect(node)
 		pass
 
-func _collect(node):
+func _collect(_node):
 	call_on_collect.call()
 	for child in get_children():
 		child.queue_free()

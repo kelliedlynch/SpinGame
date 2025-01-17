@@ -56,12 +56,12 @@ static func simplify_polygon(polygon: PackedVector2Array, min_side_length, angle
 			continue
 		var ba = prev_pt - poly[i]
 		var bc = poly[i+1] - poly[i]
-		#var angle = rad_to_deg(abs(ba.angle_to(bc)))
-		#var at = (360 * angle_threshold)
-		#if (angle > at and angle < 180 - at) or (angle > 180 + at and angle < 360 - at):
-			#simplified.append(poly[i])
-			#prev_pt = poly[i]
-			#continue	
+		var angle = rad_to_deg(abs(ba.angle_to(bc)))
+		var at = (360 * angle_threshold)
+		if (angle > at and angle < 180 - at) or (angle > 180 + at and angle < 360 - at):
+			simplified.append(poly[i])
+			prev_pt = poly[i]
+			continue	
 		simplified.append(poly[i])
 		prev_pt = poly[i]
 	if simplified.size() < 3: 
@@ -192,19 +192,19 @@ static func merge_group(polys: Array[PackedVector2Array], remove_holes = false) 
 			#break
 		
 
-	var size_after = merged.size()
-	var matched = true
-	if size_after <= 1:
-		return merged
-
-	if orig_size == size_after:
-		for j in size_after:
-			if merged.has(polys[j]) and polys.has(merged[j]):
-				continue
-			matched = false
-			break
-	else:
-		matched = false
+	#var size_after = merged.size()
+	#var matched = true
+	#if size_after <= 1:
+		#return merged
+#
+	#if orig_size == size_after:
+		#for j in size_after:
+			#if merged.has(polys[j]) and polys.has(merged[j]):
+				#continue
+			#matched = false
+			#break
+	#else:
+		#matched = false
 	
 	if remove_holes == true:
 		var holes_removed: Array[PackedVector2Array] = []

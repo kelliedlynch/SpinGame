@@ -5,8 +5,11 @@ class_name SGEntityBase
 
 var color: Color = Color.WHITE
 var _initialized = false
-
-signal polygons_updated
+var texture: Texture2D
+@onready var tex_offset = Vector2(randi_range(300, 1000), randi_range(300, 1000))
+@onready var tex_scale = Vector2.ONE
+#@onready var tex_offset = Vector2.ZERO
+#@onready var tex_scale = Vector2(randf_range(1.5, 1.8), randf_range(1.5, 1.8))
 
 #func _init() -> void:
 	#update_all_polygons(PolygonMath.DEFAULT_POLYGON)
@@ -45,12 +48,19 @@ func update_polygons(component, polygons: Array) -> void:
 		#if child_type == "Polygon2D":
 			#n.color = color
 		#component.add_child(n)
-	emit_signal("polygons_updated", component)
+	#emit_signal("polygons_updated", component)
 	
 func _make_new_shape(poly, child_type, component):
 	var n = ClassDB.instantiate(child_type)
 	n.polygon = poly
 	if child_type == "Polygon2D":
+		if texture != null:
+			#texture = load("res://wood_01.jpg")
+			n.texture = texture
+			n.texture_offset = tex_offset
+			n.texture_scale = tex_scale
+			#n.texture = texture
+			
 		n.color = color
 		#n.scale = entity_scale
 	#component.add_child(n)

@@ -16,7 +16,7 @@ func _ready() -> void:
 	var cap = PolygonMath.generate_capsule_shape(polysize.x, polysize.x / 2)
 	update_polygons(destructor, [cap])
 	
-	super._ready()
+	#super._ready()
 
 func _process(delta: float) -> void:
 
