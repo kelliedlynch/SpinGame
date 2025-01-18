@@ -1,4 +1,3 @@
-@tool
 extends SGEntityBase
 class_name DestructibleEntity
 
@@ -231,14 +230,15 @@ func apply_destructor(collision_poly: SGCollPoly, destruct_area: Array[PackedVec
 			var vis = new_coll.get_children()[0]
 			vis.polygon = new_coll.polygon
 			#new_coll.add_child(new_vis)
-			hitbox.add_child(new_coll)
+			hitbox.call_deferred("add_child", new_coll)
 			var old_remote = collision_poly.find_remote_transform()
 			var new_remote = old_remote.duplicate()
 			#new_coll.remote_transform = new_remote
 			#var a = collision_poly.remote_transform.scene_file_path
 			#new_remote.scene_file_path = .rsplit("/", false, 1)[0].path_join(new_remote.name)
 			old_remote.add_sibling(new_remote)
-			new_remote.remote_path = new_remote.get_path_to(new_coll)
+			#new_remote.remote_path = new_remote.get_path_to(new_coll)
+			call_deferred("_set_remote_path", new_remote, new_coll)
 			
 	
 
@@ -246,6 +246,9 @@ func apply_destructor(collision_poly: SGCollPoly, destruct_area: Array[PackedVec
 	#call_deferred("update_polygons", destructible_area, decayed_hitbox)
 	#call_deferred("update_polygons", visible_area, decayed_visible)
 	return true
+
+func _set_remote_path(remote: RemoteTransform2D, target: SGCollPoly):
+	remote.remote_path = remote.get_path_to(target)
 
 	
 func _is_prunable(poly: PackedVector2Array) -> bool:

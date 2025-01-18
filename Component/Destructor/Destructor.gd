@@ -1,34 +1,18 @@
 extends Area2D
 class_name Destructor
 
-@onready var parent = get_parent()
+var cut_state = CutState.READY
 
-# { next_frame: current_frame }
-# if current has key, shape is a next frame prediction
-var current_for = {}
-# { current_frame: next_frame }
-# if next has key, shape is the actual destructor
-var next_for = {}
-
-var cut_state = PlayerHitbox.CutState.READY
-
-var cut_spin_threshold: float = 1
-var cut_velocity_threshold: float = 80
 var target: SGCollPoly = null
 
-# TODO: probably only Player destructor will be affected by spin; break out into
-#       separate class
-var max_spin_speed = 10
-var min_spin_speed = 10
-var spin_speed = 3
-var spin_accel = 1.7
+var base_power: int = 1
 
 # extra margin added to destructor shape to prevent it getting stuck
 var EXPAND_CAPSULE = .03
 
 func _ready() -> void:
 	monitorable = true
-	monitoring = false
+	#monitoring = false
 	
 func get_next_frame_destructor(travel: Vector2) -> Array[PackedVector2Array]:
 	# returns a polygon in global coordinates
@@ -47,73 +31,38 @@ func get_next_frame_destructor(travel: Vector2) -> Array[PackedVector2Array]:
 			var rotated = PolygonMath.rotate_polygon(capsule, int(rad_to_deg(travel_angle)))
 			var translated = PackedVector2Array()
 			var offset = Vector2.from_angle(travel_angle) * ((length - poly_size.x) / 2)
-			var vis_translated = PackedVector2Array()
+			#var vis_translated = PackedVector2Array()
 			for pt in rotated:
-				translated.append(to_global(pt + offset))
-				vis_translated.append(pt + offset)
+				translated.append(get_parent().to_global(pt + offset))
+				#vis_translated.append(pt + offset)
 			next.append(translated)
 			#var vis = Polygon2D.new()
-			#vis.polygon = vis_translated
+			#vis.polygon = translated
 			#vis.color = Color(.7, .9, .1, .4)
-			#parent.add_child(vis)
+			#get_tree().root.add_child(vis)
 	return next
-			
 
-func _physics_process(delta: float) -> void:
-	spin_speed += spin_accel * delta
-	spin_speed = clamp(spin_speed, min_spin_speed, max_spin_speed)
-
-func _translate_to_destructible_space(entity:DestructibleEntity, polys: Array[PackedVector2Array] = []) -> Array[PackedVector2Array]:
-	if polys.is_empty():
-		for poly in get_children():
-			if !(poly is CollisionPolygon2D) or next_for.has(poly): continue
+#func _translate_to_destructible_space(entity:DestructibleEntity, polys: Array[PackedVector2Array] = []) -> Array[PackedVector2Array]:
+	#if polys.is_empty():
+		#for poly in get_children():
 			#if !(poly is CollisionPolygon2D): continue
-			polys.append(poly.polygon)	
-	var translated: Array[PackedVector2Array] = []
-	for poly in polys:
-		var new_poly: PackedVector2Array = []
-		for pt in poly:
-			new_poly.append(entity.destructible_area.to_local((to_global(pt))))
-		translated.append(new_poly)
-	return translated
+			##if !(poly is CollisionPolygon2D): continue
+			#polys.append(poly.polygon)	
+	#var translated: Array[PackedVector2Array] = []
+	#for poly in polys:
+		#var new_poly: PackedVector2Array = []
+		#for pt in poly:
+			#new_poly.append(entity.hitbox.to_local((to_global(pt))))
+		#translated.append(new_poly)
+	#return translated
 
-#func get_destructor_polygon(entity: DestructibleEntity, polys: Array[PackedVector2Array] = []) -> Array[PackedVector2Array]:
-	##print(cutting_power())
-	#var translated = _translate_to_destructible_space(entity, polys)
-	## TODO: look at physicsserver2d shapes for this instead. currently just expanding hitbox to ensure
-	##       player doesn't get trapped
-	#var offset: Array[PackedVector2Array] = []
-	#for poly in translated:
-		#var expanded = Geometry2D.offset_polygon(poly, 1)
-		#offset.append_array(expanded)
-		#
-	#var destructible = entity.get_polygons(entity.destructible_area)
-	##var polys_after_destruction: Array[PackedVector2Array] = []
-	#var any_overlap = false
-	#
-	#var clipper: Array[PackedVector2Array] = []
-	#for existing_poly in destructible:
-		#for destruct_poly in offset:
-			#var overlap = Geometry2D.intersect_polygons(existing_poly, destruct_poly)
-			#if overlap.is_empty():
-				#clipper.append(existing_poly)
-				#continue
-			#any_overlap = true
-#
-	#if any_overlap == false: 
-		## TODO: Figure out what we actually do when there's no overlap. Sparks?
-		#return destructible
-	#spin_speed -= entity.material_resistance
-	##var merged: Array[PackedVector2Array] = [clipped[0]]	
-	##for poly in clipped:
-		##var new_merged: Array[PackedVector2Array] = []
-		##for i in randi_range(1, merged.size()):
-			##new_merged.append_array(Geometry2D.merge_polygons(merged[i], poly))
-	#hitbox_clip = PolygonMath.merge_recursive(hitbox_clip)
-	#return hitbox_clip
+func get_power() -> float:
+	return base_power
 
-func cutting_power() -> float:
-	var speed = spin_speed
-	if parent.linear_velocity.length() > 500:
-		speed += parent.linear_velocity.length() / 500
-	return speed
+enum CutState{
+	CUTTING,
+	READY,
+	NOT_READY,
+	BEGIN_CUT,
+	END_CUT
+}

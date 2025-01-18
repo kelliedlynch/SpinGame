@@ -1,3 +1,4 @@
+@tool
 extends StaticBody2D
 
 var size: Vector2
@@ -7,7 +8,6 @@ var size: Vector2
 @onready var t_wall: CollisionShape2D = $TopWall
 @onready var b_wall: CollisionShape2D = $BottomWall
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	size = get_viewport_rect().size
 	var thickness = size.x / 50

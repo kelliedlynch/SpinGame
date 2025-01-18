@@ -2,23 +2,20 @@ extends SGEntityBase
 class_name Player
 
 #var size: Vector2 = Vector2(100, 100)
-@onready var hitbox: PlayerHitbox = $RigidHitbox
-@onready var visible_area: VisibleArea = $RigidHitbox/VisibleArea
-@onready var destructor: Destructor = $RigidHitbox/Destructor
+@onready var hitbox: PlayerHitbox = $Hitbox
+#@onready var visible_area: VisibleArea = $VisibleArea
+@onready var destructor: Destructor = $Hitbox/Destructor
+@onready var blade_sprite: Polygon2D = $Hitbox/saw_blade_coll/saw_blade_vis
+@onready var googly_eyes: Node2D = $Hitbox/GooglyEyes
 
 
 func _ready() -> void:
-	var saw = PolygonVertexData.saw_blade
-	var polysize = PolygonMath.size_of_polygon(saw)
-	var circle = PolygonMath.generate_circle_polygon(polysize.x / 2)
-	update_polygons(hitbox, [circle])
-	update_polygons(visible_area, [saw])
-	var cap = PolygonMath.generate_capsule_shape(polysize.x, polysize.x / 2)
-	update_polygons(destructor, [cap])
-	
-	#super._ready()
+	super._ready()
+	googly_eyes.hitbox = hitbox
+	destructor.hitbox = hitbox
+	hitbox.destructor = destructor
 
 func _process(delta: float) -> void:
 
 	var r = log(pow(destructor.spin_speed, 4)) * delta
-	visible_area.rotate(r)
+	blade_sprite.rotate(r)

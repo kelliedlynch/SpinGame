@@ -17,8 +17,8 @@ var texture: Texture2D
 func _ready() -> void:
 	if get_tree().get_root().get_children().has(self):
 		self.position = get_viewport_rect().size / 2
-	if _initialized == false:
-		update_all_polygons([PolygonMath.DEFAULT_POLYGON])
+	#if _initialized == false:
+		#update_all_polygons([PolygonMath.DEFAULT_POLYGON])
 
 
 func get_polygons(component) -> Array[PackedVector2Array]:

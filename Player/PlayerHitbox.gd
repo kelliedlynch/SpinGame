@@ -8,10 +8,7 @@ var needs_push = false
 
 var input_vector := Vector2.ZERO
 
-
-@onready var parent: Player = get_parent()
-@onready var destructor: Destructor = $Destructor
-@onready var visible_area: VisibleArea = $VisibleArea
+var destructor: Destructor
 
 func _ready() -> void:
 	contact_monitor = true
@@ -26,8 +23,8 @@ func _on_body_exited(node):
 
 func _on_destroyed_destructible(node):
 	if destructor.target == node:
-		#destructor.set_deferred("cut_state", CutState.READY)
-		destructor.cut_state = CutState.READY
+		#destructor.set_deferred("cut_state", Destructor.CutState.READY)
+		destructor.cut_state = Destructor.CutState.READY
 		destructor.target = null
 	else:
 		pass
@@ -35,9 +32,9 @@ func _on_destroyed_destructible(node):
 func _try_clip_destructible(state: PhysicsDirectBodyState2D) -> bool:
 	if destructor.target == null:
 		return false
-	var destructible = destructor.target.get_parent().get_parent()
-	var power = destructor.cutting_power()
-	if destructor.cut_state == CutState.CUTTING:
+	var destructible = destructor.target.owner
+	var power = destructor.get_power()
+	if destructor.cut_state == Destructor.CutState.CUTTING:
 		power += destructible.CUT_INERTIA
 	if power < destructible.material_hardness:
 		return false
@@ -82,29 +79,29 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 	#input_vector = Vector2.ZERO
 	#state.linear_velocity = state.linear_velocity.limit_length(max_speed)
 
-	if destructor.cut_state == CutState.BEGIN_CUT:
+	if destructor.cut_state == Destructor.CutState.BEGIN_CUT:
 		var clip = _try_clip_destructible(state)
 		_apply_destructible_forces(state)
 		if clip == true:
-			#destructor.cut_state = CutState.END_CUT
-			destructor.cut_state = CutState.CUTTING
+			#destructor.cut_state = Destructor.CutState.END_CUT
+			destructor.cut_state = Destructor.CutState.CUTTING
 		else:
-			destructor.cut_state = CutState.END_CUT
-	elif destructor.cut_state == CutState.CUTTING:
+			destructor.cut_state = Destructor.CutState.END_CUT
+	elif destructor.cut_state == Destructor.CutState.CUTTING:
 		var clip = _try_clip_destructible(state)
 		_apply_destructible_forces(state)
 		if clip == false:
-			destructor.cut_state = CutState.END_CUT
-	elif destructor.cut_state == CutState.END_CUT:
+			destructor.cut_state = Destructor.CutState.END_CUT
+	elif destructor.cut_state == Destructor.CutState.END_CUT:
 		var clip = _try_clip_destructible(state)
 		#_apply_destructible_forces(state)
 		if clip == false:
 			if destructor.target != null:
 				destructor.target.tree_exiting.disconnect(_on_destroyed_destructible)
 				destructor.target = null
-			destructor.cut_state = CutState.READY
+			destructor.cut_state = Destructor.CutState.READY
 		else:
-			destructor.cut_state = CutState.CUTTING
+			destructor.cut_state = Destructor.CutState.CUTTING
 
 	
 func _physics_process(delta: float) -> void:
@@ -112,26 +109,26 @@ func _physics_process(delta: float) -> void:
 	input_vector = Vector2.ZERO
 	linear_velocity = linear_velocity.limit_length(max_speed)
 	
-	if destructor.cut_state == CutState.READY:
+	if destructor.cut_state == Destructor.CutState.READY:
 		var test = move_and_collide(linear_velocity * delta, true, .08, true)
 		if test != null and test.get_collider() is DestructibleHitbox:
-			var destructible = test.get_collider().get_parent()
+			var destructible = test.get_collider().owner
 			var destructible_shape: SGCollPoly = test.get_collider_shape()
-			if destructor.cutting_power() >= destructible.material_hardness + destructible.CUT_INERTIA:
-				destructor.cut_state = CutState.BEGIN_CUT
-				destructible_shape.tree_exiting.connect(_on_destroyed_destructible)
+			if destructor.get_power() >= destructible.material_hardness + destructible.CUT_INERTIA:
+				destructor.cut_state = Destructor.CutState.BEGIN_CUT
+				destructible_shape.tree_exiting.connect(_on_destroyed_destructible.bind(destructible_shape))
 				destructor.target = destructible_shape
-	elif destructor.cut_state == CutState.BEGIN_CUT:
+	elif destructor.cut_state == Destructor.CutState.BEGIN_CUT:
 		pass
-	elif destructor.cut_state == CutState.CUTTING:
+	elif destructor.cut_state == Destructor.CutState.CUTTING:
 		pass
-	elif destructor.cut_state == CutState.END_CUT:
+	elif destructor.cut_state == Destructor.CutState.END_CUT:
 		#if destructor.target != null:
 			#destructor.target.tree_exiting.disconnect(_on_destroyed_destructible)
 		#destructor.target = null
-		#destructor.cut_state = CutState.READY
+		#destructor.cut_state = Destructor.CutState.READY
 		pass
-	elif destructor.cut_state == CutState.NOT_READY:
+	elif destructor.cut_state == Destructor.CutState.NOT_READY:
 		pass
 
 func _process(delta) -> void:
@@ -151,10 +148,3 @@ func _process(delta) -> void:
 		#linear_velocity += Vector2(0, power * delta)
 		input_vector += (Vector2(0, power * delta))
 		
-enum CutState{
-	CUTTING,
-	READY,
-	NOT_READY,
-	BEGIN_CUT,
-	END_CUT
-}

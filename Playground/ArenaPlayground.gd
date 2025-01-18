@@ -29,7 +29,7 @@ func _process(delta: float) -> void:
 		spawn_destructible()
 	$SpinSpeedLabel.text = str(round_to_dec(player.destructor.spin_speed, 2))
 	$MoveSpeedLabel.text = str(int(player.hitbox.linear_velocity.length()))
-	$CutPowerLabel.text = str(round_to_dec(player.destructor.cutting_power(), 2))
+	$CutPowerLabel.text = str(round_to_dec(player.destructor.get_power(), 2))
 	if powerup == null:
 		if powerup_timer > 1:
 			powerup_timer = 0

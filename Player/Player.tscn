@@ -1,18 +1,35 @@
-[gd_scene load_steps=5 format=3 uid="uid://dmbienyglkltx"]
+[gd_scene load_steps=7 format=3 uid="uid://dmbienyglkltx"]
 
 [ext_resource type="Script" path="res://Player/Player.gd" id="1_y3n6f"]
 [ext_resource type="Script" path="res://Player/PlayerHitbox.gd" id="2_tc5g5"]
-[ext_resource type="Script" path="res://Component/VisibleArea.gd" id="3_y8ug1"]
-[ext_resource type="Script" path="res://Component/Destructor/Destructor.gd" id="4_peewv"]
+[ext_resource type="Texture2D" uid="uid://bihviwqlsm5s4" path="res://Graphics/saw blade sprite sheet.png" id="4_j3xsx"]
+[ext_resource type="Script" path="res://Component/SGCollPoly.gd" id="6_hnlpu"]
+[ext_resource type="Script" path="res://Component/Destructor/PlayerDestructor.gd" id="6_ohqba"]
+[ext_resource type="PackedScene" uid="uid://f83mqw1l7iv" path="res://Player/GooglyEyes.tscn" id="7_pkhu0"]
 
 [node name="Player" type="Node2D"]
 script = ExtResource("1_y3n6f")
 
-[node name="RigidHitbox" type="RigidBody2D" parent="."]
+[node name="Hitbox" type="RigidBody2D" parent="."]
 script = ExtResource("2_tc5g5")
 
-[node name="VisibleArea" type="Node2D" parent="RigidHitbox"]
-script = ExtResource("3_y8ug1")
+[node name="saw_blade_coll" type="CollisionPolygon2D" parent="Hitbox"]
+position = Vector2(-63, -70)
+polygon = PackedVector2Array(46.4749, 9.13386, 18.0909, 27.2395, 4.36397, 53.5142, 4.19554, 86.2735, 21.9647, 114.317, 48.5763, 128.212, 80.3251, 128.044, 107.614, 111.033, 123.025, 83.2422, 122.183, 51.9146, 104.667, 21.6818, 75.8656, 8.2075)
+script = ExtResource("6_hnlpu")
 
-[node name="Destructor" type="Area2D" parent="RigidHitbox"]
-script = ExtResource("4_peewv")
+[node name="saw_blade_vis" type="Polygon2D" parent="Hitbox/saw_blade_coll"]
+position = Vector2(63, 69)
+offset = Vector2(-63, -69)
+texture = ExtResource("4_j3xsx")
+polygon = PackedVector2Array(44.8709, 11.5756, 18.0909, 27.2395, 4.36397, 53.5142, 4.19554, 86.2735, 21.9647, 114.317, 48.5763, 128.212, 80.3251, 128.044, 107.695, 111.875, 122.857, 83.4949, 122.183, 51.9146, 104.667, 21.6818, 75.8656, 8.2075)
+uv = PackedVector2Array(46.4749, 9.13386, 18.0909, 27.2395, 4.36397, 53.5142, 4.19554, 86.2735, 21.9647, 114.317, 48.5763, 128.212, 80.3251, 128.044, 107.614, 111.033, 123.025, 83.2422, 122.183, 51.9146, 104.667, 21.6818, 75.8656, 8.2075)
+
+[node name="GooglyEyes" parent="Hitbox" instance=ExtResource("7_pkhu0")]
+
+[node name="Destructor" type="Area2D" parent="Hitbox"]
+position = Vector2(-63, -70)
+script = ExtResource("6_ohqba")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Hitbox/Destructor"]
+polygon = PackedVector2Array(46.4749, 9.13386, 18.0909, 27.2395, 4.36397, 53.5142, 4.19554, 86.2735, 21.9647, 114.317, 48.5763, 128.212, 80.3251, 128.044, 107.614, 111.033, 123.025, 83.2422, 122.183, 51.9146, 104.667, 21.6818, 75.8656, 8.2075)
