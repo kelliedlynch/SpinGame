@@ -7,6 +7,18 @@ var boss_state = BossState.IDLE
 var atk_timer: Tween
 var atk_perform: Tween
 
+var attacks: Array[Node] = []
+var attack_index = 0
+
+func _ready() -> void:
+	attacks.append(JumpAndSmash.new())
+	var parent = get_parent()
+	var arena = get_parent().get_parent().get_node("Arena")
+	for atk in attacks:
+		atk.boss = parent
+		atk.arena = arena
+		add_child(atk)
+
 func _process(_delta: float) -> void:
 	if boss_state == BossState.IDLE:
 		atk_perform = null
@@ -20,16 +32,11 @@ func _process(_delta: float) -> void:
 func attack():
 	boss_state = BossState.ATTACKING
 	atk_timer = null
-	JumpAndSmash.execute_attack(get_parent())
-	
-	#atk_perform.tween_property(self, "boss_state", BossState.IDLE, 0)
-	
-
-
-func _disable_collision(entity):
-	for shape in entity.hitbox:
-		shape.collision_layer = 5
-	pass
+	attacks[attack_index].execute_attack()
+	if attack_index < attacks.size() - 1:
+		attack_index += 1
+	else:
+		attack_index = 0
 		
 
 enum BossState {

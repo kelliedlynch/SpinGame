@@ -1,7 +1,13 @@
 extends Node
 class_name JumpAndSmash
 
-static func _find_landing_spot(boss: BossMonsterWithPhysics):
+var boss: BossMonsterWithPhysics
+var arena: Node2D
+var atk_perform: Tween
+var blink: Tween
+var landing: Area2D
+
+func _find_landing_spot(boss: BossMonsterWithPhysics):
 	var arena = boss.get_parent().get_node("Arena")
 	var arena_size = arena.get_node("ArenaBorder").size
 	var full_size = boss.calculate_size()
@@ -9,13 +15,43 @@ static func _find_landing_spot(boss: BossMonsterWithPhysics):
 	var x = randi_range(walls + full_size.x / 2, arena_size.x - walls - full_size.x / 2)
 	var y = randi_range(walls + full_size.y / 2, arena_size.y - walls - full_size.y / 2)
 	return Vector2(x, y)
+	
+func _create_landing_area(origin: Vector2):
+	landing = Area2D.new()
+	var boss_size = boss.calculate_size()
+	var cap = PolygonMath.generate_capsule_shape(boss_size.x * 2, boss_size.x * .4)
+	var coll = CollisionPolygon2D.new()
+	coll.polygon = cap
+	landing.add_child(coll)
+	landing.position = arena.to_local(origin + Vector2(0, boss_size.y / 2))
+	arena.add_child(landing)
+	var visible_landing = Polygon2D.new()
+	visible_landing.polygon = cap
+	var c = Color.DARK_RED
+	c.a = .4
+	visible_landing.color = c
+	coll.add_child(visible_landing)
+	blink = create_tween()
+	var d = Color(c)
+	d.r = 1
+	d.a += .2
+	blink.tween_property(visible_landing, "modulate", d, .15)
+	blink.tween_property(visible_landing, "modulate", c, .15)
+	blink.set_loops(4)
+	pass
 
-static func execute_attack(boss: BossMonsterWithPhysics):
+func _clear_landing():
+	landing.queue_free()
+
+func execute_attack():
 	var ani = boss.controller.animation_player
 	var target = _find_landing_spot(boss)
 	ani.play("default/wave_arm")
-	var atk_perform = boss.create_tween()
-	atk_perform.tween_interval(ani.get_animation_library("default").get_animation("wave_arm").length)
+	atk_perform = create_tween()
+	var wave_time = ani.get_animation_library("default").get_animation("wave_arm").length
+	atk_perform.tween_interval(wave_time / 2)
+	atk_perform.tween_callback(_create_landing_area.bind(target))
+	atk_perform.tween_interval(wave_time / 2)
 	atk_perform.tween_callback(boss.hitbox.set.bind("collision_layer", 16))
 	atk_perform.tween_callback(ani.play.bind("default/jump_up"))
 	var jump_time = ani.get_animation_library("default").get_animation("jump_up").length
@@ -25,4 +61,5 @@ static func execute_attack(boss: BossMonsterWithPhysics):
 	atk_perform.tween_callback(ani.play.bind("default/jump_landing"))
 	atk_perform.tween_interval(land_time * .5)
 	atk_perform.tween_callback(boss.hitbox.set.bind("collision_layer", 2))
+	atk_perform.tween_callback(_clear_landing)
 	atk_perform.tween_callback(boss.controller.set.bind("boss_state", BossController.BossState.IDLE))
