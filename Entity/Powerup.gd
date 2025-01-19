@@ -9,6 +9,8 @@ var target: Player
 var duration = 0
 var ticking_down = false
 
+var flash_tween: Tween
+
 var lifespan = -1
 var in_world = false
 
@@ -28,10 +30,10 @@ func _ready():
 	duration = 5
 	color = Color.LIME_GREEN
 	update_all_polygons([PolygonMath.generate_circle_polygon(12)])
-	var tween = create_tween()
-	tween.tween_property(visible_area, "scale", Vector2(1.5, 1.5), .5)
-	tween.tween_property(visible_area, "scale", Vector2(1, 1), .5)
-	tween.set_loops(200)
+	flash_tween = create_tween()
+	flash_tween.tween_property(visible_area, "scale", Vector2(1.5, 1.5), .5)
+	flash_tween.tween_property(visible_area, "scale", Vector2(1, 1), .5)
+	flash_tween.set_loops(200)
 	#for child in visible_area.get_children():
 		#if child is Polygon2D:
 			#child.color = Color.LIME_GREEN
@@ -44,6 +46,7 @@ func _on_body_entered(node):
 
 func _collect(_node):
 	call_on_collect.call()
+	flash_tween.kill()
 	for child in get_children():
 		child.queue_free()
 	
@@ -78,9 +81,10 @@ func _on_process(delta):
 			_on_expire()
 		
 func _on_expire():
-	target.destructor.spin_speed = prev_speed
+	
 	target.destructor.max_spin_speed -= 2
 	target.destructor.spin_accel -= 3
+	target.destructor.spin_speed = clamp(target.destructor.spin_speed, target.destructor.min_spin_speed, target.destructor.max_spin_speed)
 	queue_free()
 
 func _process(delta: float) -> void:

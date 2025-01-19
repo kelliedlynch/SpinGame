@@ -1,14 +1,17 @@
-extends Node
+extends Node2D
 
 var spawn_point: Vector2
+var GRID_COLUMNS = 16
 
 func _ready() -> void:
-	spawn_point = get_viewport().size / 2
-	var spacing = get_viewport().size.x / 16
-	_make_grid_background(spacing)
+	spawn_point = get_viewport_rect().size / 2
+	_make_grid_background()
 
-func _make_grid_background(spacing: float):
-	var port = get_viewport().size
+func _make_grid_background():
+	var spacing = get_viewport_rect().size.x / GRID_COLUMNS
+	for child in $Grid.get_children():
+		child.queue_free()
+	var port = get_viewport_rect().size
 	var h = port.x / spacing
 	var v = port.y / spacing
 	var line_color = Color.DEEP_SKY_BLUE
