@@ -32,7 +32,7 @@ func _on_destroyed_destructible(node):
 func _try_clip_destructible(state: PhysicsDirectBodyState2D) -> bool:
 	if destructor.target == null:
 		return false
-	var destructible = destructor.target.get_parent().get_parent()
+	var destructible = destructor.target.get_parent()
 	var power = destructor.get_power()
 	if destructor.cut_state == Destructor.CutState.CUTTING:
 		power += destructible.CUT_INERTIA
@@ -45,28 +45,33 @@ func _try_clip_destructible(state: PhysicsDirectBodyState2D) -> bool:
 	var destructor_hit = destructible.apply_destructor(destructor.target, next_frame_shape)
 	if destructor_hit:
 		#var size = PolygonMath.size_of_polygon(next_frame_shape)
-		var angle = travel.angle()
-		angle += randf_range(-.5, .5)
-		var spark_vector = Vector2.from_angle(angle) * material_limited_velocity.length()
-		var min_dist = 1000000
-		var closest_vertex
-		var center = to_global(Vector2.ZERO)
-		# TODO: make this work with multiple destructor shapes
-		for vertex in next_frame_shape[0]:
-			var pt = Geometry2D.get_closest_point_to_segment(vertex, center, center + spark_vector)
-			var dist = pt.distance_to(vertex)
-			if dist < min_dist:
-				closest_vertex = vertex
-				min_dist = dist
-		#var size = PolygonMath.size_of_polygon(next_frame_shape[0])
-		destructible.generate_fragment(closest_vertex, material_limited_velocity, center)
+		#var angle = travel.angle()
+		#angle += randf_range(-.5, .5)
+		#var spark_vector = Vector2.from_angle(angle) * material_limited_velocity.length()
+		#var min_dist = 1000000
+		#var closest_vertex
+		#var destructor_center = to_global(Vector2.ZERO)
+		#var destructible_center = destructor.target.to_global(Vector2.ZERO)
+		## TODO: make this work with multiple destructor shapes
+		#for vertex in next_frame_shape[0]:
+			#
+			#
+			#
+			#var pt = Geometry2D.get_closest_point_to_segment(vertex, center, center + spark_vector)
+			#var dist = pt.distance_to(vertex)
+			#if dist < min_dist:
+				#closest_vertex = vertex
+				#min_dist = dist
+		##var size = PolygonMath.size_of_polygon(next_frame_shape[0])
+		#destructible.generate_fragment(closest_vertex, material_limited_velocity, center)
+		destructible.generate_fragment(destructor.target, destructor, next_frame_shape)
 		
 	return destructor_hit
 
 func _apply_destructible_forces(state: PhysicsDirectBodyState2D):
 	if destructor.target == null:
 		return
-	var destructible = destructor.target.get_parent().get_parent()
+	var destructible = destructor.target.get_parent()
 	state.linear_velocity.limit_length(state.linear_velocity.length() - destructible.material_linear_damp)
 	#var a = state.linear_velocity.length()
 	#var b = destructor.target.material_max_cut_speed
@@ -112,7 +117,7 @@ func _physics_process(delta: float) -> void:
 	if destructor.cut_state == Destructor.CutState.READY:
 		var test = move_and_collide(linear_velocity * delta, true, .08, true)
 		if test != null and test.get_collider() is DestructibleHitbox:
-			var destructible = test.get_collider().owner
+			var destructible = test.get_collider()
 			var destructible_shape: SGCollPoly = test.get_collider_shape()
 			if destructor.get_power() >= destructible.material_hardness + destructible.CUT_INERTIA:
 				destructor.cut_state = Destructor.CutState.BEGIN_CUT

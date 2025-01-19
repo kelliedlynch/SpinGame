@@ -1,23 +1,27 @@
 extends Node
 class_name BossController
 
+@onready var boss: BossMonster = get_parent()
 var animation_player: AnimationPlayer
 var atk_speed = 1
 var boss_state = BossState.IDLE
 var atk_timer: Tween
 var atk_perform: Tween
+@onready var arena: Arena = boss.arena
 
 var attacks: Array[Node] = []
 var attack_index = 0
 
+func _init() -> void:
+	process_mode = ProcessMode.PROCESS_MODE_DISABLED
+
 func _ready() -> void:
 	attacks.append(JumpAndSmash.new())
-	var parent = get_parent()
-	var arena = get_parent().get_parent().get_node("Arena")
 	for atk in attacks:
-		atk.boss = parent
+		atk.boss = boss
 		atk.arena = arena
 		add_child(atk)
+		process_mode = ProcessMode.PROCESS_MODE_INHERIT
 
 func _process(_delta: float) -> void:
 	if boss_state == BossState.IDLE:

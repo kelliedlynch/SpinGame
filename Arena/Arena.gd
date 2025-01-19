@@ -1,4 +1,5 @@
 extends Node2D
+class_name Arena
 
 var spawn_point: Vector2
 var GRID_COLUMNS = 16

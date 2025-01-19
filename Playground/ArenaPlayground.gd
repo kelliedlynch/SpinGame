@@ -2,7 +2,7 @@ extends Node2D
 
 var spawn_side = true
 var player: Player
-var destructible: DestructibleEntity
+var boss: BossMonster
 var powerup_timer = 0
 var powerup: Powerup = null
 
@@ -27,9 +27,9 @@ func spawn_powerup():
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("ui_accept"):
 		spawn_destructible()
-	$SpinSpeedLabel.text = str(round_to_dec(player.destructor.spin_speed, 2))
-	$MoveSpeedLabel.text = str(int(player.hitbox.linear_velocity.length()))
-	$CutPowerLabel.text = str(round_to_dec(player.destructor.get_power(), 2))
+	$SpinSpeedLabel.text = str(round_to_dec(player.destructor.spin_speed, 2)) if player != null else "0"
+	$MoveSpeedLabel.text = str(int(player.hitbox.linear_velocity.length())) if player != null else "0"
+	$CutPowerLabel.text = str(round_to_dec(player.destructor.get_power(), 2)) if player != null else "0"
 	if powerup == null:
 		if powerup_timer > 1:
 			powerup_timer = 0
@@ -37,14 +37,16 @@ func _process(delta: float) -> void:
 		powerup_timer += delta
 
 func spawn_destructible(_node = null):
-	destructible = preload("res://Boss/BossMonsterWithPhysics.tscn").instantiate()
+	boss = preload("res://Boss/BossMonster.tscn").instantiate()
 	var spawn_loc = Vector2(randi_range(180, 480), randi_range(180, 520))
 	if spawn_side == true:
 		spawn_loc = Vector2(spawn_loc.x + 940, spawn_loc.y)
 	spawn_side = !spawn_side
-	destructible.position = spawn_loc
-	add_child(destructible)
-	destructible.was_destroyed.connect(spawn_destructible)
+	boss.position = spawn_loc
+	boss.arena = $Arena
+	add_child.call_deferred(boss)
+	#boss.add_to_arena($Arena)
+	boss.tree_exited.connect(spawn_destructible)
 
 func round_to_dec(num, digit):
 	return round(num * pow(10.0, digit)) / pow(10.0, digit)

@@ -1,14 +1,14 @@
-extends Node
+extends BossAttackBase
 class_name JumpAndSmash
 
-var boss: BossMonsterWithPhysics
-var arena: Node2D
+
+var damage = 22
 var atk_perform: Tween
 var blink: Tween
 var landing: Area2D
 
-func _find_landing_spot(boss: BossMonsterWithPhysics):
-	var arena = boss.get_parent().get_node("Arena")
+func _find_landing_spot(boss: BossMonster):
+	#var arena = boss.get_parent().get_node("Arena")
 	var arena_size = arena.get_node("ArenaBorder").size
 	var full_size = boss.calculate_size()
 	var walls = arena.get_node("ArenaBorder/LeftWall").shape.size.x
@@ -52,14 +52,30 @@ func execute_attack():
 	atk_perform.tween_interval(wave_time / 2)
 	atk_perform.tween_callback(_create_landing_area.bind(target))
 	atk_perform.tween_interval(wave_time / 2)
-	atk_perform.tween_callback(boss.hitbox.set.bind("collision_layer", 16))
+	atk_perform.tween_callback(_toggle_collisions)
 	atk_perform.tween_callback(ani.play.bind("default/jump_up"))
 	var jump_time = ani.get_animation_library("default").get_animation("jump_up").length
 	var land_time = ani.get_animation_library("default").get_animation("jump_landing").length
 	atk_perform.tween_interval(jump_time * .5)
 	atk_perform.tween_property(boss, "position", target, jump_time * .5 + land_time * .5)
+	#var pos = boss.position
+	#atk_perform.tween_method(boss.move_to_position, pos, target, jump_time * .5 + land_time * .5)
 	atk_perform.tween_callback(ani.play.bind("default/jump_landing"))
 	atk_perform.tween_interval(land_time * .5)
-	atk_perform.tween_callback(boss.hitbox.set.bind("collision_layer", 2))
+	atk_perform.tween_callback(_deal_damage)
+	atk_perform.tween_callback(_toggle_collisions)
 	atk_perform.tween_callback(_clear_landing)
 	atk_perform.tween_callback(boss.controller.set.bind("boss_state", BossController.BossState.IDLE))
+
+func _toggle_collisions():
+	for child in boss.destructibles.get_children():
+		if child.collision_layer != 16:
+			child.collision_layer = 16
+		else:
+			child.collision_layer = 2
+
+func _deal_damage():
+	for body in landing.get_overlapping_bodies():
+		if body is PlayerHitbox:
+			body.owner.deal_damage(damage)
+	pass
