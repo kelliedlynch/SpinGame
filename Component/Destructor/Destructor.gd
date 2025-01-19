@@ -31,10 +31,8 @@ func get_next_frame_destructor(travel: Vector2) -> Array[PackedVector2Array]:
 			var rotated = PolygonMath.rotate_polygon(capsule, int(rad_to_deg(travel_angle)))
 			var translated = PackedVector2Array()
 			var offset = Vector2.from_angle(travel_angle) * ((length - poly_size.x) / 2)
-			#var vis_translated = PackedVector2Array()
 			for pt in rotated:
 				translated.append(get_parent().to_global(pt + offset))
-				#vis_translated.append(pt + offset)
 			next.append(translated)
 			#var vis = Polygon2D.new()
 			#vis.polygon = translated

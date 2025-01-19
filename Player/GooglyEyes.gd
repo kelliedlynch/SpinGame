@@ -8,7 +8,7 @@ extends Node2D
 var hitbox: PlayerHitbox
 
 var JITTER: float = .002
-var GRAVITY_THRESHOLD: int = 100
+var GRAVITY_THRESHOLD: int = 200
 var GRAVITY: float = 2
 
 #var current_tween: Tween

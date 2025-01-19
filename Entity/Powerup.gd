@@ -48,17 +48,19 @@ func _collect(_node):
 		child.queue_free()
 	
 func _on_collect():
-	for child in target.visible_area.get_children():
-		var color_before = Color(child.color)
-		var mask = Color(color)
-		mask.a = .5
-		var to_color = Color(color_before).blend(mask)
-		var tween = create_tween()
-		var blink_interval = .25
-		tween.tween_property(child, "modulate", to_color, blink_interval)
-		tween.tween_property(child, "modulate", color, blink_interval)
-		tween.set_loops(duration / (blink_interval * 2) - 1)
-		tween.connect("finished", child.set_modulate.bind(color_before))
+	for child in target.hitbox.get_children():
+		for poly in child.get_children():
+			if poly is not Polygon2D: continue
+			var color_before = Color(poly.color)
+			var mask = Color(color)
+			mask.a = .5
+			var to_color = Color(color_before).blend(mask)
+			var tween = target.create_tween()
+			var blink_interval = .25
+			tween.tween_property(poly, "modulate", to_color, blink_interval)
+			tween.tween_property(poly, "modulate", color, blink_interval)
+			tween.set_loops(duration / (blink_interval * 2) - 1)
+			tween.connect("finished", poly.set_modulate.bind(color_before))
 		#tween.tween_property(child, "modulate", color_before, 0)
 		
 		

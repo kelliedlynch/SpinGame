@@ -22,6 +22,11 @@ window/size/viewport_height=1080
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
+[layer_names]
+
+2d_physics/layer_1="hitboxes"
+2d_physics/layer_5="moving_enemies"
+
 [physics]
 
 3d/default_gravity=0.0

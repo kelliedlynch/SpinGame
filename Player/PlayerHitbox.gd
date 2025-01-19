@@ -32,7 +32,7 @@ func _on_destroyed_destructible(node):
 func _try_clip_destructible(state: PhysicsDirectBodyState2D) -> bool:
 	if destructor.target == null:
 		return false
-	var destructible = destructor.target.owner
+	var destructible = destructor.target.get_parent().get_parent()
 	var power = destructor.get_power()
 	if destructor.cut_state == Destructor.CutState.CUTTING:
 		power += destructible.CUT_INERTIA

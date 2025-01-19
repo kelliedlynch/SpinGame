@@ -1,6 +1,8 @@
 extends SGEntityBase
 class_name Player
 
+var hit_points = 100
+
 #var size: Vector2 = Vector2(100, 100)
 @onready var hitbox: PlayerHitbox = $Hitbox
 #@onready var visible_area: VisibleArea = $VisibleArea

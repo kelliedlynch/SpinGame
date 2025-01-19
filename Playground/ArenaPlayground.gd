@@ -7,7 +7,7 @@ var powerup_timer = 0
 var powerup: Powerup = null
 
 func _ready() -> void:
-	RenderingServer.set_default_clear_color(Color(.07, .09, .09, 1))
+	RenderingServer.set_default_clear_color(Color(.17, .18, .2, 1))
 		
 	player = preload("res://Player/Player.tscn").instantiate()
 	player.position = get_viewport_rect().size / 2

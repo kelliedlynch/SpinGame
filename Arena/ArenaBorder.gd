@@ -1,5 +1,5 @@
-@tool
 extends StaticBody2D
+class_name ArenaBorder
 
 var size: Vector2
 
