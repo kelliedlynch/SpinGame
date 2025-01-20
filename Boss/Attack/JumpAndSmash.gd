@@ -19,7 +19,7 @@ func _find_landing_spot(boss: BossMonster):
 func _create_landing_area(origin: Vector2):
 	landing = Area2D.new()
 	var boss_size = boss.calculate_size()
-	var cap = PolygonMath.generate_capsule_shape(boss_size.x * 2, boss_size.x * .4)
+	var cap = PolygonMath.generate_ellipse_polygon(boss_size.x * 1.8, boss_size.x * .8)
 	var coll = CollisionPolygon2D.new()
 	coll.polygon = cap
 	landing.add_child(coll)
@@ -69,6 +69,7 @@ func execute_attack():
 
 func _toggle_collisions():
 	for child in boss.destructibles.get_children():
+		if!(child is PhysicsBody2D): continue
 		if child.collision_layer != 16:
 			child.collision_layer = 16
 		else:

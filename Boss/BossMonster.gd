@@ -13,8 +13,15 @@ func _ready() -> void:
 	#item_rect_changed.connect(_on_item_rect_changed)
 	for child in destructibles.get_children():
 		child.boss = self
+		child.shape_destroyed.connect(_on_shape_destroyed)
 	if get_tree().get_root().get_children().has(self):
 		self.position = get_viewport_rect().size / 2
+
+func _on_shape_destroyed():
+	if destructibles.get_child_count() == 0:
+		controller.animation_player.stop()
+		controller.atk_perform.kill()
+		queue_free()
 
 func calculate_size() -> Vector2:
 	var min_x = 1000000

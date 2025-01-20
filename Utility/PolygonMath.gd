@@ -15,6 +15,17 @@ static func generate_circle_polygon(radius) -> PackedVector2Array:
 		vertices.append(pt)
 	return vertices
 	
+static func generate_ellipse_polygon(w: float, h: float, vertex_count = 36) -> PackedVector2Array:
+	if w == h: return generate_circle_polygon(w)
+	var vertices = PackedVector2Array()
+	var interval = 2 * PI / vertex_count
+	for i in vertex_count:
+		var x = w * cos(interval * i)
+		var y = h * sin(interval * i)
+		vertices.append(Vector2(x, y))
+	return vertices
+	
+	
 static func size_of_polygon(vertices: PackedVector2Array) -> Vector2:
 	if vertices.size() == 0: return Vector2.ZERO
 	var minpoint = min_point(vertices)

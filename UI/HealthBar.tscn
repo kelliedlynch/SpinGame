@@ -1,0 +1,49 @@
+[gd_scene load_steps=8 format=3 uid="uid://bai3usudhkfh1"]
+
+[ext_resource type="Texture2D" uid="uid://daj436a2o4ydr" path="res://Graphics/bar_back_left.tres" id="1_uhh7u"]
+[ext_resource type="Texture2D" uid="uid://du3vmgbq42auw" path="res://Graphics/blue_bar_left.tres" id="1_ukceu"]
+[ext_resource type="Script" path="res://UI/HealthBar.gd" id="1_vvjne"]
+[ext_resource type="Texture2D" uid="uid://cv5kcg0kkital" path="res://Graphics/bar_back_middle.tres" id="2_kiae7"]
+[ext_resource type="Texture2D" uid="uid://5flj48j1qao5" path="res://Graphics/blue_bar_right.tres" id="2_x0exv"]
+[ext_resource type="Texture2D" uid="uid://cwoqnuudihswp" path="res://Graphics/bar_back_right.tres" id="3_3xgoi"]
+[ext_resource type="Texture2D" uid="uid://btc57mpd7mbfa" path="res://Graphics/blue_bar_middle.tres" id="3_tnjwy"]
+
+[node name="HealthBar" type="Node2D"]
+script = ExtResource("1_vvjne")
+current_value = 50
+
+[node name="Background" type="Node2D" parent="."]
+
+[node name="bar_back_left" type="Sprite2D" parent="Background"]
+texture_filter = 1
+position = Vector2(3, 13)
+texture = ExtResource("1_uhh7u")
+
+[node name="bar_back_middle" type="Sprite2D" parent="Background"]
+texture_filter = 1
+position = Vector2(60, 13)
+scale = Vector2(7.71429, 1)
+texture = ExtResource("2_kiae7")
+
+[node name="bar_back_right" type="Sprite2D" parent="Background"]
+texture_filter = 1
+position = Vector2(117, 13)
+texture = ExtResource("3_3xgoi")
+
+[node name="Fill" type="Node2D" parent="."]
+
+[node name="bar_fill_left" type="Sprite2D" parent="Fill"]
+texture_filter = 1
+position = Vector2(3, 13)
+texture = ExtResource("1_ukceu")
+
+[node name="bar_fill_middle" type="Sprite2D" parent="Fill"]
+texture_filter = 1
+position = Vector2(27, 13)
+scale = Vector2(3.42857, 1)
+texture = ExtResource("3_tnjwy")
+
+[node name="bar_fill_right" type="Sprite2D" parent="Fill"]
+texture_filter = 1
+position = Vector2(54, 13)
+texture = ExtResource("2_x0exv")

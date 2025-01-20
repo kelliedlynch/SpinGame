@@ -30,20 +30,20 @@ var material_linear_damp = 30
 
 var boss: BossMonster
 
+signal shape_destroyed
+
 func _ready() -> void:
 	for child in get_children():
 		if child is SGCollPoly:
-			child.tree_exiting.connect(_on_shape_was_destroyed.bind(child))
+			child.tree_exiting.connect(_on_was_destroyed.bind(child))
 			child.visible_polygon.polygon = child.visible_polygon.uv
 			child.polygon = child.visible_polygon.polygon
 
 func _on_was_destroyed(_node):
+	emit_signal("shape_destroyed")
 	queue_free()
 
-func _on_shape_was_destroyed(node):
-	#node.queue_free()
-	if get_child_count() == 0:
-		queue_free()
+		
 	
 func _try_clip(poly: PackedVector2Array, clipper: Array[PackedVector2Array]) -> Array[PackedVector2Array]:
 	var clipped: Array[PackedVector2Array] = []
@@ -182,7 +182,7 @@ func _spawn_debris(poly: PackedVector2Array):
 	frag.timeout *= 2
 	frag.color = Color.STEEL_BLUE
 	frag.polygon = poly
-	add_sibling(frag)
+	boss.arena.add_child(frag)
 	
 func _is_decayable(poly: PackedVector2Array) -> bool:
 	var size = PolygonMath.size_of_polygon(poly)
