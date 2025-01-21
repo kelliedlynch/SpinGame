@@ -1,15 +1,45 @@
-[gd_scene load_steps=8 format=3 uid="uid://bai3usudhkfh1"]
+[gd_scene load_steps=8 format=3 uid="uid://2w4mboxc03b0"]
 
 [ext_resource type="Texture2D" uid="uid://daj436a2o4ydr" path="res://Graphics/bar_back_left.tres" id="1_uhh7u"]
 [ext_resource type="Texture2D" uid="uid://du3vmgbq42auw" path="res://Graphics/blue_bar_left.tres" id="1_ukceu"]
-[ext_resource type="Script" path="res://UI/HealthBar.gd" id="1_vvjne"]
 [ext_resource type="Texture2D" uid="uid://cv5kcg0kkital" path="res://Graphics/bar_back_middle.tres" id="2_kiae7"]
 [ext_resource type="Texture2D" uid="uid://5flj48j1qao5" path="res://Graphics/blue_bar_right.tres" id="2_x0exv"]
 [ext_resource type="Texture2D" uid="uid://cwoqnuudihswp" path="res://Graphics/bar_back_right.tres" id="3_3xgoi"]
 [ext_resource type="Texture2D" uid="uid://btc57mpd7mbfa" path="res://Graphics/blue_bar_middle.tres" id="3_tnjwy"]
 
+[sub_resource type="GDScript" id="GDScript_a4brl"]
+script/source = "@tool
+extends Node2D
+
+@export var size: Vector2 = Vector2(120, 26)
+@export var max_value: int = 100
+@export var current_value: int = 100
+@onready var back_left = $Background/bar_back_left
+@onready var back_mid = $Background/bar_back_middle
+@onready var back_right = $Background/bar_back_right
+@onready var fill_left = $Fill/bar_fill_left
+@onready var fill_mid = $Fill/bar_fill_middle
+@onready var fill_right = $Fill/bar_fill_right
+
+func _process(delta: float) -> void:
+	var height = back_left.get_rect().size.y
+	var bl_width = back_left.get_rect().size.x
+	var back_width = size.x - bl_width * 2
+	back_left.position = Vector2(bl_width / 2, height / 2)
+	back_right.position = Vector2(bl_width / 2 + bl_width + back_width, height / 2)
+	back_mid.position = Vector2(bl_width + back_width / 2, height / 2)
+	back_mid.scale = Vector2(back_width / back_mid.get_rect().size.x, 1)
+	var fl_width = fill_left.get_rect().size.x
+	var fill_width = (float(current_value) / max_value) * size.x - fl_width * 2
+	fill_left.position = Vector2(bl_width / 2, height / 2)
+	fill_right.position = Vector2(bl_width / 2 + bl_width + fill_width, height / 2)
+	fill_mid.position = Vector2(fl_width + fill_width / 2, height / 2)
+	fill_mid.scale = Vector2(fill_width / fill_mid.get_rect().size.x, 1)
+	
+"
+
 [node name="HealthBar" type="Node2D"]
-script = ExtResource("1_vvjne")
+script = SubResource("GDScript_a4brl")
 current_value = 50
 
 [node name="Background" type="Node2D" parent="."]
@@ -39,11 +69,11 @@ texture = ExtResource("1_ukceu")
 
 [node name="bar_fill_middle" type="Sprite2D" parent="Fill"]
 texture_filter = 1
-position = Vector2(27, 13)
+position = Vector2(30, 13)
 scale = Vector2(3.42857, 1)
 texture = ExtResource("3_tnjwy")
 
 [node name="bar_fill_right" type="Sprite2D" parent="Fill"]
 texture_filter = 1
-position = Vector2(54, 13)
+position = Vector2(57, 13)
 texture = ExtResource("2_x0exv")

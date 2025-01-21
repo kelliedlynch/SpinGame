@@ -9,18 +9,20 @@ var arena: Arena
 	#tree_entered.connect(_add_to_arena)
 
 func _ready() -> void:
+	z_index = RenderLayer.ARENA_ENTITIES
+	$shadow.z_index = RenderLayer.ENTITY_SHADOWS
+	$shadow.z_as_relative = false
 	controller.animation_player = $AnimationPlayer
 	#item_rect_changed.connect(_on_item_rect_changed)
 	for child in destructibles.get_children():
 		child.boss = self
-		child.shape_destroyed.connect(_on_shape_destroyed)
+		child.tree_exited.connect(_on_shape_destroyed)
+
 	if get_tree().get_root().get_children().has(self):
 		self.position = get_viewport_rect().size / 2
 
 func _on_shape_destroyed():
 	if destructibles.get_child_count() == 0:
-		controller.animation_player.stop()
-		controller.atk_perform.kill()
 		queue_free()
 
 func calculate_size() -> Vector2:
@@ -39,12 +41,8 @@ func calculate_size() -> Vector2:
 					if v.y > min_y: max_y = v.y
 	return Vector2(max_x - min_x, max_y - min_y)
 
-
-#func move_to_position(pos: Vector2):
-	#position = pos
-	#for hitbox in destructibles.get_children():
-		#hitbox.position = pos
-		#for coll in hitbox.get_children():
-			#if coll is SGCollPoly:
-				##var remote = coll.find_remote_transform()
-				#coll.position = pos
+func move_to_position(pos: Vector2):
+	for hitbox in destructibles.get_children():
+		for coll in hitbox.get_children():
+			if coll is CollisionPolygon2D:
+				coll.position = pos

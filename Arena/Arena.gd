@@ -1,11 +1,25 @@
 extends Node2D
 class_name Arena
 
+@onready var bounds: ArenaBorder = $ArenaBorder
 var spawn_point: Vector2
 var GRID_COLUMNS = 16
+var size: Vector2
+var active_area: Rect2
 
 func _ready() -> void:
-	spawn_point = get_viewport_rect().size / 2
+	z_index = RenderLayer.ARENA_BACKGROUND
+	if Engine.is_editor_hint():
+		var x = ProjectSettings.get_setting("display/window/size/viewport_width")
+		var y = ProjectSettings.get_setting("display/window/size/viewport_height")
+		size = Vector2(x, y)
+	else:
+		size = get_viewport_rect().size
+	bounds.wall_thickness = int(size.x / 50)
+	active_area = Rect2(bounds.wall_thickness, bounds.wall_thickness, int(size.x) - bounds.wall_thickness * 2, int(size.y) - bounds.wall_thickness * 2)
+	bounds.size = size
+	bounds.make_walls()
+	spawn_point = size / 2
 	_make_grid_background()
 
 func _make_grid_background():

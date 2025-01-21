@@ -1,0 +1,9 @@
+extends Object
+class_name RenderLayer
+
+const ARENA_BACKGROUND = 0
+const ENTITY_SHADOWS = 10
+const AREA_TARGET_INDICATORS = 20
+const ARENA_ENTITIES = 30
+const ENTITY_TARGET_INDICATORS = 40
+const BATTLE_OVERLAY = 500

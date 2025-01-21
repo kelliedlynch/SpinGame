@@ -37,6 +37,66 @@ tracks/1/keys = {
 "update": 0,
 "values": [Vector2(-833, -268)]
 }
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Skeleton2D/body_bone:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.30053]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Skeleton2D/body_bone/left_upper_bone:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.436387]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Skeleton2D/body_bone/left_upper_bone/left_lower_bone:rotation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-0.938643]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Skeleton2D/body_bone/left_upper_bone:position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-37.9623, -49.557)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Skeleton2D/body_bone:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_d7a3b"]
 _data = {
@@ -63,10 +123,12 @@ modifications/1 = SubResource("SkeletonModification2DCCDIK_rddr3")
 modifications/2 = SubResource("SkeletonModification2DCCDIK_dio3r")
 
 [node name="BossMonster" type="Node2D"]
+position = Vector2(75, 28)
 script = ExtResource("1_vcr0m")
 
 [node name="shadow" type="Polygon2D" parent="."]
 modulate = Color(1, 1, 1, 0.415686)
+z_as_relative = false
 position = Vector2(-833, -268)
 texture = ExtResource("2_8cicw")
 polygon = PackedVector2Array(879.135, 299.789, 848.504, 299.569, 840.599, 298.032, 820.837, 298.142, 802.942, 303.522, 780.545, 304.18, 746.62, 321.527, 727.626, 325.809, 691.945, 326.907, 663.509, 329.871, 633.866, 337.776, 624.754, 345.681, 615.641, 350.292, 614.214, 363.467, 622.338, 372.908, 648.249, 384.656, 680.966, 384.985, 694.141, 382.57, 715.549, 383.558, 732.128, 382.131, 754.634, 382.131, 798.989, 391.024, 834.232, 396.294, 855.311, 396.952, 862.887, 393.439, 890.663, 386.632, 921.843, 374.994, 930.187, 365.553, 931.175, 357.318, 928.101, 337.995, 920.197, 327.895, 893.737, 310.109, 890.004, 305.059)
@@ -75,6 +137,9 @@ uv = PackedVector2Array(879.135, 299.789, 848.504, 299.569, 840.599, 298.032, 82
 [node name="Destructibles" type="Node2D" parent="."]
 
 [node name="left_lower" type="AnimatableBody2D" parent="Destructibles"]
+position = Vector2(-201.854, -272.43)
+rotation = -2.66148
+scale = Vector2(0.999841, 0.999841)
 collision_layer = 2
 collision_mask = 2
 physics_material_override = SubResource("PhysicsMaterial_5elrg")
@@ -82,9 +147,7 @@ sync_to_physics = false
 script = ExtResource("3_yybww")
 
 [node name="left_lower" type="CollisionPolygon2D" parent="Destructibles/left_lower"]
-position = Vector2(211.987, 347.981)
-rotation = -2.58525
-scale = Vector2(0.999877, 0.999877)
+position = Vector2(-639.394, -338.407)
 polygon = PackedVector2Array(516.279, 133.27, 515.995, 156.336, 519.127, 189.084, 523.683, 224.11, 526.246, 258.282, 532.796, 267.679, 576.934, 279.069, 592.027, 271.381, 596.014, 256.573, 594.305, 194.494, 590.888, 174.276, 592.027, 146.938, 588.04, 133.27, 598.292, 114.76, 600.57, 89.4159, 592.881, 70.9062, 562.981, 40.7211, 536.213, 35.8801, 517.988, 48.9793, 503.465, 65.2109, 498.909, 89.4159, 501.472, 115.614)
 script = ExtResource("4_euerh")
 
@@ -95,6 +158,9 @@ polygon = PackedVector2Array(516.279, 133.27, 515.995, 156.336, 519.127, 189.084
 uv = PackedVector2Array(516.279, 133.27, 515.995, 156.336, 519.127, 189.084, 523.683, 224.11, 526.246, 258.282, 532.796, 267.679, 576.934, 279.069, 592.027, 271.381, 596.014, 256.573, 594.305, 194.494, 590.888, 174.276, 592.027, 146.938, 588.04, 133.27, 598.292, 114.76, 600.57, 89.4159, 592.881, 70.9062, 562.981, 40.7211, 536.213, 35.8801, 517.988, 48.9793, 503.465, 65.2109, 498.909, 89.4159, 501.472, 115.614)
 
 [node name="left_upper" type="AnimatableBody2D" parent="Destructibles"]
+position = Vector2(-42.9444, -36.2673)
+rotation = 0.20132
+scale = Vector2(0.999921, 0.999921)
 collision_layer = 2
 collision_mask = 2
 physics_material_override = SubResource("PhysicsMaterial_5elrg")
@@ -102,9 +168,9 @@ sync_to_physics = false
 script = ExtResource("3_yybww")
 
 [node name="left_upper" type="CollisionPolygon2D" parent="Destructibles/left_upper"]
-position = Vector2(-430.989, -99.998)
-rotation = -0.458163
-scale = Vector2(0.999942, 0.999942)
+position = Vector2(-425.282, -12.7676)
+rotation = -0.658574
+scale = Vector2(0.999941, 0.999941)
 polygon = PackedVector2Array(354.817, 125.582, 358.235, 164.595, 363.93, 195.064, 368.201, 235.501, 367.062, 259.137, 356.811, 269.388, 333.175, 272.236, 304.129, 276.507, 294.447, 269.388, 289.321, 246.037, 279.924, 241.766, 277.646, 197.058, 283.626, 195.919, 279.639, 118.747, 269.673, 112.198, 273.659, 102.801, 261.13, 80.8736, 267.679, 55.5295, 273.09, 56.9533, 281.918, 33.3178, 310.109, 19.9339, 346.274, 22.212, 366.208, 39.2979, 377.314, 59.2314, 379.592, 97.39, 374.181, 113.337)
 script = ExtResource("4_euerh")
 
@@ -115,6 +181,9 @@ polygon = PackedVector2Array(354.817, 125.582, 358.235, 164.595, 363.93, 195.064
 uv = PackedVector2Array(353.963, 123.873, 358.235, 164.595, 363.93, 195.064, 368.201, 235.501, 367.062, 259.137, 356.811, 269.388, 333.175, 272.236, 304.129, 276.507, 294.447, 269.388, 289.321, 246.037, 279.924, 241.766, 277.646, 197.058, 283.626, 195.919, 279.639, 118.747, 269.673, 112.198, 273.659, 102.801, 261.13, 80.8736, 267.679, 55.5295, 273.09, 56.9533, 281.918, 33.3178, 310.109, 19.9339, 346.274, 22.212, 366.208, 39.2979, 377.314, 59.2314, 379.592, 97.39, 374.181, 113.337)
 
 [node name="body" type="AnimatableBody2D" parent="Destructibles"]
+position = Vector2(1, 24)
+rotation = 0.03902
+scale = Vector2(0.999996, 0.999996)
 collision_layer = 2
 collision_mask = 2
 physics_material_override = SubResource("PhysicsMaterial_5elrg")
@@ -123,7 +192,7 @@ script = ExtResource("3_yybww")
 
 [node name="body" type="CollisionPolygon2D" parent="Destructibles/body"]
 position = Vector2(-809.997, -163)
-rotation = 0.0390199
+rotation = 0.03902
 scale = Vector2(0.999996, 0.999996)
 polygon = PackedVector2Array(757.249, 50.5679, 753.712, 59.9392, 747.878, 89.114, 736.031, 115.99, 731.434, 132.788, 735.147, 150.469, 741.689, 158.426, 753.889, 203.338, 758.84, 214.831, 776.522, 215.892, 815.422, 219.605, 820.372, 216.245, 884.203, 218.013, 896.934, 210.41, 906.128, 189.369, 918.682, 149.055, 917.091, 134.556, 906.659, 104.851, 901.708, 63.8292, 893.044, 42.0807, 880.313, 34.124, 858.034, 33.4167, 853.791, 37.6603, 827.622, 38.5444, 784.125, 46.5011, 773.693, 49.8606)
 script = ExtResource("4_euerh")
@@ -147,47 +216,47 @@ script = ExtResource("6_dcxw3")
 script = ExtResource("7_opnlv")
 
 [node name="Skeleton2D" type="Skeleton2D" parent="."]
+position = Vector2(1, 24)
 rotation = -1.26151
 modification_stack = SubResource("SkeletonModificationStack2D_t3lrm")
 
 [node name="body_bone" type="Bone2D" parent="Skeleton2D"]
 rotation = 1.30053
 scale = Vector2(0.999996, 0.999996)
-rest = Transform2D(0.266988, 0.9637, -0.9637, 0.266988, 0, 0)
+rest = Transform2D(0.266987, 0.963696, -0.963696, 0.266987, 0, 0)
 
 [node name="left_upper_bone" type="Bone2D" parent="Skeleton2D/body_bone"]
-position = Vector2(-30.2653, -31.8436)
-rotation = 0.185005
-scale = Vector2(0.999946, 0.999946)
-rest = Transform2D(0.982906, 0.183946, -0.183946, 0.982906, -47.8765, -47.1682)
+position = Vector2(-37.9623, -49.557)
+rotation = 0.436387
+scale = Vector2(0.999925, 0.999925)
+rest = Transform2D(0.906217, 0.422636, -0.422636, 0.906217, -37.9623, -49.557)
 
 [node name="left_lower_bone" type="Bone2D" parent="Skeleton2D/body_bone/left_upper_bone"]
-position = Vector2(-116.869, -130.297)
-rotation = -0.61103
-scale = Vector2(0.999934, 0.999934)
-rest = Transform2D(0.819019, -0.573684, 0.573684, 0.819019, -116.869, -130.297)
+position = Vector2(-170.813, -114.13)
+rotation = -0.938643
+scale = Vector2(0.99992, 0.99992)
+rest = Transform2D(0.590836, -0.806693, 0.806693, 0.590836, -170.813, -114.13)
 
 [node name="hand_bone" type="Bone2D" parent="Skeleton2D/body_bone/left_upper_bone/left_lower_bone"]
-position = Vector2(-146.248, 128.306)
+position = Vector2(-178.261, 133.814)
 rotation = 0.337125
 scale = Vector2(0.999998, 0.999998)
-rest = Transform2D(0.943708, 0.330775, -0.330775, 0.943708, -146.248, 128.306)
+rest = Transform2D(0.943708, 0.330775, -0.330775, 0.943708, -178.261, 133.814)
 auto_calculate_length_and_angle = false
 length = 37.039
 bone_angle = -190.643
 
 [node name="remote_left_lower" type="RemoteTransform2D" parent="Skeleton2D/body_bone/left_upper_bone/left_lower_bone"]
-position = Vector2(100.357, 617.593)
+position = Vector2(-30.7501, -88.9102)
 rotation = -2.19824
-remote_path = NodePath("../../../../../Destructibles/left_lower/left_lower")
+remote_path = NodePath("../../../../../Destructibles/left_lower")
 
 [node name="remote_left_upper" type="RemoteTransform2D" parent="Skeleton2D/body_bone/left_upper_bone"]
-position = Vector2(-406.851, 23.9816)
-rotation = -0.682188
-remote_path = NodePath("../../../../Destructibles/left_upper/left_upper")
+position = Vector2(-11.306, -4.60384)
+rotation = -0.274087
+remote_path = NodePath("../../../../Destructibles/left_upper")
 
 [node name="remote_body" type="RemoteTransform2D" parent="Skeleton2D/body_bone"]
-position = Vector2(-815.742, -131.278)
-remote_path = NodePath("../../../Destructibles/body/body")
+remote_path = NodePath("../../../Destructibles/body")
 
 [connection signal="item_rect_changed" from="." to="." method="_on_item_rect_changed"]

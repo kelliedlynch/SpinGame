@@ -2,50 +2,73 @@ extends BossAttackBase
 class_name JumpAndSmash
 
 
-var damage = 22
 var atk_perform: Tween
 var blink: Tween
-var landing: Area2D
+@onready var landing: Area2D = Area2D.new()
 
-func _find_landing_spot(boss: BossMonster):
-	#var arena = boss.get_parent().get_node("Arena")
-	var arena_size = arena.get_node("ArenaBorder").size
-	var full_size = boss.calculate_size()
-	var walls = arena.get_node("ArenaBorder/LeftWall").shape.size.x
-	var x = randi_range(walls + full_size.x / 2, arena_size.x - walls - full_size.x / 2)
-	var y = randi_range(walls + full_size.y / 2, arena_size.y - walls - full_size.y / 2)
-	return Vector2(x, y)
-	
-func _create_landing_area(origin: Vector2):
-	landing = Area2D.new()
-	var boss_size = boss.calculate_size()
-	var cap = PolygonMath.generate_ellipse_polygon(boss_size.x * 1.8, boss_size.x * .8)
-	var coll = CollisionPolygon2D.new()
-	coll.polygon = cap
-	landing.add_child(coll)
-	landing.position = arena.to_local(origin + Vector2(0, boss_size.y / 2))
+var area_polygon: PackedVector2Array 
+
+func _ready() -> void:
+	if area_polygon == null or area_polygon.is_empty():
+		call_deferred("_set_default_area_poly")
+	landing.z_index = RenderLayer.AREA_TARGET_INDICATORS
+	landing.z_as_relative = false
 	arena.add_child(landing)
-	var visible_landing = Polygon2D.new()
-	visible_landing.polygon = cap
-	var c = Color.DARK_RED
-	c.a = .4
-	visible_landing.color = c
-	coll.add_child(visible_landing)
-	blink = create_tween()
-	var d = Color(c)
-	d.r = 1
-	d.a += .2
-	blink.tween_property(visible_landing, "modulate", d, .15)
-	blink.tween_property(visible_landing, "modulate", c, .15)
-	blink.set_loops(4)
+	tree_exiting.connect(_on_tree_exiting)
+	
+func _on_tree_exiting():
+	#_clear_indicator()
+	landing.queue_free()
+	if atk_perform != null:
+		atk_perform.kill()
+	if blink != null:
+		blink.kill()
+	
+func _set_default_area_poly():
+	area_polygon = PolygonMath.generate_ellipse_polygon(boss.calculate_size().x * 1.7, boss.calculate_size().y * .7)
 	pass
 
-func _clear_landing():
-	landing.queue_free()
+func _find_landing_spot():
+	#var arena = boss.get_parent().get_node("Arena")
+	var rect: Rect2 = arena.active_area
+	var full_size = boss.calculate_size()
+	#var walls = arena.get_node("ArenaBorder/LeftWall").shape.size.x
+	var x = randi_range(rect.position.x + full_size.x / 2, rect.position.x + rect.size.x - full_size.x / 2)
+	var y = randi_range(rect.position.y + full_size.y / 2, rect.position.y + rect.size.y - full_size.y / 2)
+	return Vector2(x, y)
+	#return rect.position
+	
+func _create_landing_area(origin: Vector2):
+	#landing = Area2D.new()
+	var boss_size = boss.calculate_size()
+	var indicator = CollisionPolygon2D.new()
+	indicator.polygon = area_polygon
+	landing.add_child(indicator)
+	landing.position = arena.to_local(origin + Vector2(0, boss_size.y / 2))
+	var visible_landing = Polygon2D.new()
+	visible_landing.polygon = area_polygon
+	var c = Color.FIREBRICK
+	c.a = .2
+	visible_landing.modulate = c
+	var d = Color.CRIMSON
+	d.a = .3
+
+	#visible_landing.color.a = .01
+	indicator.add_child(visible_landing)
+	blink = create_tween()
+
+	##d.a = .3
+	blink.tween_property(visible_landing, "modulate", d, .07)
+	blink.tween_property(visible_landing, "modulate", c, .07)
+	blink.set_loops(4)
+
+func _clear_indicator():
+	for child in landing.get_children():
+		landing.remove_child(child)
 
 func execute_attack():
-	var ani = boss.controller.animation_player
-	var target = _find_landing_spot(boss)
+	var ani = controller.animation_player
+	var target = _find_landing_spot()
 	ani.play("default/wave_arm")
 	atk_perform = create_tween()
 	var wave_time = ani.get_animation_library("default").get_animation("wave_arm").length
@@ -64,19 +87,20 @@ func execute_attack():
 	atk_perform.tween_interval(land_time * .5)
 	atk_perform.tween_callback(_deal_damage)
 	atk_perform.tween_callback(_toggle_collisions)
-	atk_perform.tween_callback(_clear_landing)
+	atk_perform.tween_callback(_clear_indicator)
 	atk_perform.tween_callback(boss.controller.set.bind("boss_state", BossController.BossState.IDLE))
 
 func _toggle_collisions():
 	for child in boss.destructibles.get_children():
 		if!(child is PhysicsBody2D): continue
-		if child.collision_layer != 16:
-			child.collision_layer = 16
+		if child.collision_layer != CollisionLayer.INTANGIBLE_ENEMY:
+			child.collision_layer = CollisionLayer.INTANGIBLE_ENEMY
 		else:
-			child.collision_layer = 2
+			child.collision_layer = CollisionLayer.ENEMY_HITBOX
 
 func _deal_damage():
 	for body in landing.get_overlapping_bodies():
-		if body is PlayerHitbox:
-			body.owner.deal_damage(damage)
+		if body is PlayerHitbox and body.owner == Player.entity:
+			Player.deal_damage(get_damage())
+			return
 	pass

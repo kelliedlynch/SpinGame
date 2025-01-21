@@ -16,9 +16,9 @@ func _init() -> void:
 	process_mode = ProcessMode.PROCESS_MODE_DISABLED
 
 func _ready() -> void:
-	attacks.append(JumpAndSmash.new())
+	attacks.append(JumpAndSmash.new(boss, self))
 	for atk in attacks:
-		atk.boss = boss
+		#atk.boss = boss
 		atk.arena = arena
 		add_child(atk)
 		process_mode = ProcessMode.PROCESS_MODE_INHERIT
@@ -42,6 +42,10 @@ func attack():
 	else:
 		attack_index = 0
 		
+#func _on_exiting_tree():
+	#if atk_timer != null:
+		#atk_timer.kill()
+		#animation_player.stop()
 
 enum BossState {
 	IDLE,

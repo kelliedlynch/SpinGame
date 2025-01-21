@@ -1,9 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://d2w2eik253alq"]
+[gd_scene load_steps=4 format=3 uid="uid://d2w2eik253alq"]
 
 [ext_resource type="Script" path="res://Playground/ArenaPlayground.gd" id="1_f4c2g"]
 [ext_resource type="PackedScene" uid="uid://wp1jq2yr7g3m" path="res://Arena/Arena.tscn" id="2_snwc1"]
+[ext_resource type="PackedScene" uid="uid://b7l060catm3gw" path="res://UI/BattleOverlay.tscn" id="3_bowmj"]
 
-[node name="ArenaPlayground" type="Node2D"]
+[node name="ArenaPlayground" type="Node"]
 script = ExtResource("1_f4c2g")
 
 [node name="Arena" parent="." instance=ExtResource("2_snwc1")]
@@ -41,3 +42,7 @@ offset_right = 1532.0
 offset_bottom = 168.0
 text = "0"
 horizontal_alignment = 2
+
+[node name="BattleOverlay" parent="." instance=ExtResource("3_bowmj")]
+size_flags_horizontal = 3
+size_flags_vertical = 3

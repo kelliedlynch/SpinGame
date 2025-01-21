@@ -1,0 +1,10 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://bu7g0naukxglx"]
+
+[ext_resource type="FontFile" uid="uid://3k3fcj10b8ws" path="res://UI/Bungee-Regular.ttf" id="1_4xedt"]
+
+[resource]
+default_font = ExtResource("1_4xedt")
+MarginContainer/constants/margin_bottom = 30
+MarginContainer/constants/margin_left = 30
+MarginContainer/constants/margin_right = 30
+MarginContainer/constants/margin_top = 30

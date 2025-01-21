@@ -3,7 +3,7 @@ class_name Destructor
 
 var cut_state = CutState.READY
 
-var target: SGCollPoly = null
+var target: DestructibleHitbox = null
 
 var base_power: int = 1
 

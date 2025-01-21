@@ -1,20 +1,14 @@
-extends Node2D
+extends Node
 
 var spawn_side = true
-var player: Player
+#var player: Player
 var boss: BossMonster
 var powerup_timer = 0
 var powerup: Powerup = null
 
 func _ready() -> void:
 	RenderingServer.set_default_clear_color(Color(.17, .18, .2, 1))
-		
-	player = preload("res://Player/Player.tscn").instantiate()
-	player.position = get_viewport_rect().size / 2
-	#player.position = $Arena.spawn_point
-	add_child(player)
-	#player.destructor.min_spin_speed = 10
-
+	Player.spawn_to_arena($Arena)
 	spawn_destructible()
 	spawn_powerup()
 	
@@ -27,9 +21,9 @@ func spawn_powerup():
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("ui_accept"):
 		spawn_destructible()
-	$SpinSpeedLabel.text = str(round_to_dec(player.destructor.spin_speed, 2)) if player != null else "0"
-	$MoveSpeedLabel.text = str(int(player.hitbox.linear_velocity.length())) if player != null else "0"
-	$CutPowerLabel.text = str(round_to_dec(player.destructor.get_power(), 2)) if player != null else "0"
+	#$SpinSpeedLabel.text = str(round_to_dec(player.destructor.spin_speed, 2)) if player != null else "0"
+	#$MoveSpeedLabel.text = str(int(player.hitbox.linear_velocity.length())) if player != null else "0"
+	#$CutPowerLabel.text = str(round_to_dec(player.destructor.get_power(), 2)) if player != null else "0"
 	if powerup == null:
 		if powerup_timer > 1:
 			powerup_timer = 0

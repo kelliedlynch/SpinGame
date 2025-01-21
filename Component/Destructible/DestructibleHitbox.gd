@@ -35,15 +35,22 @@ signal shape_destroyed
 func _ready() -> void:
 	for child in get_children():
 		if child is SGCollPoly:
-			child.tree_exiting.connect(_on_was_destroyed.bind(child))
+			child.tree_exited.connect(_on_child_exited_tree)
 			child.visible_polygon.polygon = child.visible_polygon.uv
 			child.polygon = child.visible_polygon.polygon
+			
+func _on_child_exited_tree():
+	var a = get_children()
+	if get_child_count() == 0:
+		emit_signal("shape_destroyed")
 
-func _on_was_destroyed(_node):
-	emit_signal("shape_destroyed")
-	queue_free()
+#func _destroy_shape(shape: SGCollPoly) -> void:
+	##shape.tree_exited.connect(_on_shape_exited_tree)
+	#shape.queue_free()
+	#emit_signal("shape_destroyed")
 
-		
+func _on_shape_exited_tree():
+	pass
 	
 func _try_clip(poly: PackedVector2Array, clipper: Array[PackedVector2Array]) -> Array[PackedVector2Array]:
 	var clipped: Array[PackedVector2Array] = []
@@ -84,36 +91,47 @@ func _chunkify_destructor(destructor: Array[PackedVector2Array]) -> Array[Packed
 		visible_destructor_shape.append(merged)
 	return visible_destructor_shape
 	
-func apply_destructor(collision_poly: SGCollPoly, destruct_area: Array[PackedVector2Array]) -> bool:
+func apply_destructor(destructor_polys: Array[PackedVector2Array]) -> bool:
 	var screen_size = get_viewport_rect().size
 	var min_side_length = max(screen_size.x, screen_size.y) * SIMPLIFY_THRESHOLD
-	var destruct_area_to_local: Array[PackedVector2Array] = []
-	for poly in destruct_area:
+	var hitbox_shapes: Array[SGCollPoly] = []
+	for child in get_children():
+		if child is SGCollPoly:
+			hitbox_shapes.append(child)
+	var destructor_polys_to_local: Array[PackedVector2Array] = []
+	for poly in destructor_polys:
 		var new_poly = PackedVector2Array()
 		for pt in poly:
-			new_poly.append(collision_poly.to_local(pt))
-		destruct_area_to_local.append(new_poly)
+			new_poly.append(hitbox_shapes[0].to_local(pt))
+		destructor_polys_to_local.append(new_poly)
 		
-	var chunkified_destructor = _chunkify_destructor(destruct_area_to_local)
+	var chunkified_destructor = _chunkify_destructor(destructor_polys_to_local)
 	var polys_after_destruct: Array[PackedVector2Array] = []
+	var clipped_any = false
 	for i in chunkified_destructor.size():
-		var clipped_hitbox = Geometry2D.clip_polygons(collision_poly.polygon, chunkified_destructor[i])
-		if clipped_hitbox.is_empty():
-			collision_poly.queue_free()
-			return true
-		polys_after_destruct.append_array(clipped_hitbox)
+		for j in hitbox_shapes.size():
+			var clipped_shape = Geometry2D.clip_polygons(hitbox_shapes[j].polygon, chunkified_destructor[i])
+			if clipped_shape.is_empty():
+				generate_fragment(hitbox_shapes[i], chunkified_destructor)
+				clipped_any = true
+				continue
+			if clipped_shape.size() == 1 and clipped_shape[0] == hitbox_shapes[j].polygon:
+				polys_after_destruct.append(clipped_shape[0])
+				continue
+			clipped_any = true
+			polys_after_destruct.append_array(clipped_shape)
+	
+	if clipped_any == false:
+		return false
 	
 	for i in range(polys_after_destruct.size() - 1, -1, -1):
 		if _is_prunable(polys_after_destruct[i]):
 			polys_after_destruct.remove_at(i)
 		i -= 1
 	if polys_after_destruct.is_empty():
-		collision_poly.queue_free()
+		emit_signal("shape_destroyed")
+		queue_free()
 		return true
-	if polys_after_destruct.size() == 1 and polys_after_destruct[0] == collision_poly.polygon:
-		return false
-
-	#generate_fragment()
 
 	var simplified_polygons: Array[PackedVector2Array] = []
 	for i in polys_after_destruct.size():
@@ -129,33 +147,39 @@ func apply_destructor(collision_poly: SGCollPoly, destruct_area: Array[PackedVec
 	var decayed_polygons: Array[PackedVector2Array] = []
 	for i in simplified_polygons.size():
 		if _is_decayable(simplified_polygons[i]) == true:
-			_decay_chunk(simplified_polygons[i], collision_poly)
+			_decay_chunk(simplified_polygons[i])
 			continue
 		decayed_polygons.append(simplified_polygons[i])
 
 	if decayed_polygons.is_empty():
-		collision_poly.queue_free()
+		emit_signal("shape_destroyed")
+		queue_free()
 		return true
 		
-	if decayed_polygons.size() >= 1:
-		collision_poly.set_deferred("polygon", decayed_polygons[0])
-		collision_poly.visible_polygon.set_deferred("polygon", decayed_polygons[0])
+	#if decayed_polygons.size() >= 1:
+		#collision_poly.set_deferred("polygon", decayed_polygons[0])
+		#collision_poly.visible_polygon.set_deferred("polygon", decayed_polygons[0])
 	
-	if decayed_polygons.size() > 1:
-		for i in range(1, decayed_polygons.size()):
-			var new_coll = collision_poly.duplicate()
-			new_coll.polygon = decayed_polygons[i]
-			var vis = new_coll.get_children()[0]
-			vis.polygon = new_coll.polygon
-			call_deferred("add_child", new_coll)
-			var old_remote = collision_poly.find_remote_transform()
-			var new_remote = old_remote.duplicate()
-			old_remote.add_sibling(new_remote)
-			call_deferred("_set_remote_path", new_remote, new_coll)
+	#if decayed_polygons.size() > 1:
+	#var existing_shapes = hitbox_shapes.size()
+	for i in range(0, decayed_polygons.size()):
+		#var coll_shape: CollisionPolygon2D
+		#if existing_shapes > i:
+			#coll_shape = hitbox_shapes[0]
+		var new_coll = hitbox_shapes[0].duplicate()
+		new_coll.polygon = decayed_polygons[i]
+		new_coll.tree_exited.connect(_on_child_exited_tree)
+		var vis = new_coll.get_children()[0]
+		vis.polygon = new_coll.polygon
+		call_deferred("add_child", new_coll)
+	for h in hitbox_shapes:
+		h.queue_free()
+	if get_child_count() > 2:
+		pass
 	return true
 
-func _set_remote_path(remote: RemoteTransform2D, target: SGCollPoly):
-	remote.remote_path = remote.get_path_to(target)
+#func _set_remote_path(remote: RemoteTransform2D, target: SGCollPoly):
+	#remote.remote_path = remote.get_path_to(target)
 
 func _is_prunable(poly: PackedVector2Array) -> bool:
 	var screen_size = get_viewport_rect().size
@@ -169,10 +193,10 @@ func _is_prunable(poly: PackedVector2Array) -> bool:
 			return true
 	return false
 	
-func _decay_chunk(poly: PackedVector2Array, collision_poly: SGCollPoly):
+func _decay_chunk(poly: PackedVector2Array):
 	var local_poly = PackedVector2Array()
 	for vertex in poly:
-		local_poly.append(get_parent().to_local(collision_poly.to_global(vertex)))
+		local_poly.append(get_parent().to_local(get_children()[0].to_global(vertex)))
 	_spawn_debris(local_poly)
 
 func _spawn_debris(poly: PackedVector2Array):
@@ -205,32 +229,38 @@ func _triangle_fragment(size: Vector2):
 	var triangle = PackedVector2Array([Vector2(0, -size.y / 2.0), Vector2(size.x / 2.0, size.y / 2.0), Vector2(-size.x / 2.0, size.y / 2.0)])
 	return triangle
 	
-func generate_fragment(collision_poly: SGCollPoly, destructor: Destructor, destruct_area: Array[PackedVector2Array]):
-	var closest_vertex = destruct_area[0][0]
+func generate_fragment(collision_poly: SGCollPoly, destructor_poly: PackedVector2Array):
+	var closest_vertex = destructor_poly[0]
 	var closest_distance = 1000000
 	for vertex in collision_poly.polygon:
 		vertex = collision_poly.to_global(vertex)
-		for poly in destruct_area:
-			var p_size = poly.size()
-			for i in p_size:
-				var dist = vertex.distance_to(poly[i])
-				if dist < SPARK_DISTANCE:
-					closest_distance = dist
-					var index = i + randi_range(0, SPARK_VERTEX_DRIFT)
-					if index >= p_size:
-						index -= p_size
-					closest_vertex = poly[index]
-					break
-				if dist < closest_distance:
-					closest_distance = dist
-					closest_vertex = poly[i]
+		#for poly in destructor_polys:
+		var p_size = destructor_poly.size()
+		for i in p_size:
+			var dist = vertex.distance_to(destructor_poly[i])
+			if dist < SPARK_DISTANCE:
+				closest_distance = dist
+				var index = i + randi_range(0, SPARK_VERTEX_DRIFT)
+				if index >= p_size:
+					index -= p_size
+				closest_vertex = destructor_poly[index]
+				break
+			if dist < closest_distance:
+				closest_distance = dist
+				closest_vertex = destructor_poly[i]
 	assert(closest_distance < SPARK_DISTANCE)
 	
 	var frag = DebrisFragment.new()
 	frag.polygon = _get_fragment(spark_size)
 	frag.color = Color.YELLOW
 	frag.position = boss.arena.to_local(closest_vertex)
-	var vector_to_tan = closest_vertex - destructor.get_parent().to_global(Vector2.ZERO)
+	#var d_size = PolygonMath.size_of_polygon(destructor_poly)
+	var min_pt = PolygonMath.min_point(destructor_poly)
+	var max_pt = PolygonMath.max_point(destructor_poly)
+	var center_point = (max_pt - min_pt) / 2 + min_pt
+	
+	
+	var vector_to_tan = closest_vertex - center_point
 	var angle_vec = vector_to_tan.angle()
 	var rot = angle_vec + PI/2 
 	var out_vec = Vector2.from_angle(rot)

@@ -16,17 +16,17 @@ physics_material_override = ExtResource("3_77gc3")
 script = ExtResource("2_6y0r2")
 
 [node name="LeftWall" type="CollisionShape2D" parent="ArenaBorder"]
-position = Vector2(51.2, 1331)
+position = Vector2(-441.6, 540)
 shape = ExtResource("4_rbppl")
 
 [node name="RightWall" type="CollisionShape2D" parent="ArenaBorder"]
-position = Vector2(5068.8, 1331)
+position = Vector2(2361.6, 540)
 shape = ExtResource("4_rbppl")
 
 [node name="TopWall" type="CollisionShape2D" parent="ArenaBorder"]
-position = Vector2(2560, 51.2)
+position = Vector2(960, -441.6)
 shape = ExtResource("4_076a3")
 
 [node name="BottomWall" type="CollisionShape2D" parent="ArenaBorder"]
-position = Vector2(2560, 2610.8)
+position = Vector2(960, 1521.6)
 shape = ExtResource("4_076a3")

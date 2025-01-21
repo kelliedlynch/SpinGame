@@ -4,7 +4,7 @@ class_name Powerup
 @onready var collision_poly: CollisionPolygon2D = $CollisionPolygon2D
 @onready var visible_poly: Polygon2D = $CollisionPolygon2D/Polygon2D
 
-var target: Player
+var target: PlayerEntity
 
 var duration = 0
 var ticking_down = false
