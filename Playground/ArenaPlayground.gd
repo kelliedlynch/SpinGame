@@ -5,11 +5,14 @@ var spawn_side = true
 var boss: BossMonster
 var powerup_timer = 0
 var powerup: Powerup = null
+@onready var pg_overlay: PlaygroundOverlay = $PlaygroundOverlay
 
 func _ready() -> void:
 	RenderingServer.set_default_clear_color(Color(.17, .18, .2, 1))
+	pg_overlay.player_btn.button_down.connect(Player.spawn_to_arena.bind($Arena))
+	pg_overlay.boss_btn.button_down.connect(spawn_boss)
 	Player.spawn_to_arena($Arena)
-	spawn_destructible()
+	spawn_boss()
 	spawn_powerup()
 	
 func spawn_powerup():
@@ -19,8 +22,7 @@ func spawn_powerup():
 	add_child(powerup)
 
 func _process(delta: float) -> void:
-	if Input.is_action_just_pressed("ui_accept"):
-		spawn_destructible()
+
 	#$SpinSpeedLabel.text = str(round_to_dec(player.destructor.spin_speed, 2)) if player != null else "0"
 	#$MoveSpeedLabel.text = str(int(player.hitbox.linear_velocity.length())) if player != null else "0"
 	#$CutPowerLabel.text = str(round_to_dec(player.destructor.get_power(), 2)) if player != null else "0"
@@ -30,7 +32,9 @@ func _process(delta: float) -> void:
 			spawn_powerup()
 		powerup_timer += delta
 
-func spawn_destructible(_node = null):
+func spawn_boss():
+	if boss != null:
+		boss.queue_free()
 	boss = preload("res://Boss/BossMonster.tscn").instantiate()
 	var spawn_loc = Vector2(randi_range(180, 480), randi_range(180, 520))
 	if spawn_side == true:
@@ -40,7 +44,7 @@ func spawn_destructible(_node = null):
 	boss.arena = $Arena
 	add_child.call_deferred(boss)
 	#boss.add_to_arena($Arena)
-	boss.tree_exited.connect(spawn_destructible)
+	#boss.tree_exited.connect(spawn_destructible)
 
 func round_to_dec(num, digit):
 	return round(num * pow(10.0, digit)) / pow(10.0, digit)

@@ -112,13 +112,14 @@ func apply_destructor(destructor_polys: Array[PackedVector2Array]) -> bool:
 		for j in hitbox_shapes.size():
 			var clipped_shape = Geometry2D.clip_polygons(hitbox_shapes[j].polygon, chunkified_destructor[i])
 			if clipped_shape.is_empty():
-				generate_fragment(hitbox_shapes[i], chunkified_destructor)
+				generate_fragment(hitbox_shapes[j], chunkified_destructor[i])
 				clipped_any = true
 				continue
 			if clipped_shape.size() == 1 and clipped_shape[0] == hitbox_shapes[j].polygon:
 				polys_after_destruct.append(clipped_shape[0])
 				continue
 			clipped_any = true
+			generate_fragment(hitbox_shapes[j], chunkified_destructor[i])
 			polys_after_destruct.append_array(clipped_shape)
 	
 	if clipped_any == false:
@@ -196,7 +197,7 @@ func _is_prunable(poly: PackedVector2Array) -> bool:
 func _decay_chunk(poly: PackedVector2Array):
 	var local_poly = PackedVector2Array()
 	for vertex in poly:
-		local_poly.append(get_parent().to_local(get_children()[0].to_global(vertex)))
+		local_poly.append(boss.arena.to_local(get_children()[0].to_global(vertex)))
 	_spawn_debris(local_poly)
 
 func _spawn_debris(poly: PackedVector2Array):
@@ -230,10 +231,10 @@ func _triangle_fragment(size: Vector2):
 	return triangle
 	
 func generate_fragment(collision_poly: SGCollPoly, destructor_poly: PackedVector2Array):
-	var closest_vertex = destructor_poly[0]
+	var closest_vertex = collision_poly.to_global(destructor_poly[0])
 	var closest_distance = 1000000
 	for vertex in collision_poly.polygon:
-		vertex = collision_poly.to_global(vertex)
+		#vertex = collision_poly.to_global(vertex)
 		#for poly in destructor_polys:
 		var p_size = destructor_poly.size()
 		for i in p_size:
@@ -243,11 +244,11 @@ func generate_fragment(collision_poly: SGCollPoly, destructor_poly: PackedVector
 				var index = i + randi_range(0, SPARK_VERTEX_DRIFT)
 				if index >= p_size:
 					index -= p_size
-				closest_vertex = destructor_poly[index]
+				closest_vertex = collision_poly.to_global(destructor_poly[index])
 				break
 			if dist < closest_distance:
 				closest_distance = dist
-				closest_vertex = destructor_poly[i]
+				closest_vertex = collision_poly.to_global(destructor_poly[i])
 	assert(closest_distance < SPARK_DISTANCE)
 	
 	var frag = DebrisFragment.new()
@@ -255,8 +256,8 @@ func generate_fragment(collision_poly: SGCollPoly, destructor_poly: PackedVector
 	frag.color = Color.YELLOW
 	frag.position = boss.arena.to_local(closest_vertex)
 	#var d_size = PolygonMath.size_of_polygon(destructor_poly)
-	var min_pt = PolygonMath.min_point(destructor_poly)
-	var max_pt = PolygonMath.max_point(destructor_poly)
+	var min_pt = collision_poly.to_global(PolygonMath.min_point(destructor_poly))
+	var max_pt = collision_poly.to_global(PolygonMath.max_point(destructor_poly))
 	var center_point = (max_pt - min_pt) / 2 + min_pt
 	
 	
