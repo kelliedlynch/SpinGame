@@ -121,6 +121,7 @@ script = ExtResource("1_5veut")
 
 [node name="Hitbox" type="RigidBody2D" parent="."]
 collision_mask = 3
+input_pickable = true
 script = ExtResource("2_fwe6s")
 
 [node name="saw_blade_coll" type="CollisionPolygon2D" parent="Hitbox"]

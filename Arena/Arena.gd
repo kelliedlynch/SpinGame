@@ -43,5 +43,3 @@ func _make_grid_background():
 		line.width = 3
 		line.default_color = line_color
 		$Grid.add_child(line)
-	
-	pass

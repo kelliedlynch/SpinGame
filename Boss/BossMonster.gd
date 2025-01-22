@@ -17,7 +17,9 @@ func _ready() -> void:
 	for child in destructibles.get_children():
 		child.boss = self
 		child.tree_exited.connect(_on_shape_destroyed)
-
+	$Destructibles/left_lower.material_hardness = 2
+	$Destructibles/left_upper.material_hardness = 5
+	$Destructibles/body.material_hardness = 8
 	if get_tree().get_root().get_children().has(self):
 		self.position = get_viewport_rect().size / 2
 

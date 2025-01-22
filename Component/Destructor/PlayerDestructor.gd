@@ -3,9 +3,9 @@ class_name PlayerDestructor
 
 var hitbox: PlayerHitbox
 var max_spin_speed = 10
-var min_spin_speed = 10
+var min_spin_speed = .5
 var spin_speed = 3
-var spin_accel = 1.7
+var spin_accel = 1.3
 
 func get_power() -> float:
 	var speed = spin_speed

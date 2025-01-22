@@ -3,8 +3,12 @@
 [ext_resource type="Script" path="res://Arena/Arena.gd" id="1_hcsty"]
 [ext_resource type="Script" path="res://Arena/ArenaBorder.gd" id="2_6y0r2"]
 [ext_resource type="PhysicsMaterial" uid="uid://dhvdkh1hnanpl" path="res://Arena/ArenaWallMaterial.tres" id="3_77gc3"]
-[ext_resource type="Shape2D" uid="uid://d1n3mjq0caimm" path="res://Arena/HorizWall.tres" id="4_076a3"]
-[ext_resource type="Shape2D" uid="uid://cgdfruhjd17ih" path="res://Arena/VertWall.tres" id="4_rbppl"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_biwai"]
+size = Vector2(960, 3000)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uocu7"]
+size = Vector2(3840, 960)
 
 [node name="Arena" type="Node2D"]
 script = ExtResource("1_hcsty")
@@ -17,16 +21,16 @@ script = ExtResource("2_6y0r2")
 
 [node name="LeftWall" type="CollisionShape2D" parent="ArenaBorder"]
 position = Vector2(-441.6, 540)
-shape = ExtResource("4_rbppl")
+shape = SubResource("RectangleShape2D_biwai")
 
 [node name="RightWall" type="CollisionShape2D" parent="ArenaBorder"]
 position = Vector2(2361.6, 540)
-shape = ExtResource("4_rbppl")
+shape = SubResource("RectangleShape2D_biwai")
 
 [node name="TopWall" type="CollisionShape2D" parent="ArenaBorder"]
 position = Vector2(960, -441.6)
-shape = ExtResource("4_076a3")
+shape = SubResource("RectangleShape2D_uocu7")
 
 [node name="BottomWall" type="CollisionShape2D" parent="ArenaBorder"]
 position = Vector2(960, 1521.6)
-shape = ExtResource("4_076a3")
+shape = SubResource("RectangleShape2D_uocu7")

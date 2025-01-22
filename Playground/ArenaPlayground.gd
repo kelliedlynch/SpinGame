@@ -23,9 +23,9 @@ func spawn_powerup():
 
 func _process(delta: float) -> void:
 
-	#$SpinSpeedLabel.text = str(round_to_dec(player.destructor.spin_speed, 2)) if player != null else "0"
-	#$MoveSpeedLabel.text = str(int(player.hitbox.linear_velocity.length())) if player != null else "0"
-	#$CutPowerLabel.text = str(round_to_dec(player.destructor.get_power(), 2)) if player != null else "0"
+	$SpinSpeedLabel.text = str(round_to_dec(Player.entity.destructor.spin_speed, 2)) if Player.entity != null else "0"
+	$MoveSpeedLabel.text = str(int(Player.entity.hitbox.linear_velocity.length())) if Player.entity != null else "0"
+	$CutPowerLabel.text = str(round_to_dec(Player.entity.destructor.get_power(), 2)) if Player.entity != null else "0"
 	if powerup == null:
 		if powerup_timer > 1:
 			powerup_timer = 0

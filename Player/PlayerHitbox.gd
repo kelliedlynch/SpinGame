@@ -1,13 +1,7 @@
 extends RigidHitbox
 class_name PlayerHitbox
 
-var max_speed = 2000
-var begin_cut_speed = 0
-
-var needs_push = false
-
 var input_vector := Vector2.ZERO
-
 var destructor: Destructor
 
 func _ready() -> void:
@@ -15,7 +9,8 @@ func _ready() -> void:
 	max_contacts_reported = 5
 	body_exited.connect(_on_body_exited)
 	lock_rotation = true
-	collision_mask = 1 | 2
+	collision_mask = CollisionLayer.PLAYER_HITBOX + CollisionLayer.ENEMY_HITBOX
+	
 #
 func _on_body_exited(node):
 	if node is AnimatableBody2D:
@@ -23,29 +18,22 @@ func _on_body_exited(node):
 
 func _on_destroyed_destructible(node):
 	if destructor.target == node:
-		#destructor.set_deferred("cut_state", Destructor.CutState.READY)
 		destructor.cut_state = Destructor.CutState.READY
 		destructor.target = null
-	else:
-		pass
 
 func _try_clip_destructible(state: PhysicsDirectBodyState2D) -> bool:
 	if destructor.target == null:
 		return false
 	var destructible = destructor.target
 	var power = destructor.get_power()
-	if destructor.cut_state == Destructor.CutState.CUTTING:
+	if destructor.cut_state == Destructor.CutState.CUTTING or destructor.cut_state == Destructor.CutState.BEGIN_CUT:
 		power += destructible.CUT_INERTIA
 	if power < destructible.material_hardness:
 		return false
 	var material_limited_velocity = state.linear_velocity.limit_length(destructible.material_max_cut_speed)
-	#state.linear_velocity = material_limited_velocity
 	var travel = material_limited_velocity * state.step
 	var next_frame_shape = destructor.get_next_frame_destructor(travel)
 	var destructor_hit = destructible.apply_destructor(next_frame_shape)
-	#if destructor_hit:
-		#destructible.generate_fragment(destructor, next_frame_shape)
-		
 	return destructor_hit
 
 func _apply_destructible_forces(state: PhysicsDirectBodyState2D):
@@ -79,7 +67,7 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 			destructor.cut_state = Destructor.CutState.END_CUT
 	elif destructor.cut_state == Destructor.CutState.END_CUT:
 		var clip = _try_clip_destructible(state)
-		#_apply_destructible_forces(state)
+		_apply_destructible_forces(state)
 		if clip == false:
 			if destructor.target != null:
 				for child in destructor.target.get_parent().get_children():
@@ -96,7 +84,7 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 func _physics_process(delta: float) -> void:
 	linear_velocity += input_vector
 	input_vector = Vector2.ZERO
-	linear_velocity = linear_velocity.limit_length(max_speed)
+	linear_velocity = linear_velocity.limit_length(Player.max_move_speed)
 	
 	if destructor.cut_state == Destructor.CutState.READY:
 		var test = move_and_collide(linear_velocity * delta, true, .08, true)
@@ -123,21 +111,20 @@ func _physics_process(delta: float) -> void:
 		pass
 	elif destructor.cut_state == Destructor.CutState.NOT_READY:
 		pass
-
-func _process(delta) -> void:
-	#last_frame_velocity = linear_velocity
-	#get_parent().linear_velocity = linear_velocity
-	var power = 1000
-	if Input.is_action_pressed("ui_left"):
-		#linear_velocity += Vector2(-power * delta, 0)
-		input_vector += (Vector2(-power * delta, 0))
-	if Input.is_action_pressed("ui_right"):
-		#linear_velocity += Vector2(power * delta, 0)
-		input_vector += (Vector2(power * delta, 0))
-	if Input.is_action_pressed("ui_up"):
-		#linear_velocity += Vector2(0, -power * delta)
-		input_vector += (Vector2(0, -power * delta))
-	if Input.is_action_pressed("ui_down"):
-		#linear_velocity += Vector2(0, power * delta)
-		input_vector += (Vector2(0, power * delta))
-		
+#
+#func _process(delta) -> void:
+	##last_frame_velocity = linear_velocity
+	##get_parent().linear_velocity = linear_velocity
+	#var power = 1000
+	#if Input.is_action_pressed("ui_left"):
+		##linear_velocity += Vector2(-power * delta, 0)
+		#input_vector += (Vector2(-power * delta, 0))
+	#if Input.is_action_pressed("ui_right"):
+		##linear_velocity += Vector2(power * delta, 0)
+		#input_vector += (Vector2(power * delta, 0))
+	#if Input.is_action_pressed("ui_up"):
+		##linear_velocity += Vector2(0, -power * delta)
+		#input_vector += (Vector2(0, -power * delta))
+	#if Input.is_action_pressed("ui_down"):
+		##linear_velocity += Vector2(0, power * delta)
+		#input_vector += (Vector2(0, power * delta))

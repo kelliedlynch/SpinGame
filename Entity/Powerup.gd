@@ -14,7 +14,11 @@ var flash_tween: Tween
 var lifespan = -1
 var in_world = false
 
-var prev_speed = 0
+#var prev_speed = 0
+
+const SPIN_BOOST = 10
+const MAX_SPIN_BOOST = 6
+const SPIN_ACCEL_BOST = 4
 
 var call_on_collect: Callable = Callable(self, "_on_collect")
 var call_on_process: Callable = Callable(self, "_on_process")
@@ -22,8 +26,8 @@ var call_on_process: Callable = Callable(self, "_on_process")
 func _ready():
 	monitoring = true
 	monitorable = true
-	collision_layer = 2
-	collision_mask = 5
+	collision_layer = CollisionLayer.COLLECTIBLES
+	collision_mask = CollisionLayer.PLAYER_HITBOX
 	body_entered.connect(_on_body_entered)
 	area_entered.connect(_on_body_entered)
 	in_world = true
@@ -43,36 +47,39 @@ func _ready():
 func _on_body_entered(node):
 	if node is PlayerHitbox:
 		target = node.get_parent()
-		_collect(node)
-		pass
+		if target == Player.entity:
+			_collect(node)
 
 func _collect(_node):
-	call_on_collect.call()
+	#call_on_collect.call()
 	flash_tween.kill()
+
 	for child in get_children():
 		child.queue_free()
-	
-func _on_collect():
-	for child in target.get_children():
+	for child in target.hitbox.get_children():
+		if child is not CollisionPolygon2D: continue
 		for poly in child.get_children():
 			if poly is not Polygon2D: continue
 			var color_before = Color(poly.color)
-			var mask = Color(visible_poly.color)
-			mask.a = .5
-			var to_color = Color(color_before).blend(mask)
+			var gr_mask = Color.LIME_GREEN
+			gr_mask.a = .5
+			var y_mask = Color.GREEN_YELLOW
+			y_mask.a = .5
+			var on_color = Color(color_before).blend(gr_mask)
+			var off_color = Color(color_before).blend(y_mask)
 			var tween = target.create_tween()
 			var blink_interval = .25
-			tween.tween_property(poly, "modulate", to_color, blink_interval)
-			tween.tween_property(poly, "modulate", visible_poly.color, blink_interval)
+			tween.tween_property(poly, "modulate", on_color, blink_interval)
+			tween.tween_property(poly, "modulate", off_color, blink_interval)
 			tween.set_loops(duration / (blink_interval * 2) - 1)
 			tween.connect("finished", poly.set_modulate.bind(color_before))
-		#tween.tween_property(child, "modulate", color_before, 0)
+
 		
 		
-	prev_speed = target.destructor.spin_speed
-	target.destructor.spin_speed += 10
-	target.destructor.max_spin_speed += 2
-	target.destructor.spin_accel += 3
+	#prev_speed = target.destructor.spin_speed
+	target.destructor.spin_speed += SPIN_BOOST
+	target.destructor.max_spin_speed += MAX_SPIN_BOOST
+	target.destructor.spin_accel += SPIN_ACCEL_BOST
 	ticking_down = true
 	
 func _on_process(delta):
@@ -84,8 +91,8 @@ func _on_process(delta):
 		
 func _on_expire():
 	
-	target.destructor.max_spin_speed -= 2
-	target.destructor.spin_accel -= 3
+	target.destructor.max_spin_speed -= MAX_SPIN_BOOST
+	target.destructor.spin_accel -= SPIN_ACCEL_BOST
 	target.destructor.spin_speed = clamp(target.destructor.spin_speed, target.destructor.min_spin_speed, target.destructor.max_spin_speed)
 	queue_free()
 

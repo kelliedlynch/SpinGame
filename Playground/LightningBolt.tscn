@@ -1,0 +1,47 @@
+[gd_scene load_steps=5 format=3 uid="uid://cluulgc5hgdrb"]
+
+[ext_resource type="Script" path="res://Playground/LightningBolt.gd" id="1_1bbuc"]
+
+[sub_resource type="Curve" id="Curve_ebb53"]
+_data = [Vector2(0, 0.496785), 0.0, 0.0, 0, 0, Vector2(0.500734, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.501608), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Gradient" id="Gradient_1nrcf"]
+offsets = PackedFloat32Array(0, 0.445969, 0.535163, 1)
+colors = PackedColorArray(0, 1, 1, 0.0901961, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_5stqn"]
+gradient = SubResource("Gradient_1nrcf")
+fill_from = Vector2(0.478632, 1)
+fill_to = Vector2(0.5, 0)
+
+[node name="LightningBolt" type="Line2D"]
+width = 3.0
+width_curve = SubResource("Curve_ebb53")
+default_color = Color(0, 0.776471, 0.878431, 1)
+script = ExtResource("1_1bbuc")
+
+[node name="bolt_glow" type="Line2D" parent="."]
+modulate = Color(1, 1, 1, 0.329412)
+show_behind_parent = true
+width = 22.0
+texture = SubResource("GradientTexture2D_5stqn")
+texture_mode = 2
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="prev_bolt" type="Line2D" parent="."]
+modulate = Color(1, 1, 1, 0.313726)
+width = 3.0
+default_color = Color(0, 0.776471, 0.878431, 1)
+
+[node name="prev_bolt_glow" type="Line2D" parent="prev_bolt"]
+modulate = Color(1, 1, 1, 0.329412)
+show_behind_parent = true
+width = 22.0
+texture = SubResource("GradientTexture2D_5stqn")
+texture_mode = 2
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2

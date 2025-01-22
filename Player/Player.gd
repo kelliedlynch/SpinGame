@@ -1,5 +1,7 @@
 extends Node
 
+var max_move_speed: int = 2000
+var move_power = 1000
 
 var _max_health: int = 100
 var max_health: int:
@@ -41,3 +43,4 @@ func spawn_to_arena(arena: Arena):
 	emit_signal("player_health_changed", current_health, max_health)
 	took_damage.connect(entity._on_take_damage)
 	current_health = max_health
+	

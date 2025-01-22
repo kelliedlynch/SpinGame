@@ -6,34 +6,55 @@
 [ext_resource type="Texture2D" uid="uid://bwofoiotocxv3" path="res://Graphics/bar_white_fill_3patch.png" id="4_2bgbc"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_nl1sl"]
-font_size = 20
+font_size = 26
 outline_size = 2
 outline_color = Color(0, 0, 0, 1)
 shadow_size = 3
 shadow_color = Color(0, 0, 0, 0.443137)
 
-[node name="BattleOverlay" type="Control"]
-layout_mode = 3
+[node name="BattleOverlay" type="AspectRatioContainer"]
+z_index = 500
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("2_ufawk")
+ratio = 1.7777
 script = ExtResource("1_r7r0q")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 1
 
 [node name="header" type="MarginContainer" parent="VBoxContainer"]
 layout_mode = 2
+
+[node name="HBoxContainer" type="VBoxContainer" parent="VBoxContainer/header"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="health_label2" type="Label" parent="VBoxContainer/header/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 36
+text = "One-Armed Bandit"
+horizontal_alignment = 1
+justification_flags = 0
+
+[node name="boss_health_bar" type="TextureProgressBar" parent="VBoxContainer/header/HBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+value = 50.0
+nine_patch_stretch = true
+stretch_margin_left = 6
+stretch_margin_right = 6
+texture_under = ExtResource("3_k43lh")
+texture_progress = ExtResource("4_2bgbc")
+tint_progress = Color(1, 0.14, 0.14, 1)
 
 [node name="main" type="MarginContainer" parent="VBoxContainer"]
 layout_mode = 2
@@ -59,7 +80,7 @@ size_flags_horizontal = 3
 value = 50.0
 nine_patch_stretch = true
 stretch_margin_left = 6
-stretch_margin_top = 6
+stretch_margin_right = 6
 texture_under = ExtResource("3_k43lh")
 texture_progress = ExtResource("4_2bgbc")
 tint_progress = Color(1, 0.14, 0.14, 1)

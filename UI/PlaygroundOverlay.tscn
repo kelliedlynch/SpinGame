@@ -2,42 +2,34 @@
 
 [ext_resource type="Theme" uid="uid://bu7g0naukxglx" path="res://UI/ui_theme.tres" id="1_naaqn"]
 
-[node name="PlaygroundOverlay" type="Control"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+[node name="MarginContainer" type="MarginContainer"]
+offset_left = -6.10352e-05
+offset_top = 0.00671387
+offset_right = 1920.0
+offset_bottom = 1079.99
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_naaqn")
-
-[node name="MarginContainer" type="MarginContainer" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
 theme_override_constants/margin_top = 60
 theme_override_constants/margin_right = 60
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="Control" type="Control" parent="MarginContainer/HBoxContainer"]
+[node name="spacer" type="AspectRatioContainer" parent="HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="action_buttons" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+[node name="action_buttons" type="VBoxContainer" parent="HBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="respawn_player_button" type="Button" parent="MarginContainer/HBoxContainer/action_buttons"]
+[node name="respawn_player_button" type="Button" parent="HBoxContainer/action_buttons"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
 text = "Respawn Player"
 
-[node name="respawn_boss_button" type="Button" parent="MarginContainer/HBoxContainer/action_buttons"]
+[node name="respawn_boss_button" type="Button" parent="HBoxContainer/action_buttons"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
 text = " Respawn Boss"

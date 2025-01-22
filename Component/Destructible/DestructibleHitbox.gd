@@ -30,19 +30,24 @@ var material_linear_damp = 30
 
 var boss: BossMonster
 
-signal shape_destroyed
+#signal shape_destroyed
 
 func _ready() -> void:
 	for child in get_children():
 		if child is SGCollPoly:
-			child.tree_exited.connect(_on_child_exited_tree)
+			#child.tree_exited.connect(_on_child_exited_tree)
 			child.visible_polygon.polygon = child.visible_polygon.uv
 			child.polygon = child.visible_polygon.polygon
+			call_deferred("_set_color", child.visible_polygon)
+
+func _set_color(poly: Polygon2D) -> void:
+	var mat_color = Color.CORNFLOWER_BLUE
+	mat_color.a = material_hardness / 10.0
+	poly.modulate = poly.color.blend(mat_color)
 			
-func _on_child_exited_tree():
-	var a = get_children()
-	if get_child_count() == 0:
-		emit_signal("shape_destroyed")
+#func _on_child_exited_tree():
+	#if get_child_count() == 0:
+		#emit_signal("shape_destroyed")
 
 #func _destroy_shape(shape: SGCollPoly) -> void:
 	##shape.tree_exited.connect(_on_shape_exited_tree)
@@ -130,7 +135,7 @@ func apply_destructor(destructor_polys: Array[PackedVector2Array]) -> bool:
 			polys_after_destruct.remove_at(i)
 		i -= 1
 	if polys_after_destruct.is_empty():
-		emit_signal("shape_destroyed")
+		#emit_signal("shape_destroyed")
 		queue_free()
 		return true
 
@@ -153,7 +158,7 @@ func apply_destructor(destructor_polys: Array[PackedVector2Array]) -> bool:
 		decayed_polygons.append(simplified_polygons[i])
 
 	if decayed_polygons.is_empty():
-		emit_signal("shape_destroyed")
+		#emit_signal("shape_destroyed")
 		queue_free()
 		return true
 		
@@ -169,7 +174,7 @@ func apply_destructor(destructor_polys: Array[PackedVector2Array]) -> bool:
 			#coll_shape = hitbox_shapes[0]
 		var new_coll = hitbox_shapes[0].duplicate()
 		new_coll.polygon = decayed_polygons[i]
-		new_coll.tree_exited.connect(_on_child_exited_tree)
+		#new_coll.tree_exited.connect(_on_child_exited_tree)
 		var vis = new_coll.get_children()[0]
 		vis.polygon = new_coll.polygon
 		call_deferred("add_child", new_coll)
