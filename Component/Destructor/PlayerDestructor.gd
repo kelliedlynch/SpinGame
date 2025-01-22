@@ -2,8 +2,8 @@ extends Destructor
 class_name PlayerDestructor
 
 var hitbox: PlayerHitbox
-var max_spin_speed = 10
-var min_spin_speed = .5
+var max_spin_speed = 20
+var min_spin_speed = 20
 var spin_speed = 3
 var spin_accel = 1.3
 

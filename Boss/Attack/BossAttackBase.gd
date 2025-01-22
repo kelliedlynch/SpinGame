@@ -7,6 +7,8 @@ var arena: Node2D
 var min_damage: int = 10
 var max_damage: int = 20
 
+var atk_perform: Tween
+
 func _init(boss_monster: BossMonster, boss_controller: BossController) -> void:
 	boss = boss_monster
 	controller = boss_controller

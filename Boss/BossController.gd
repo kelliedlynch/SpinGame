@@ -17,6 +17,7 @@ func _init() -> void:
 
 func _ready() -> void:
 	attacks.append(JumpAndSmash.new(boss, self))
+	attacks.append(LaserBeam.new(boss, self))
 	for atk in attacks:
 		#atk.boss = boss
 		atk.arena = arena

@@ -1,7 +1,8 @@
-[gd_scene load_steps=16 format=3 uid="uid://bsw4302tnm6yy"]
+[gd_scene load_steps=17 format=3 uid="uid://bsw4302tnm6yy"]
 
 [ext_resource type="Script" path="res://Boss/BossMonster.gd" id="1_vcr0m"]
 [ext_resource type="Texture2D" uid="uid://dl8h3mfcqqnep" path="res://Graphics/robo_parts_sprite_sheet.png" id="2_8cicw"]
+[ext_resource type="Texture2D" uid="uid://bysihkuh51bjw" path="res://Graphics/laser_dot.tres" id="3_xoadv"]
 [ext_resource type="Script" path="res://Component/Destructible/DestructibleHitbox.gd" id="3_yybww"]
 [ext_resource type="Script" path="res://Component/SGCollPoly.gd" id="4_euerh"]
 [ext_resource type="AnimationLibrary" uid="uid://big34j5uxesj8" path="res://Boss/TestAnimationLibrary.tres" id="5_jhrdh"]
@@ -98,6 +99,66 @@ tracks/6/keys = {
 "update": 0,
 "values": [Vector2(0, 0)]
 }
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("antenna:visible")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("Skeleton2D/body_bone/antenna_bone:position")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(35.3185, -69.4309)]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("antenna/laser_beam:visible")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("antenna/laser_beam:self_modulate")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 0, 0, 0)]
+}
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("antenna/laser_beam:scale")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.373655, 0.373655)]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_d7a3b"]
 _data = {
@@ -133,69 +194,89 @@ z_as_relative = false
 position = Vector2(-833, -268)
 texture = ExtResource("2_8cicw")
 polygon = PackedVector2Array(879.135, 299.789, 848.504, 299.569, 840.599, 298.032, 820.837, 298.142, 802.942, 303.522, 780.545, 304.18, 746.62, 321.527, 727.626, 325.809, 691.945, 326.907, 663.509, 329.871, 633.866, 337.776, 624.754, 345.681, 615.641, 350.292, 614.214, 363.467, 622.338, 372.908, 648.249, 384.656, 680.966, 384.985, 694.141, 382.57, 715.549, 383.558, 732.128, 382.131, 754.634, 382.131, 798.989, 391.024, 834.232, 396.294, 855.311, 396.952, 862.887, 393.439, 890.663, 386.632, 921.843, 374.994, 930.187, 365.553, 931.175, 357.318, 928.101, 337.995, 920.197, 327.895, 893.737, 310.109, 890.004, 305.059)
-uv = PackedVector2Array(879.135, 299.789, 848.504, 299.569, 840.599, 298.032, 820.837, 298.142, 802.942, 303.522, 780.545, 304.18, 746.62, 321.527, 727.626, 325.809, 691.945, 326.907, 663.509, 329.871, 633.866, 337.776, 624.754, 345.681, 615.641, 350.292, 614.214, 363.467, 622.338, 372.908, 648.249, 384.656, 680.966, 384.985, 694.141, 382.57, 715.549, 383.558, 732.128, 382.131, 754.634, 382.131, 798.989, 391.024, 834.232, 396.294, 853.225, 396.403, 860.032, 393.329, 889.565, 386.193, 921.843, 374.994, 930.187, 365.553, 931.175, 357.318, 928.101, 337.995, 920.197, 327.895, 893.737, 310.109, 890.004, 305.059)
+uv = PackedVector2Array(862.917, 308.783, 840.266, 304.546, 820.685, 302.354, 799.935, 303.669, 775.531, 304.107, 751.42, 309.076, 721.171, 326.903, 699.836, 331.726, 666.08, 335.087, 638.316, 334.94, 611.428, 341.37, 591.846, 351.307, 582.786, 364.751, 585.561, 379.241, 591.7, 389.593, 618.734, 403.037, 653.075, 402.598, 668.711, 401.283, 687.707, 400.991, 704.366, 400.699, 727.455, 401.429, 769.54, 409.613, 805.342, 413.997, 824.572, 412.177, 837.49, 412.681, 860.912, 401.967, 893.19, 390.768, 903.395, 383.894, 907.486, 377.61, 910.263, 355.545, 902.079, 338.594, 881.913, 323.835, 876.507, 316.966)
+
+[node name="antenna" type="Polygon2D" parent="."]
+visible = false
+position = Vector2(35, -43)
+rotation = 0.31501
+scale = Vector2(0.999996, 0.999996)
+offset = Vector2(-46.2597, -297.433)
+texture = ExtResource("2_8cicw")
+polygon = PackedVector2Array(41.4161, 283.112, 28.6682, 286.725, 19.6015, 301.518, 17.6246, 322.787, 25.5324, 333.899, 25.5324, 368.802, 23.4872, 391.571, 30.4406, 398.866, 53.9594, 401.456, 59.6858, 399.547, 65.4803, 391.503, 65.0031, 360.008, 62.0717, 339.012, 78.7053, 320.947, 77.8191, 294.088, 74.0016, 287.748, 65.9574, 280.317, 45.4381, 280.044)
+uv = PackedVector2Array(41.4161, 283.112, 28.6682, 286.725, 19.6015, 301.518, 17.6246, 322.787, 25.5324, 333.899, 25.5324, 368.802, 23.4872, 391.571, 30.4406, 398.866, 53.9594, 401.456, 59.6858, 399.547, 65.4803, 391.503, 65.0031, 360.008, 62.0717, 339.012, 78.7053, 320.947, 77.8191, 294.088, 74.0016, 287.748, 65.9574, 280.317, 45.4381, 280.044)
+
+[node name="laser_beam" type="Sprite2D" parent="antenna"]
+visible = false
+self_modulate = Color(1, 0, 0, 0)
+position = Vector2(2.83808, 10.6262)
+rotation = 0.0258593
+scale = Vector2(0.373655, 0.373655)
+texture = ExtResource("3_xoadv")
+
+[node name="beam_origin" type="Marker2D" parent="antenna/laser_beam"]
 
 [node name="ElectricBones" type="Node2D" parent="."]
 
 [node name="left_upper_bolt" parent="ElectricBones" instance=ExtResource("8_omfq0")]
-position = Vector2(-42.9445, -36.2673)
+position = Vector2(-42.9444, -36.2673)
 rotation = 0.20132
-scale = Vector2(0.999919, 0.999919)
-points = PackedVector2Array(-5.81909, -0.378855, -20.4003, 0.19164, -28.522, -11.6766, -34.4465, -23.208, -29.8594, -48.1592, -41.7091, -60.0417, -61.2331, -64.1618, -71.137, -74.4025, -85.4675, -93.2021, -93.6487, -108.78, -100.11, -112.934, -107.97, -115.739, -111.587, -137.132, -117.791, -152.278, -124.747, -150.849)
+scale = Vector2(0.999918, 0.999918)
+points = PackedVector2Array(-5.81909, -0.378855, -19.2558, -1.39477, -21.4883, -28.7663, -28.9844, -48.0174, -46.16, -65.2821, -59.431, -62.5634, -70.597, -63.5659, -67.5749, -94.6892, -83.5396, -94.2541, -94.8639, -108.115, -107.698, -141.376, -119.955, -139.768, -124.499, -153.295, -124.747, -150.849)
 
 [node name="left_lower_bolt" parent="ElectricBones" instance=ExtResource("8_omfq0")]
 position = Vector2(-201.853, -272.429)
 rotation = -2.66148
-scale = Vector2(0.999838, 0.999838)
-points = PackedVector2Array(-93.6142, -30.6694, -97.4143, -48.1601, -105.421, -52.4089, -87.8199, -84.0228, -94.7389, -88.634, -96.5256, -95.736, -87.7951, -112.561, -100.583, -114.148, -88.1882, -140.61, -96.5862, -154.946, -91.9981, -185.736, -100.23, -188.951, -99.0768, -199.963, -93.5315, -234.949, -94.9873, -249.847)
+scale = Vector2(0.999837, 0.999837)
+points = PackedVector2Array(-93.6142, -30.6694, -94.6093, -47.2125, -90.8085, -67.2865, -101.983, -81.3644, -104.547, -90.6582, -93.0613, -116.698, -94.1356, -139.349, -93.4495, -152.267, -100.035, -165.644, -93.2532, -188.351, -96.0616, -208.92, -99.1999, -228.566, -94.9873, -249.847)
 
 [node name="body_bolts" type="Node2D" parent="ElectricBones"]
 position = Vector2(1, 24)
-rotation = 0.03902
+rotation = 0.0390199
 scale = Vector2(0.999996, 0.999996)
 
 [node name="body_bolt" parent="ElectricBones/body_bolts" instance=ExtResource("8_omfq0")]
 position = Vector2(1.89648, 22.9436)
 rotation = 0.03902
 scale = Vector2(0.999996, 0.999996)
-points = PackedVector2Array(46.9755, -91.9428, 34.8834, -97.5079, 17.7299, -85.46, -4.90885, -86.6963, -17.6758, -81.2346, -28.1428, -90.584, -34.7272, -79.1831, -49.7945, -84.3962)
+points = PackedVector2Array(46.9755, -91.9428, 29.874, -94.7195, 21.429, -92.5177, 12.4732, -90.9636, -8.12035, -90.6815, -24.9136, -74.2485, -49.494, -84.2759, -49.7945, -84.3962)
 
 [node name="body_bolt2" parent="ElectricBones/body_bolts" instance=ExtResource("8_omfq0")]
 position = Vector2(1, 24)
 rotation = 0.03902
 scale = Vector2(0.999996, 0.999996)
-points = PackedVector2Array(78.4619, -9.16551, 68.4303, -27.2331, 66.5066, -46.3466, 67.2937, -63.5159, 46.8043, -76.4665, 55.6726, -96.7369, 47.986, -91.0395)
+points = PackedVector2Array(78.4619, -9.16551, 77.4447, -24.8355, 60.9618, -40.5042, 66.9259, -65.2263, 57.788, -84.6016, 47.986, -91.0395)
 
 [node name="body_bolt3" parent="ElectricBones/body_bolts" instance=ExtResource("8_omfq0")]
 position = Vector2(1, 24)
 rotation = 0.03902
 scale = Vector2(0.999996, 0.999996)
-points = PackedVector2Array(60.8945, 48.3797, 73.6999, 38.5131, 78.9079, 17.4492, 75.8802, -3.00771, 78.5332, -12.5717, 79.8322, -17.2971)
+points = PackedVector2Array(60.8945, 48.3797, 72.6149, 42.2375, 56.8716, 20.3729, 67.5535, 2.81097, 67.9899, -6.03854, 73.2945, -13.0724, 79.8322, -17.2971)
 
 [node name="body_bolt4" parent="ElectricBones/body_bolts" instance=ExtResource("8_omfq0")]
 position = Vector2(-1.0364, 39.8178)
 rotation = 0.03902
 scale = Vector2(0.971612, 0.550062)
-points = PackedVector2Array(66.2691, 52.9747, 46.89, 56.1486, 33.2978, 50.6488, 26.4593, 42.2914, 3.91679, 51.5908, -10.957, 40.0457, -27.6877, 37.1096)
+points = PackedVector2Array(66.2691, 52.9747, 52.0774, 49.5436, 31.2299, 50.5366, 21.0993, 37.7489, 12.183, 37.2559, -2.38834, 34.1707, -11.4492, 29.7845, -28.6577, 30.3437, -27.6877, 37.1096)
 
 [node name="body_bolt5" parent="ElectricBones/body_bolts" instance=ExtResource("8_omfq0")]
 position = Vector2(-23.7957, 56.9719)
 rotation = 0.03902
 scale = Vector2(0.999996, 0.999996)
-points = PackedVector2Array(0.0780182, 1.99849, -9.93658, -3.94813, -15.4319, -20.7257, -28.613, -29.1852, -34.7695, -44.6778)
+points = PackedVector2Array(0.0780182, 1.99849, -3.24925, -17.2457, -18.5512, -12.2496, -28.65, -32.8177, -34.7695, -44.6778)
 
 [node name="body_bolt6" parent="ElectricBones/body_bolts" instance=ExtResource("8_omfq0")]
 position = Vector2(1, 24)
 rotation = 0.03902
 scale = Vector2(0.999996, 0.999996)
-points = PackedVector2Array(-60.4446, -15.3552, -45.6257, -25.8245, -57.0431, -32.2009, -53.1917, -45.0163, -42.0437, -70.5317, -35.7471, -85.2027, -37.675, -83.3378)
+points = PackedVector2Array(-60.4446, -15.3552, -54.6782, -34.9412, -57.8, -35.6922, -48.2838, -52.5995, -40.9678, -68.4428, -41.3323, -72.2049, -37.675, -83.3378)
 
 [node name="Destructibles" type="Node2D" parent="."]
 
 [node name="left_lower" type="AnimatableBody2D" parent="Destructibles"]
 position = Vector2(-201.853, -272.429)
 rotation = -2.66148
-scale = Vector2(0.999838, 0.999838)
+scale = Vector2(0.999837, 0.999837)
 collision_layer = 2
 collision_mask = 2
 physics_material_override = SubResource("PhysicsMaterial_5elrg")
@@ -214,9 +295,9 @@ polygon = PackedVector2Array(516.279, 133.27, 515.995, 156.336, 519.127, 189.084
 uv = PackedVector2Array(516.279, 133.27, 515.995, 156.336, 519.127, 189.084, 523.683, 224.11, 526.246, 258.282, 532.796, 267.679, 576.934, 279.069, 592.027, 271.381, 596.014, 256.573, 594.305, 194.494, 590.888, 174.276, 592.027, 146.938, 588.04, 133.27, 598.292, 114.76, 600.57, 89.4159, 592.881, 70.9062, 562.981, 40.7211, 536.213, 35.8801, 517.988, 48.9793, 503.465, 65.2109, 498.909, 89.4159, 501.472, 115.614)
 
 [node name="left_upper" type="AnimatableBody2D" parent="Destructibles"]
-position = Vector2(-42.9445, -36.2673)
+position = Vector2(-42.9444, -36.2673)
 rotation = 0.20132
-scale = Vector2(0.999919, 0.999919)
+scale = Vector2(0.999918, 0.999918)
 collision_layer = 2
 collision_mask = 2
 physics_material_override = SubResource("PhysicsMaterial_5elrg")
@@ -238,7 +319,7 @@ uv = PackedVector2Array(353.963, 123.873, 358.235, 164.595, 363.93, 195.064, 368
 
 [node name="body" type="AnimatableBody2D" parent="Destructibles"]
 position = Vector2(1, 24)
-rotation = 0.03902
+rotation = 0.0390199
 scale = Vector2(0.999996, 0.999996)
 collision_layer = 2
 collision_mask = 2
@@ -285,13 +366,13 @@ rest = Transform2D(0.266987, 0.963696, -0.963696, 0.266987, 0, 0)
 position = Vector2(-37.9623, -49.557)
 rotation = 0.436387
 scale = Vector2(0.999923, 0.999923)
-rest = Transform2D(0.906217, 0.422636, -0.422636, 0.906217, -37.9623, -49.557)
+rest = Transform2D(0.906215, 0.422635, -0.422635, 0.906215, -37.9623, -49.557)
 
 [node name="left_lower_bone" type="Bone2D" parent="Skeleton2D/body_bone/left_upper_bone"]
 position = Vector2(-170.813, -114.13)
 rotation = -0.938643
 scale = Vector2(0.999919, 0.999919)
-rest = Transform2D(0.590836, -0.806693, 0.806693, 0.590836, -170.813, -114.13)
+rest = Transform2D(0.590835, -0.806692, 0.806692, 0.590835, -170.813, -114.13)
 
 [node name="hand_bone" type="Bone2D" parent="Skeleton2D/body_bone/left_upper_bone/left_lower_bone"]
 position = Vector2(-178.261, 133.814)
@@ -327,5 +408,13 @@ remote_path = NodePath("../../../Destructibles/body")
 
 [node name="remote_elec_body" type="RemoteTransform2D" parent="Skeleton2D/body_bone"]
 remote_path = NodePath("../../../ElectricBones/body_bolts")
+
+[node name="antenna_bone" type="Bone2D" parent="Skeleton2D/body_bone"]
+position = Vector2(35.3185, -69.4309)
+rest = Transform2D(1, 0, 0, 1, 31.3606, -68.2756)
+
+[node name="remote_antenna" type="RemoteTransform2D" parent="Skeleton2D/body_bone/antenna_bone"]
+rotation = 0.27599
+remote_path = NodePath("../../../../antenna")
 
 [connection signal="item_rect_changed" from="." to="." method="_on_item_rect_changed"]

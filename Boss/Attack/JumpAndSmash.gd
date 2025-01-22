@@ -2,7 +2,6 @@ extends BossAttackBase
 class_name JumpAndSmash
 
 
-var atk_perform: Tween
 var blink: Tween
 @onready var landing: Area2D = Area2D.new()
 
