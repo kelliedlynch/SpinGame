@@ -198,7 +198,7 @@ uv = PackedVector2Array(862.917, 308.783, 840.266, 304.546, 820.685, 302.354, 79
 
 [node name="antenna" type="Polygon2D" parent="."]
 visible = false
-position = Vector2(35, -43)
+position = Vector2(39, -44)
 rotation = 0.31501
 scale = Vector2(0.999996, 0.999996)
 offset = Vector2(-46.2597, -297.433)
@@ -217,66 +217,67 @@ texture = ExtResource("3_xoadv")
 [node name="beam_origin" type="Marker2D" parent="antenna/laser_beam"]
 
 [node name="ElectricBones" type="Node2D" parent="."]
+modulate = Color(0.282353, 1, 0.941176, 1)
 
 [node name="left_upper_bolt" parent="ElectricBones" instance=ExtResource("8_omfq0")]
-position = Vector2(-42.9444, -36.2673)
+position = Vector2(-42.9445, -36.2673)
 rotation = 0.20132
-scale = Vector2(0.999918, 0.999918)
-points = PackedVector2Array(-5.81909, -0.378855, -19.2558, -1.39477, -21.4883, -28.7663, -28.9844, -48.0174, -46.16, -65.2821, -59.431, -62.5634, -70.597, -63.5659, -67.5749, -94.6892, -83.5396, -94.2541, -94.8639, -108.115, -107.698, -141.376, -119.955, -139.768, -124.499, -153.295, -124.747, -150.849)
+scale = Vector2(0.999919, 0.999919)
+points = PackedVector2Array(-5.81909, -0.378855, -12.3024, -23.2988, -41.015, -25.7059, -44.1736, -57.7647, -60.1177, -60.1447, -67.3061, -62.0722, -77.1097, -91.0327, -91.3917, -91.5146, -99.6107, -121.857, -114.745, -130.561, -123.531, -136.857, -124.747, -150.849)
 
 [node name="left_lower_bolt" parent="ElectricBones" instance=ExtResource("8_omfq0")]
 position = Vector2(-201.853, -272.429)
 rotation = -2.66148
-scale = Vector2(0.999837, 0.999837)
-points = PackedVector2Array(-93.6142, -30.6694, -94.6093, -47.2125, -90.8085, -67.2865, -101.983, -81.3644, -104.547, -90.6582, -93.0613, -116.698, -94.1356, -139.349, -93.4495, -152.267, -100.035, -165.644, -93.2532, -188.351, -96.0616, -208.92, -99.1999, -228.566, -94.9873, -249.847)
+scale = Vector2(0.999838, 0.999838)
+points = PackedVector2Array(-93.6142, -30.6694, -105.063, -51.0792, -96.8156, -72.4697, -84.7291, -103.685, -95.1662, -113.063, -95.0785, -123.791, -97.056, -139.055, -100.257, -154.382, -90.791, -183.431, -93.6715, -190.21, -96.6234, -195.752, -92.4153, -227.692, -96.4734, -243.773, -94.9873, -249.847)
 
 [node name="body_bolts" type="Node2D" parent="ElectricBones"]
 position = Vector2(1, 24)
-rotation = 0.0390199
+rotation = 0.03902
 scale = Vector2(0.999996, 0.999996)
 
 [node name="body_bolt" parent="ElectricBones/body_bolts" instance=ExtResource("8_omfq0")]
 position = Vector2(1.89648, 22.9436)
 rotation = 0.03902
 scale = Vector2(0.999996, 0.999996)
-points = PackedVector2Array(46.9755, -91.9428, 29.874, -94.7195, 21.429, -92.5177, 12.4732, -90.9636, -8.12035, -90.6815, -24.9136, -74.2485, -49.494, -84.2759, -49.7945, -84.3962)
+points = PackedVector2Array(46.9755, -91.9428, 24.5973, -80.5614, 14.2586, -83.9932, -1.74626, -95.1761, -10.2578, -79.4897, -22.1656, -82.8691, -34.3669, -74.7188, -49.1706, -88.7961, -49.7945, -84.3962)
 
 [node name="body_bolt2" parent="ElectricBones/body_bolts" instance=ExtResource("8_omfq0")]
 position = Vector2(1, 24)
 rotation = 0.03902
 scale = Vector2(0.999996, 0.999996)
-points = PackedVector2Array(78.4619, -9.16551, 77.4447, -24.8355, 60.9618, -40.5042, 66.9259, -65.2263, 57.788, -84.6016, 47.986, -91.0395)
+points = PackedVector2Array(78.4619, -9.16551, 74.0871, -20.6241, 70.2066, -37.6433, 70.4678, -57.2097, 57.691, -61.7327, 59.8596, -85.698, 47.986, -91.0395)
 
 [node name="body_bolt3" parent="ElectricBones/body_bolts" instance=ExtResource("8_omfq0")]
 position = Vector2(1, 24)
 rotation = 0.03902
 scale = Vector2(0.999996, 0.999996)
-points = PackedVector2Array(60.8945, 48.3797, 72.6149, 42.2375, 56.8716, 20.3729, 67.5535, 2.81097, 67.9899, -6.03854, 73.2945, -13.0724, 79.8322, -17.2971)
+points = PackedVector2Array(60.8945, 48.3797, 70.066, 27.2874, 62.2119, 11.9417, 84.8659, 0.428868, 79.1399, -16.8348, 79.8322, -17.2971)
 
 [node name="body_bolt4" parent="ElectricBones/body_bolts" instance=ExtResource("8_omfq0")]
 position = Vector2(-1.0364, 39.8178)
 rotation = 0.03902
 scale = Vector2(0.971612, 0.550062)
-points = PackedVector2Array(66.2691, 52.9747, 52.0774, 49.5436, 31.2299, 50.5366, 21.0993, 37.7489, 12.183, 37.2559, -2.38834, 34.1707, -11.4492, 29.7845, -28.6577, 30.3437, -27.6877, 37.1096)
+points = PackedVector2Array(66.2691, 52.9747, 42.9555, 52.994, 30.3533, 40.6426, 6.95834, 33.4743, -11.4117, 51.4719, -19.1807, 30.557, -27.6877, 37.1096)
 
 [node name="body_bolt5" parent="ElectricBones/body_bolts" instance=ExtResource("8_omfq0")]
 position = Vector2(-23.7957, 56.9719)
 rotation = 0.03902
 scale = Vector2(0.999996, 0.999996)
-points = PackedVector2Array(0.0780182, 1.99849, -3.24925, -17.2457, -18.5512, -12.2496, -28.65, -32.8177, -34.7695, -44.6778)
+points = PackedVector2Array(0.0780182, 1.99849, -13.0181, 0.693689, -20.9971, -9.64475, -30.0299, -24.7066, -34.7695, -44.6778)
 
 [node name="body_bolt6" parent="ElectricBones/body_bolts" instance=ExtResource("8_omfq0")]
 position = Vector2(1, 24)
 rotation = 0.03902
 scale = Vector2(0.999996, 0.999996)
-points = PackedVector2Array(-60.4446, -15.3552, -54.6782, -34.9412, -57.8, -35.6922, -48.2838, -52.5995, -40.9678, -68.4428, -41.3323, -72.2049, -37.675, -83.3378)
+points = PackedVector2Array(-60.4446, -15.3552, -51.6433, -28.3512, -52.3798, -41.934, -41.8411, -66.8828, -43.7122, -68.5157, -37.675, -83.3378)
 
 [node name="Destructibles" type="Node2D" parent="."]
 
 [node name="left_lower" type="AnimatableBody2D" parent="Destructibles"]
 position = Vector2(-201.853, -272.429)
 rotation = -2.66148
-scale = Vector2(0.999837, 0.999837)
+scale = Vector2(0.999838, 0.999838)
 collision_layer = 2
 collision_mask = 2
 physics_material_override = SubResource("PhysicsMaterial_5elrg")
@@ -295,9 +296,9 @@ polygon = PackedVector2Array(516.279, 133.27, 515.995, 156.336, 519.127, 189.084
 uv = PackedVector2Array(516.279, 133.27, 515.995, 156.336, 519.127, 189.084, 523.683, 224.11, 526.246, 258.282, 532.796, 267.679, 576.934, 279.069, 592.027, 271.381, 596.014, 256.573, 594.305, 194.494, 590.888, 174.276, 592.027, 146.938, 588.04, 133.27, 598.292, 114.76, 600.57, 89.4159, 592.881, 70.9062, 562.981, 40.7211, 536.213, 35.8801, 517.988, 48.9793, 503.465, 65.2109, 498.909, 89.4159, 501.472, 115.614)
 
 [node name="left_upper" type="AnimatableBody2D" parent="Destructibles"]
-position = Vector2(-42.9444, -36.2673)
+position = Vector2(-42.9445, -36.2673)
 rotation = 0.20132
-scale = Vector2(0.999918, 0.999918)
+scale = Vector2(0.999919, 0.999919)
 collision_layer = 2
 collision_mask = 2
 physics_material_override = SubResource("PhysicsMaterial_5elrg")
@@ -319,7 +320,7 @@ uv = PackedVector2Array(353.963, 123.873, 358.235, 164.595, 363.93, 195.064, 368
 
 [node name="body" type="AnimatableBody2D" parent="Destructibles"]
 position = Vector2(1, 24)
-rotation = 0.0390199
+rotation = 0.03902
 scale = Vector2(0.999996, 0.999996)
 collision_layer = 2
 collision_mask = 2

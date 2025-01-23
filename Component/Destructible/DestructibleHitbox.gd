@@ -22,9 +22,9 @@ var SPARK_VERTEX_DRIFT = 4
 # this is the maximum number of chunks that can break off when a destructor hits
 var material_chunk_quantity = 6
 
-const CUT_INERTIA = .1
+const CUT_INERTIA = 2
 var material_hardness = 3
-var material_resistance = .2
+var material_resistance = 3
 var material_max_cut_speed = 200
 var material_linear_damp = 30
 

@@ -17,7 +17,8 @@ func _ready() -> void:
 	
 func spawn_powerup():
 	powerup = preload("res://Entity/Powerup.tscn").instantiate()
-	var spawn_loc = Vector2(randi_range(600, 820), randi_range(80, 300))
+	var spawn_loc = Vector2(randi_range(600, 820), randi_range(100, 300))
+	spawn_loc.y = spawn_loc.y if randi() % 2 == 0 else $Arena.get_viewport_rect().size.y - spawn_loc.y
 	powerup.position = spawn_loc
 	add_child(powerup)
 
@@ -36,9 +37,9 @@ func spawn_boss():
 	if boss != null:
 		boss.queue_free()
 	boss = preload("res://Boss/BossMonster.tscn").instantiate()
-	var spawn_loc = Vector2(randi_range(180, 480), randi_range(180, 520))
+	var spawn_loc = Vector2(randi_range(180, 300), randi_range(180, 620))
 	if spawn_side == true:
-		spawn_loc = Vector2(spawn_loc.x + 940, spawn_loc.y)
+		spawn_loc = $Arena.get_viewport_rect().size - spawn_loc
 	spawn_side = !spawn_side
 	boss.position = spawn_loc
 	boss.arena = $Arena

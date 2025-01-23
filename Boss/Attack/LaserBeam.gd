@@ -3,7 +3,7 @@ class_name LaserBeam
 
 var origin: Marker2D
 var beam_width: int = 26
-var beam_aura_width: int = 120
+var beam_aura_width: int = 1200
 var beam_length: int = 0
 var beam_aura: Line2D
 var beam_line: Line2D
@@ -41,11 +41,12 @@ func _place_beam():
 	
 func _tween_curve():
 	var aura_tween = create_tween()
-	var a = beam_aura.width_curve.get_point_position(1).y
+	var old_val = beam_aura.width_curve.get_point_position(1).y
+	var new_val = beam_aura.width_curve.get_point_position(0).y
 	var callback: Callable = func (x): beam_aura.width_curve.set_point_value(1, x)
 	#var b = beam_aura.width_curve
 	#beam_aura.width_curve.set_point_value(1, 6)
-	aura_tween.tween_method(callback, a, 1, .7)
+	aura_tween.tween_method(callback, old_val, new_val, .7)
 	#beam_aura.width_curve.set_point_value(1, end_val)
 	
 func _place_beam_aura():
@@ -55,8 +56,8 @@ func _place_beam_aura():
 	if beam_length == 0:
 		target = orig_pos + orig_pos.direction_to(target) * ProjectSettings.get_setting("display/window/size/viewport_width")
 		
-	var curve_ratio = (orig_pos - pos).length_squared() / (orig_pos - target).length_squared()
-	var curve_begin_value = beam_width / beam_aura_width
+	#var curve_ratio = (orig_pos - pos).length_squared() / (orig_pos - target).length_squared()
+	var curve_begin_value: int = beam_width / beam_aura_width
 
 	beam_aura = Line2D.new()
 	beam_aura.default_color = Color.CRIMSON
@@ -68,7 +69,7 @@ func _place_beam_aura():
 	beam_aura_width_curve.add_point(Vector2(0, curve_begin_value))
 	#if curve_ratio < 1:
 		#curve.add_point(Vector2(curve_ratio, 1))
-	beam_aura_width_curve.add_point(Vector2(1, 1 / curve_ratio))
+	beam_aura_width_curve.add_point(Vector2(1, 1))
 	beam_aura.width_curve = beam_aura_width_curve
 	arena.add_child(beam_aura)
 	

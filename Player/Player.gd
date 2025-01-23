@@ -20,6 +20,7 @@ var current_health: int:
 		emit_signal("player_health_changed", value, _max_health)
 
 var entity: PlayerEntity
+var arena: Arena
 
 signal took_damage
 signal player_health_changed
@@ -31,9 +32,10 @@ func deal_damage(dmg: int) -> void:
 	else:
 		emit_signal("took_damage", dmg)
 		
-func spawn_to_arena(arena: Arena):
+func spawn_to_arena(a: Arena):
 	if entity != null:
 		entity.queue_free()
+	arena = a
 	entity = preload("res://Player/PlayerEntity.tscn").instantiate()
 	entity.position = arena.spawn_point
 	arena.add_child(entity)

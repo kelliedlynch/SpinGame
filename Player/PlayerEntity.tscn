@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dmbienyglkltx"]
+[gd_scene load_steps=12 format=3 uid="uid://dmbienyglkltx"]
 
 [ext_resource type="Script" path="res://Player/PlayerEntity.gd" id="1_5veut"]
 [ext_resource type="Script" path="res://Player/PlayerHitbox.gd" id="2_fwe6s"]
@@ -6,6 +6,17 @@
 [ext_resource type="Texture2D" uid="uid://bihviwqlsm5s4" path="res://Graphics/saw blade sprite sheet.png" id="4_l18b3"]
 [ext_resource type="PackedScene" uid="uid://f83mqw1l7iv" path="res://Player/GooglyEyes.tscn" id="5_txnaa"]
 [ext_resource type="Script" path="res://Component/Destructor/PlayerDestructor.gd" id="6_f2o1g"]
+
+[sub_resource type="Gradient" id="Gradient_konno"]
+offsets = PackedFloat32Array(0.344316, 0.588138, 0.70346, 0.794069)
+colors = PackedColorArray(1, 1, 1, 0, 0.694118, 0.0980392, 0.662745, 1, 0.694118, 0.0980392, 0.662745, 1, 0.694118, 0.0980392, 0.662745, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_fhte0"]
+gradient = SubResource("Gradient_konno")
+width = 116
+height = 116
+fill = 1
+fill_from = Vector2(0.491453, 0.504274)
 
 [sub_resource type="Animation" id="Animation_wyd3m"]
 length = 0.001
@@ -124,6 +135,27 @@ collision_mask = 3
 input_pickable = true
 script = ExtResource("2_fwe6s")
 
+[node name="charge_sparks" type="CPUParticles2D" parent="Hitbox"]
+emitting = false
+amount = 24
+lifetime = 0.7
+speed_scale = 3.14
+explosiveness = 0.19
+randomness = 0.11
+lifetime_randomness = 0.34
+emission_shape = 5
+emission_points = PackedVector2Array(0, -60, -45, 35, 45, 35)
+emission_normals = PackedVector2Array(0, -1, -0.5, 0.5, 0.5, 0.5)
+emission_colors = PackedColorArray(1, 0, 0, 1)
+gravity = Vector2(0, 0)
+initial_velocity_min = 10.0
+initial_velocity_max = 40.0
+tangential_accel_min = 61.6
+tangential_accel_max = 100.0
+scale_amount_min = 2.0
+scale_amount_max = 6.0
+color = Color(0.694118, 0.0980392, 0.662745, 1)
+
 [node name="saw_blade_coll" type="CollisionPolygon2D" parent="Hitbox"]
 position = Vector2(-63, -70)
 polygon = PackedVector2Array(46.4749, 9.13386, 18.0909, 27.2395, 4.36397, 53.5142, 4.19554, 86.2735, 21.9647, 114.317, 48.5763, 128.212, 80.3251, 128.044, 107.614, 111.033, 123.025, 83.2422, 122.183, 51.9146, 104.667, 21.6818, 75.8656, 8.2075)
@@ -136,9 +168,14 @@ texture = ExtResource("4_l18b3")
 polygon = PackedVector2Array(44.8709, 11.5756, 18.0909, 27.2395, 4.36397, 53.5142, 4.19554, 86.2735, 21.9647, 114.317, 48.5763, 128.212, 80.3251, 128.044, 107.695, 111.875, 122.857, 83.4949, 122.183, 51.9146, 104.667, 21.6818, 75.8656, 8.2075)
 uv = PackedVector2Array(46.4749, 9.13386, 18.0909, 27.2395, 4.36397, 53.5142, 4.19554, 86.2735, 21.9647, 114.317, 48.5763, 128.212, 80.3251, 128.044, 107.614, 111.033, 123.025, 83.2422, 122.183, 51.9146, 104.667, 21.6818, 75.8656, 8.2075)
 
+[node name="charge_glow" type="Sprite2D" parent="Hitbox"]
+modulate = Color(1, 1, 1, 0.501961)
+texture = SubResource("GradientTexture2D_fhte0")
+
 [node name="GooglyEyes" parent="Hitbox" instance=ExtResource("5_txnaa")]
 
 [node name="Destructor" type="Area2D" parent="Hitbox"]
+visible = false
 position = Vector2(-63, -70)
 collision_mask = 3
 script = ExtResource("6_f2o1g")
@@ -150,3 +187,6 @@ polygon = PackedVector2Array(46.4749, 9.13386, 18.0909, 27.2395, 4.36397, 53.514
 libraries = {
 "": SubResource("AnimationLibrary_yty7l")
 }
+
+[connection signal="body_entered" from="Hitbox" to="Hitbox" method="_on_body_entered"]
+[connection signal="body_exited" from="Hitbox" to="Hitbox" method="_on_body_exited"]

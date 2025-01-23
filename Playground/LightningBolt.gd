@@ -61,11 +61,8 @@ func _generate_points() -> PackedVector2Array:
 	return vertices
 
 func _process(delta: float) -> void:
-	#if points[0] != begin_point or points[-1] != end_point:
-		##points = _generate_points()
-		#set("begin_point", points[0])
-		#set("end_point", points[1])
-	#else:
+	if !visible: return
+	var a = get_children()
 	if flicker_time_remaining < 0:
 		prev_bolt.points = points
 		prev_bolt_glow.points = bolt_glow.points

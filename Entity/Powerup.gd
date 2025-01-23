@@ -32,12 +32,13 @@ func _ready():
 	area_entered.connect(_on_body_entered)
 	in_world = true
 	duration = 5
-	visible_poly.color = Color.LIME_GREEN
-	var circle = PolygonMath.generate_circle_polygon(12)
+	#visible_poly.color = Color.LIME_GREEN
+	var sprite_size = PolygonMath.size_of_polygon(visible_poly.polygon)
+	var circle = PolygonMath.generate_circle_polygon(max(sprite_size.x, sprite_size.y) / 2)
 	collision_poly.polygon = circle
-	visible_poly.polygon = circle
+	#visible_poly.polygon = circle
 	flash_tween = create_tween()
-	flash_tween.tween_property(visible_poly, "scale", Vector2(1.5, 1.5), .5)
+	flash_tween.tween_property(visible_poly, "scale", Vector2(1.1, 1.1), .5)
 	flash_tween.tween_property(visible_poly, "scale", Vector2(1, 1), .5)
 	flash_tween.set_loops(200)
 	#for child in visible_area.get_children():
@@ -83,6 +84,8 @@ func _collect(_node):
 	ticking_down = true
 	
 func _on_process(delta):
+	if visible_poly != null:
+		visible_poly.rotate(-1.7 * delta)
 	if ticking_down == true:	
 		duration -= delta
 		if duration <= 0:
