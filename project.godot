@@ -18,6 +18,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 Player="*res://Player/Player.gd"
+BattleManager="*res://Battle/BattleManager.gd"
 
 [display]
 

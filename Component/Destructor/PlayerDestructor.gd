@@ -5,7 +5,7 @@ var hitbox: PlayerHitbox
 var max_spin_speed: float = 10
 var min_spin_speed: float = .5
 var spin_speed: float = 3
-var spin_accel: float = .4
+var spin_accel: float = .3
 var spin_decel: float = .4
 var spin_state = SpinState.DEFAULT
 
@@ -25,9 +25,12 @@ func _try_clip_destructible(state: PhysicsDirectBodyState2D) -> bool:
 		return false
 	var destructible = target
 	var power = get_power()
-	if cut_state == CutState.CUTTING or cut_state == CutState.BEGIN_CUT:
-		power += destructible.CUT_INERTIA
-	if power < destructible.material_hardness:
+	#if cut_state == CutState.CUTTING or cut_state == CutState.BEGIN_CUT:
+		#power += destructible.CUT_INERTIA
+	var threshold = destructible.material_end_cut_threshold
+	if cut_state == CutState.BEGIN_CUT:
+		threshold = destructible.material_begin_cut_threshold
+	if power < threshold:
 		return false
 	var material_limited_velocity = state.linear_velocity.limit_length(destructible.material_max_cut_speed)
 	var travel = material_limited_velocity * state.step

@@ -19,7 +19,7 @@ var move_state: MoveState:
 		_move_state = value
 signal move_state_changed
 
-
+var input_vector := Vector2.ZERO
 
 var spin_spark_threshold: float = .9
 
@@ -28,7 +28,7 @@ var dash_ready_curr: float = 0
 var dash_charge_max: float = .7
 var dash_charge_curr: float = 0
 var dash_duration: float = 1.5
-var dash_speed = 1.5
+var dash_speed = 1.8
 var dash_tween: Tween
 var dash_charge_angle: float
 var dash_charge_indicator: Line2D
@@ -36,6 +36,7 @@ var dash_charge_indicator: Line2D
 var spin_curve: Curve = load("res://Component/Destructor/PlayerSpinCurve.tres")
 
 func _ready() -> void:
+	#BattleOverlay.transition_finished.connect(_on_transition_finished)
 	move_state_changed.connect(_on_move_state_changed)
 	hitbox.body_entered.connect(_on_hitbox_body_entered)
 	googly_eyes.hitbox = hitbox
@@ -55,8 +56,13 @@ func _input(event: InputEvent):
 			move_state = MoveState.DASHING
 
 		
-
-	
+func _physics_process(delta: float) -> void:
+	hitbox.linear_velocity += input_vector
+	input_vector = Vector2.ZERO
+	if move_state == MoveState.DASHING:
+		hitbox.linear_velocity = hitbox.linear_velocity.limit_length(Player.max_move_speed * dash_speed)
+	else:
+		hitbox.linear_velocity = hitbox.linear_velocity.limit_length(Player.max_move_speed)
 
 	
 func _process(delta: float) -> void:
@@ -69,29 +75,29 @@ func _process(delta: float) -> void:
 		if move_state == MoveState.DASH_CHARGING:
 			dash_charge_angle -= delta * 3.6
 		else:
-			hitbox.input_vector += Vector2(-power * delta, 0)
+			input_vector += Vector2(-power * delta, 0)
 	if Input.is_action_pressed("ui_right"):
 		if move_state == MoveState.DASH_CHARGING:
 			dash_charge_angle += delta * 3.6
 		else:
-			hitbox.input_vector += Vector2(power * delta, 0)
+			input_vector += Vector2(power * delta, 0)
 	if Input.is_action_pressed("ui_up"):
 		if move_state == MoveState.DASH_CHARGING:
 			dash_charge_angle -= delta * 3.6
 		else:
-			hitbox.input_vector += (Vector2(0, -power * delta))
+			input_vector += (Vector2(0, -power * delta))
 	if Input.is_action_pressed("ui_down"):
 		if move_state == MoveState.DASH_CHARGING:
 			dash_charge_angle += delta * 3.6
 		else:
-			hitbox.input_vector += (Vector2(0, power * delta))
+			input_vector += (Vector2(0, power * delta))
 
 	if move_state == MoveState.DASHING:
-		hitbox.input_vector += Vector2.from_angle(dash_charge_angle) * power * delta
+		input_vector += Vector2.from_angle(dash_charge_angle) * power * delta
 			
 	if dash_charge_indicator != null:
 		var indicator_length = max(get_viewport_rect().size.x, get_viewport_rect().size.y) * 2
-		dash_charge_indicator.points[1] = Vector2.from_angle(dash_charge_angle) * indicator_length
+		dash_charge_indicator.points[1] = Vector2.from_angle(dash_charge_angle) * indicator_length + dash_charge_indicator.points[0] 
 		
 	if destructor.spin_speed > destructor.max_spin_speed * .9:
 		charge_sparks.emitting = true
@@ -128,7 +134,7 @@ func _begin_dash_charge():
 	dash_charge_indicator = Line2D.new()
 	dash_charge_indicator.width = 100
 	dash_charge_indicator.add_point(to_global(hitbox.position))
-	dash_charge_indicator.add_point(Vector2.from_angle(dash_charge_angle) * indicator_length)
+	dash_charge_indicator.add_point(Vector2.from_angle(dash_charge_angle) * indicator_length + dash_charge_indicator.points[0])
 	var c = Color.KHAKI
 	c.a = .2
 	dash_charge_indicator.modulate = c

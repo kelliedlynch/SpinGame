@@ -62,7 +62,6 @@ func _generate_points() -> PackedVector2Array:
 
 func _process(delta: float) -> void:
 	if !visible: return
-	var a = get_children()
 	if flicker_time_remaining < 0:
 		prev_bolt.points = points
 		prev_bolt_glow.points = bolt_glow.points

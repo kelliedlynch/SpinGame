@@ -12,7 +12,7 @@ func _ready() -> void:
 		call_deferred("_set_default_area_poly")
 	landing.z_index = RenderLayer.AREA_TARGET_INDICATORS
 	landing.z_as_relative = false
-	arena.add_child(landing)
+	#arena.add_child(landing)
 	tree_exiting.connect(_on_tree_exiting)
 	
 func _on_tree_exiting():
@@ -29,7 +29,7 @@ func _set_default_area_poly():
 
 func _find_landing_spot():
 	#var arena = boss.get_parent().get_node("Arena")
-	var rect: Rect2 = arena.active_area
+	var rect: Rect2 = BattleManager.arena.active_area
 	var full_size = boss.calculate_size()
 	#var walls = arena.get_node("ArenaBorder/LeftWall").shape.size.x
 	var x = randi_range(rect.position.x + full_size.x / 2, rect.position.x + rect.size.x - full_size.x / 2)
@@ -43,7 +43,8 @@ func _create_landing_area(origin: Vector2):
 	var indicator = CollisionPolygon2D.new()
 	indicator.polygon = area_polygon
 	landing.add_child(indicator)
-	landing.position = arena.to_local(origin + Vector2(0, boss_size.y / 2))
+	BattleManager.arena.add_child(landing)
+	landing.position = BattleManager.arena.to_local(origin + Vector2(0, boss_size.y / 2))
 	var visible_landing = Polygon2D.new()
 	visible_landing.polygon = area_polygon
 	var c = Color.FIREBRICK
@@ -62,27 +63,26 @@ func _create_landing_area(origin: Vector2):
 	blink.set_loops(4)
 
 func _clear_indicator():
-	for child in landing.get_children():
-		landing.remove_child(child)
+	BattleManager.arena.remove_child(landing)
 
 func execute_attack():
 	var ani = controller.animation_player
 	var target = _find_landing_spot()
-	ani.play("default/wave_arm")
+	ani.play("OneArmedBanditAnimations/wave_arm")
 	atk_perform = create_tween()
-	var wave_time = ani.get_animation_library("default").get_animation("wave_arm").length
+	var wave_time = ani.get_animation("OneArmedBanditAnimations/wave_arm").length
 	atk_perform.tween_interval(wave_time / 2)
 	atk_perform.tween_callback(_create_landing_area.bind(target))
 	atk_perform.tween_interval(wave_time / 2)
 	atk_perform.tween_callback(_toggle_collisions)
-	atk_perform.tween_callback(ani.play.bind("default/jump_up"))
-	var jump_time = ani.get_animation_library("default").get_animation("jump_up").length
-	var land_time = ani.get_animation_library("default").get_animation("jump_landing").length
+	atk_perform.tween_callback(ani.play.bind("OneArmedBanditAnimations/jump_up"))
+	var jump_time = ani.get_animation_library("OneArmedBanditAnimations").get_animation("jump_up").length
+	var land_time = ani.get_animation_library("OneArmedBanditAnimations").get_animation("jump_landing").length
 	atk_perform.tween_interval(jump_time * .5)
 	atk_perform.tween_property(boss, "position", target, jump_time * .5 + land_time * .5)
 	#var pos = boss.position
 	#atk_perform.tween_method(boss.move_to_position, pos, target, jump_time * .5 + land_time * .5)
-	atk_perform.tween_callback(ani.play.bind("default/jump_landing"))
+	atk_perform.tween_callback(ani.play.bind("OneArmedBanditAnimations/jump_landing"))
 	atk_perform.tween_interval(land_time * .5)
 	atk_perform.tween_callback(_deal_damage)
 	atk_perform.tween_callback(_toggle_collisions)

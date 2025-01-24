@@ -2,7 +2,7 @@ extends Node
 
 var spawn_side = true
 #var player: Player
-var boss: BossMonster
+#var boss: BossMonster
 var powerup_timer = 0
 var powerup: Powerup = null
 @onready var pg_overlay: PlaygroundOverlay = $PlaygroundOverlay
@@ -10,10 +10,14 @@ var powerup: Powerup = null
 func _ready() -> void:
 	RenderingServer.set_default_clear_color(Color(.17, .18, .2, 1))
 	pg_overlay.player_btn.button_down.connect(Player.spawn_to_arena.bind($Arena))
-	pg_overlay.boss_btn.button_down.connect(spawn_boss)
-	Player.spawn_to_arena($Arena)
-	spawn_boss()
+	BattleManager.spawn_boss_to_arena(null, $Arena)
+	pg_overlay.boss_btn.button_down.connect(BattleManager.spawn_boss_to_arena.bind(null, $Arena))
+	#Player.spawn_to_arena($Arena)
+	#spawn_boss()
 	spawn_powerup()
+	BattleManager.spawn_player_to_arena($Arena)
+	BattleManager.begin_battle()
+
 	
 func spawn_powerup():
 	powerup = preload("res://Entity/Powerup.tscn").instantiate()
@@ -33,17 +37,8 @@ func _process(delta: float) -> void:
 			spawn_powerup()
 		powerup_timer += delta
 
-func spawn_boss():
-	if boss != null:
-		boss.queue_free()
-	boss = preload("res://Boss/BossMonster.tscn").instantiate()
-	var spawn_loc = Vector2(randi_range(180, 300), randi_range(180, 620))
-	if spawn_side == true:
-		spawn_loc = $Arena.get_viewport_rect().size - spawn_loc
-	spawn_side = !spawn_side
-	boss.position = spawn_loc
-	boss.arena = $Arena
-	add_child.call_deferred(boss)
+#func spawn_boss():
+
 	#boss.add_to_arena($Arena)
 	#boss.tree_exited.connect(spawn_destructible)
 

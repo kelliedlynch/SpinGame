@@ -3,7 +3,7 @@ class_name BossAttackBase
 
 var boss: BossMonster
 var controller: BossController
-var arena: Node2D
+#var arena: Node2D
 var min_damage: int = 10
 var max_damage: int = 20
 

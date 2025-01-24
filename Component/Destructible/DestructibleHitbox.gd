@@ -17,14 +17,15 @@ var DECAY_THRESHOLD = .015
 var SPARK_DISTANCE = 30
 # move the spark-generating point a rancom number of vertices up to this
 # TODO: Generate spark point more elegantly, probably using angles and stuff
-var SPARK_VERTEX_DRIFT = 4
+var SPARK_VERTEX_DRIFT = 6
 
 # this is the maximum number of chunks that can break off when a destructor hits
 var material_chunk_quantity = 6
 
 const CUT_INERTIA = 2
-var material_hardness = 3
-var material_resistance = 3
+var material_begin_cut_threshold = 5
+var material_end_cut_threshold = 2
+var material_resistance = 4
 var material_max_cut_speed = 200
 var material_linear_damp = 30
 
@@ -38,12 +39,12 @@ func _ready() -> void:
 			#child.tree_exited.connect(_on_child_exited_tree)
 			child.visible_polygon.polygon = child.visible_polygon.uv
 			child.polygon = child.visible_polygon.polygon
-			call_deferred("_set_color", child.visible_polygon)
+			#call_deferred("_set_color", child.visible_polygon)
 
-func _set_color(poly: Polygon2D) -> void:
-	var mat_color = Color.CORNFLOWER_BLUE
-	mat_color.a = material_hardness / 10.0
-	poly.modulate = poly.color.blend(mat_color)
+#func _set_color(poly: Polygon2D) -> void:
+	#var mat_color = Color.CORNFLOWER_BLUE
+	#mat_color.a = (material_begin_cut_threshold + material_end_cut_threshold) / 10.0
+	#poly.modulate = poly.color.blend(mat_color)
 			
 #func _on_child_exited_tree():
 	#if get_child_count() == 0:
@@ -202,7 +203,7 @@ func _is_prunable(poly: PackedVector2Array) -> bool:
 func _decay_chunk(poly: PackedVector2Array):
 	var local_poly = PackedVector2Array()
 	for vertex in poly:
-		local_poly.append(boss.arena.to_local(get_children()[0].to_global(vertex)))
+		local_poly.append(BattleManager.arena.to_local(get_children()[0].to_global(vertex)))
 	_spawn_debris(local_poly)
 
 func _spawn_debris(poly: PackedVector2Array):
@@ -212,7 +213,7 @@ func _spawn_debris(poly: PackedVector2Array):
 	frag.timeout *= 2
 	frag.color = Color.STEEL_BLUE
 	frag.polygon = poly
-	boss.arena.add_child(frag)
+	BattleManager.arena.add_child(frag)
 	
 func _is_decayable(poly: PackedVector2Array) -> bool:
 	var size = PolygonMath.size_of_polygon(poly)
@@ -256,10 +257,13 @@ func generate_fragment(collision_poly: SGCollPoly, destructor_poly: PackedVector
 				closest_vertex = collision_poly.to_global(destructor_poly[i])
 	assert(closest_distance < SPARK_DISTANCE)
 	
-	var frag = DebrisFragment.new()
-	frag.polygon = _get_fragment(spark_size)
-	frag.color = Color.YELLOW
-	frag.position = boss.arena.to_local(closest_vertex)
+	
+
+	
+	#var frag = DebrisFragment.new()
+	#frag.polygon = _get_fragment(spark_size)
+	#frag.color = Color.YELLOW
+	#frag.position = boss.arena.to_local(closest_vertex)
 	#var d_size = PolygonMath.size_of_polygon(destructor_poly)
 	var min_pt = collision_poly.to_global(PolygonMath.min_point(destructor_poly))
 	var max_pt = collision_poly.to_global(PolygonMath.max_point(destructor_poly))
@@ -268,8 +272,10 @@ func generate_fragment(collision_poly: SGCollPoly, destructor_poly: PackedVector
 	
 	var vector_to_tan = closest_vertex - center_point
 	var angle_vec = vector_to_tan.angle()
-	var rot = angle_vec + PI/2 
+	var rot = angle_vec - PI/2 
 	var out_vec = Vector2.from_angle(rot)
-	var speed = randi_range(300, 600)
-	frag.velocity = out_vec * speed
-	boss.arena.add_child(frag)
+	var emitter: CPUParticles2D = load("res://Component/Destructor/destructor_sparks.tscn").instantiate()
+	emitter.position = closest_vertex
+	emitter.direction = out_vec
+	BattleManager.arena.add_child(emitter)
+	emitter.emitting = true

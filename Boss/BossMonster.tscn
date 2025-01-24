@@ -1,169 +1,69 @@
-[gd_scene load_steps=17 format=3 uid="uid://bsw4302tnm6yy"]
+[gd_scene load_steps=23 format=3 uid="uid://bsw4302tnm6yy"]
 
 [ext_resource type="Script" path="res://Boss/BossMonster.gd" id="1_vcr0m"]
 [ext_resource type="Texture2D" uid="uid://dl8h3mfcqqnep" path="res://Graphics/robo_parts_sprite_sheet.png" id="2_8cicw"]
 [ext_resource type="Texture2D" uid="uid://bysihkuh51bjw" path="res://Graphics/laser_dot.tres" id="3_xoadv"]
 [ext_resource type="Script" path="res://Component/Destructible/DestructibleHitbox.gd" id="3_yybww"]
 [ext_resource type="Script" path="res://Component/SGCollPoly.gd" id="4_euerh"]
-[ext_resource type="AnimationLibrary" uid="uid://big34j5uxesj8" path="res://Boss/TestAnimationLibrary.tres" id="5_jhrdh"]
-[ext_resource type="Script" path="res://Boss/TestAnimationPlayer.gd" id="6_dcxw3"]
+[ext_resource type="Script" path="res://Boss/BossHeart.gd" id="5_23db0"]
+[ext_resource type="AnimationLibrary" uid="uid://big34j5uxesj8" path="res://Boss/OneArmedBanditAnimations.tres" id="5_jhrdh"]
 [ext_resource type="Script" path="res://Boss/BossController.gd" id="7_opnlv"]
+[ext_resource type="AnimationLibrary" uid="uid://b6u0p2qags3gq" path="res://Boss/HeartAnimations.tres" id="7_pwl3x"]
+[ext_resource type="Material" uid="uid://dgnrnngx1v76h" path="res://Component/Destructor/new_canvas_item_material.tres" id="7_pyv6p"]
+[ext_resource type="Texture2D" uid="uid://cshnk24yxcpkk" path="res://Graphics/wood5.png" id="8_jbbss"]
 [ext_resource type="PackedScene" uid="uid://cluulgc5hgdrb" path="res://Playground/LightningBolt.tscn" id="8_omfq0"]
+[ext_resource type="Texture2D" uid="uid://d4ato4o4ify22" path="res://Graphics/wood1.png" id="9_647d2"]
+[ext_resource type="Texture2D" uid="uid://c7v217eicfgu6" path="res://Graphics/vector-metal.png" id="10_85jmo"]
 
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_5elrg"]
-bounce = 0.08
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_66ykw"]
+bounce = 0.46
 
-[sub_resource type="Animation" id="Animation_o7ucu"]
+[sub_resource type="Animation" id="Animation_0h341"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("shadow:scale")
+tracks/0/path = NodePath("heart_collision_poly/heart_visible_poly:skew")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(1, 1)]
+"values": [0.0]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("shadow:position")
+tracks/1/path = NodePath("heart_collision_poly/heart_visible_poly:scale")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(-833, -268)]
+"values": [Vector2(1, 1)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Skeleton2D/body_bone:rotation")
+tracks/2/path = NodePath("heart_collision_poly/heart_visible_poly:modulate")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [1.30053]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Skeleton2D/body_bone/left_upper_bone:rotation")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.436387]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("Skeleton2D/body_bone/left_upper_bone/left_lower_bone:rotation")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [-0.938643]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("Skeleton2D/body_bone/left_upper_bone:position")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(-37.9623, -49.557)]
-}
-tracks/6/type = "value"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("Skeleton2D/body_bone:position")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, 0)]
-}
-tracks/7/type = "value"
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/path = NodePath("antenna:visible")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/8/type = "value"
-tracks/8/imported = false
-tracks/8/enabled = true
-tracks/8/path = NodePath("Skeleton2D/body_bone/antenna_bone:position")
-tracks/8/interp = 1
-tracks/8/loop_wrap = true
-tracks/8/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(35.3185, -69.4309)]
-}
-tracks/9/type = "value"
-tracks/9/imported = false
-tracks/9/enabled = true
-tracks/9/path = NodePath("antenna/laser_beam:visible")
-tracks/9/interp = 1
-tracks/9/loop_wrap = true
-tracks/9/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/10/type = "value"
-tracks/10/imported = false
-tracks/10/enabled = true
-tracks/10/path = NodePath("antenna/laser_beam:self_modulate")
-tracks/10/interp = 1
-tracks/10/loop_wrap = true
-tracks/10/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 0, 0, 0)]
-}
-tracks/11/type = "value"
-tracks/11/imported = false
-tracks/11/enabled = true
-tracks/11/path = NodePath("antenna/laser_beam:scale")
-tracks/11/interp = 1
-tracks/11/loop_wrap = true
-tracks/11/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0.373655, 0.373655)]
+"values": [Color(1, 0.72549, 0.164706, 1)]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_d7a3b"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_i6x7e"]
 _data = {
-"RESET": SubResource("Animation_o7ucu")
+"RESET": SubResource("Animation_0h341")
 }
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_5elrg"]
+bounce = 0.08
 
 [sub_resource type="SkeletonModification2DCCDIK" id="SkeletonModification2DCCDIK_nxhb5"]
 target_nodepath = NodePath("../IKTargetLeftArm")
@@ -184,9 +84,10 @@ modifications/0 = SubResource("SkeletonModification2DCCDIK_nxhb5")
 modifications/1 = SubResource("SkeletonModification2DCCDIK_rddr3")
 modifications/2 = SubResource("SkeletonModification2DCCDIK_dio3r")
 
-[node name="BossMonster" type="Node2D"]
+[node name="BossMonster" type="Node2D" node_paths=PackedStringArray("heart_location")]
 position = Vector2(75, 28)
 script = ExtResource("1_vcr0m")
+heart_location = NodePath("Destructibles/body")
 
 [node name="shadow" type="Polygon2D" parent="."]
 modulate = Color(1, 1, 1, 0.415686)
@@ -198,9 +99,9 @@ uv = PackedVector2Array(862.917, 308.783, 840.266, 304.546, 820.685, 302.354, 79
 
 [node name="antenna" type="Polygon2D" parent="."]
 visible = false
-position = Vector2(39, -44)
+position = Vector2(38.9999, -43.9999)
 rotation = 0.31501
-scale = Vector2(0.999996, 0.999996)
+scale = Vector2(0.999994, 0.999994)
 offset = Vector2(-46.2597, -297.433)
 texture = ExtResource("2_8cicw")
 polygon = PackedVector2Array(41.4161, 283.112, 28.6682, 286.725, 19.6015, 301.518, 17.6246, 322.787, 25.5324, 333.899, 25.5324, 368.802, 23.4872, 391.571, 30.4406, 398.866, 53.9594, 401.456, 59.6858, 399.547, 65.4803, 391.503, 65.0031, 360.008, 62.0717, 339.012, 78.7053, 320.947, 77.8191, 294.088, 74.0016, 287.748, 65.9574, 280.317, 45.4381, 280.044)
@@ -217,67 +118,98 @@ texture = ExtResource("3_xoadv")
 [node name="beam_origin" type="Marker2D" parent="antenna/laser_beam"]
 
 [node name="ElectricBones" type="Node2D" parent="."]
-modulate = Color(0.282353, 1, 0.941176, 1)
+modulate = Color(0.0941176, 0.772549, 0.941176, 1)
 
 [node name="left_upper_bolt" parent="ElectricBones" instance=ExtResource("8_omfq0")]
-position = Vector2(-42.9445, -36.2673)
-rotation = 0.20132
-scale = Vector2(0.999919, 0.999919)
-points = PackedVector2Array(-5.81909, -0.378855, -12.3024, -23.2988, -41.015, -25.7059, -44.1736, -57.7647, -60.1177, -60.1447, -67.3061, -62.0722, -77.1097, -91.0327, -91.3917, -91.5146, -99.6107, -121.857, -114.745, -130.561, -123.531, -136.857, -124.747, -150.849)
+position = Vector2(-44.9998, -33.9998)
+rotation = -0.0500621
+scale = Vector2(0.999915, 0.999915)
+points = PackedVector2Array(-5.81909, -0.378855, -25.9986, -14.0917, -42.6453, -29.4903, -39.289, -50.3596, -52.7315, -75.3114, -74.9683, -73.4285, -80.0438, -92.4649, -87.8561, -112.155, -97.0723, -115.092, -112.111, -123.166, -120.267, -144.594, -124.747, -150.849)
 
 [node name="left_lower_bolt" parent="ElectricBones" instance=ExtResource("8_omfq0")]
-position = Vector2(-201.853, -272.429)
-rotation = -2.66148
-scale = Vector2(0.999838, 0.999838)
-points = PackedVector2Array(-93.6142, -30.6694, -105.063, -51.0792, -96.8156, -72.4697, -84.7291, -103.685, -95.1662, -113.063, -95.0785, -123.791, -97.056, -139.055, -100.257, -154.382, -90.791, -183.431, -93.6715, -190.21, -96.6234, -195.752, -92.4153, -227.692, -96.4734, -243.773, -94.9873, -249.847)
+position = Vector2(-238.2, -246.93)
+rotation = -2.58525
+scale = Vector2(0.999831, 0.999831)
+points = PackedVector2Array(-93.6142, -30.6694, -100.962, -39.9876, -102.84, -53.6439, -98.2519, -75.5004, -93.3574, -97.7784, -99.6073, -112.636, -102.132, -119.04, -102.23, -136.939, -100.098, -148.182, -99.4666, -165.371, -94.9522, -182.372, -101.617, -187.648, -92.9605, -220.81, -91.8406, -240.724, -90.7321, -252.844, -94.9873, -249.847)
 
 [node name="body_bolts" type="Node2D" parent="ElectricBones"]
 position = Vector2(1, 24)
-rotation = 0.03902
-scale = Vector2(0.999996, 0.999996)
+rotation = 0.0390199
+scale = Vector2(0.999994, 0.999994)
 
 [node name="body_bolt" parent="ElectricBones/body_bolts" instance=ExtResource("8_omfq0")]
 position = Vector2(1.89648, 22.9436)
 rotation = 0.03902
 scale = Vector2(0.999996, 0.999996)
-points = PackedVector2Array(46.9755, -91.9428, 24.5973, -80.5614, 14.2586, -83.9932, -1.74626, -95.1761, -10.2578, -79.4897, -22.1656, -82.8691, -34.3669, -74.7188, -49.1706, -88.7961, -49.7945, -84.3962)
+points = PackedVector2Array(46.9755, -91.9428, 32.5369, -95.9858, 14.8184, -88.6003, -5.17811, -90.6863, -20.6183, -91.5033, -42.3108, -92.8731, -49.7945, -84.3962)
 
 [node name="body_bolt2" parent="ElectricBones/body_bolts" instance=ExtResource("8_omfq0")]
 position = Vector2(1, 24)
 rotation = 0.03902
 scale = Vector2(0.999996, 0.999996)
-points = PackedVector2Array(78.4619, -9.16551, 74.0871, -20.6241, 70.2066, -37.6433, 70.4678, -57.2097, 57.691, -61.7327, 59.8596, -85.698, 47.986, -91.0395)
+points = PackedVector2Array(78.4619, -9.16551, 72.7691, -22.1039, 61.3632, -28.7803, 63.7629, -43.9321, 62.4946, -57.1433, 51.7636, -68.2914, 53.2892, -78.1366, 47.986, -91.0395)
 
 [node name="body_bolt3" parent="ElectricBones/body_bolts" instance=ExtResource("8_omfq0")]
 position = Vector2(1, 24)
 rotation = 0.03902
 scale = Vector2(0.999996, 0.999996)
-points = PackedVector2Array(60.8945, 48.3797, 70.066, 27.2874, 62.2119, 11.9417, 84.8659, 0.428868, 79.1399, -16.8348, 79.8322, -17.2971)
+points = PackedVector2Array(60.8945, 48.3797, 60.7293, 33.9685, 78.7589, 16.3722, 67.5943, -8.03595, 75.9278, -14.2629, 79.8322, -17.2971)
 
 [node name="body_bolt4" parent="ElectricBones/body_bolts" instance=ExtResource("8_omfq0")]
 position = Vector2(-1.0364, 39.8178)
 rotation = 0.03902
 scale = Vector2(0.971612, 0.550062)
-points = PackedVector2Array(66.2691, 52.9747, 42.9555, 52.994, 30.3533, 40.6426, 6.95834, 33.4743, -11.4117, 51.4719, -19.1807, 30.557, -27.6877, 37.1096)
+points = PackedVector2Array(66.2691, 52.9747, 45.0793, 53.5932, 24.9373, 50.9934, 12.2166, 47.6423, 0.584597, 36.0421, -14.7656, 28.4509, -27.6877, 37.1096)
 
 [node name="body_bolt5" parent="ElectricBones/body_bolts" instance=ExtResource("8_omfq0")]
 position = Vector2(-23.7957, 56.9719)
 rotation = 0.03902
 scale = Vector2(0.999996, 0.999996)
-points = PackedVector2Array(0.0780182, 1.99849, -13.0181, 0.693689, -20.9971, -9.64475, -30.0299, -24.7066, -34.7695, -44.6778)
+points = PackedVector2Array(0.0780182, 1.99849, 0.862381, -11.5494, -15.2, -6.7936, -17.8082, -16.7346, -28.9544, -37.1, -34.7695, -44.6778)
 
 [node name="body_bolt6" parent="ElectricBones/body_bolts" instance=ExtResource("8_omfq0")]
 position = Vector2(1, 24)
 rotation = 0.03902
 scale = Vector2(0.999996, 0.999996)
-points = PackedVector2Array(-60.4446, -15.3552, -51.6433, -28.3512, -52.3798, -41.934, -41.8411, -66.8828, -43.7122, -68.5157, -37.675, -83.3378)
+points = PackedVector2Array(-60.4446, -15.3552, -60.8849, -28.8965, -44.2442, -50.7623, -50.176, -48.8888, -50.8093, -50.7659, -37.6739, -79.8121, -36.7668, -84.3701, -37.675, -83.3378)
+
+[node name="Heart" type="RigidBody2D" parent="."]
+position = Vector2(1, 24)
+rotation = 0.0390199
+scale = Vector2(0.999994, 0.999994)
+collision_layer = 16
+collision_mask = 0
+physics_material_override = SubResource("PhysicsMaterial_66ykw")
+contact_monitor = true
+max_contacts_reported = 5
+script = ExtResource("5_23db0")
+
+[node name="heart_collision_poly" type="CollisionPolygon2D" parent="Heart"]
+position = Vector2(-127.411, -341.292)
+scale = Vector2(1, 1)
+polygon = PackedVector2Array(89.3019, 319.473, 82.4151, 303.604, 82.9142, 292.126, 96.1887, 282.344, 110.661, 285.039, 114.354, 276.855, 136.511, 278.053, 144.995, 287.534, 159.567, 283.941, 171.843, 284.939, 179.429, 295.519, 179.728, 313.285, 173.84, 323.865, 178.032, 335.243, 178.83, 354.007, 172.742, 363.389, 171.245, 384.947, 165.855, 399.719, 153.978, 408.303, 129.724, 406.306, 104.573, 384.548, 92.0966, 364.786, 91.7971, 358.698, 85.4094, 351.611, 82.1157, 337.538, 83.014, 326.16)
+script = ExtResource("4_euerh")
+
+[node name="heart_visible_poly" type="Polygon2D" parent="Heart/heart_collision_poly"]
+modulate = Color(1, 0.72549, 0.164706, 1)
+position = Vector2(123.086, 345.471)
+offset = Vector2(-123.086, -345.471)
+texture = ExtResource("2_8cicw")
+polygon = PackedVector2Array(89.3019, 319.473, 82.4151, 303.604, 82.9142, 292.126, 96.1887, 282.344, 110.661, 285.039, 114.354, 276.855, 136.511, 278.053, 144.995, 287.534, 159.567, 283.941, 171.843, 284.939, 179.429, 295.519, 179.728, 313.285, 173.84, 323.865, 178.032, 335.243, 178.83, 354.007, 172.742, 363.389, 171.245, 384.947, 165.855, 399.719, 153.978, 408.303, 129.724, 406.306, 104.573, 384.548, 92.0966, 364.786, 91.7971, 358.698, 85.4094, 351.611, 82.1157, 337.538, 83.014, 326.16)
+uv = PackedVector2Array(89.3019, 319.473, 82.4151, 303.604, 82.9142, 292.126, 96.1887, 282.344, 110.661, 285.039, 114.354, 276.855, 136.511, 278.053, 144.995, 287.534, 159.567, 283.941, 171.843, 284.939, 179.429, 295.519, 179.728, 313.285, 173.84, 323.865, 178.032, 335.243, 178.83, 354.007, 172.742, 363.389, 171.245, 384.947, 165.855, 399.719, 153.978, 408.303, 129.724, 406.306, 104.573, 384.548, 92.0966, 364.786, 91.7971, 358.698, 85.4094, 351.611, 82.1157, 337.538, 83.014, 326.16)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Heart"]
+libraries = {
+"": SubResource("AnimationLibrary_i6x7e"),
+"HeartAnimations": ExtResource("7_pwl3x")
+}
 
 [node name="Destructibles" type="Node2D" parent="."]
 
 [node name="left_lower" type="AnimatableBody2D" parent="Destructibles"]
-position = Vector2(-201.853, -272.429)
-rotation = -2.66148
-scale = Vector2(0.999838, 0.999838)
+position = Vector2(-238.2, -246.93)
+rotation = -2.58525
+scale = Vector2(0.999831, 0.999831)
 collision_layer = 2
 collision_mask = 2
 physics_material_override = SubResource("PhysicsMaterial_5elrg")
@@ -290,15 +222,23 @@ polygon = PackedVector2Array(516.279, 133.27, 515.995, 156.336, 519.127, 189.084
 script = ExtResource("4_euerh")
 
 [node name="left_lower" type="Polygon2D" parent="Destructibles/left_lower/left_lower"]
+clip_children = 2
 scale = Vector2(0.999888, 0.999888)
 texture = ExtResource("2_8cicw")
 polygon = PackedVector2Array(516.279, 133.27, 515.995, 156.336, 519.127, 189.084, 523.683, 224.11, 526.246, 258.282, 532.796, 267.679, 576.934, 279.069, 592.027, 271.381, 596.014, 256.573, 594.305, 194.494, 590.888, 174.276, 592.027, 146.938, 588.04, 133.27, 598.292, 114.76, 600.57, 89.4159, 592.881, 70.9062, 562.981, 40.7211, 536.213, 35.8801, 517.988, 48.9793, 503.465, 65.2109, 498.909, 89.4159, 501.472, 115.614)
 uv = PackedVector2Array(516.279, 133.27, 515.995, 156.336, 519.127, 189.084, 523.683, 224.11, 526.246, 258.282, 532.796, 267.679, 576.934, 279.069, 592.027, 271.381, 596.014, 256.573, 594.305, 194.494, 590.888, 174.276, 592.027, 146.938, 588.04, 133.27, 598.292, 114.76, 600.57, 89.4159, 592.881, 70.9062, 562.981, 40.7211, 536.213, 35.8801, 517.988, 48.9793, 503.465, 65.2109, 498.909, 89.4159, 501.472, 115.614)
 
+[node name="material_texture" type="Sprite2D" parent="Destructibles/left_lower/left_lower/left_lower"]
+material = ExtResource("7_pyv6p")
+position = Vector2(531.335, 269.088)
+rotation = 2.20422
+scale = Vector2(1.00008, 1.00008)
+texture = ExtResource("8_jbbss")
+
 [node name="left_upper" type="AnimatableBody2D" parent="Destructibles"]
-position = Vector2(-42.9445, -36.2673)
-rotation = 0.20132
-scale = Vector2(0.999919, 0.999919)
+position = Vector2(-44.9998, -33.9998)
+rotation = -0.0500621
+scale = Vector2(0.999915, 0.999915)
 collision_layer = 2
 collision_mask = 2
 physics_material_override = SubResource("PhysicsMaterial_5elrg")
@@ -313,15 +253,22 @@ polygon = PackedVector2Array(354.817, 125.582, 358.235, 164.595, 363.93, 195.064
 script = ExtResource("4_euerh")
 
 [node name="left_upper" type="Polygon2D" parent="Destructibles/left_upper/left_upper"]
+clip_children = 2
 scale = Vector2(0.999946, 0.999946)
 texture = ExtResource("2_8cicw")
 polygon = PackedVector2Array(354.817, 125.582, 358.235, 164.595, 363.93, 195.064, 368.201, 235.501, 367.062, 259.137, 356.811, 269.388, 333.175, 272.236, 304.129, 276.507, 294.447, 269.388, 289.321, 246.037, 279.924, 241.766, 277.646, 197.058, 283.626, 195.919, 279.639, 118.747, 269.673, 112.198, 273.659, 102.801, 261.13, 80.8736, 267.679, 55.5295, 273.09, 56.9533, 281.918, 33.3178, 310.109, 19.9339, 346.274, 22.212, 366.208, 39.2979, 377.314, 59.2314, 379.592, 97.39, 374.181, 113.337)
 uv = PackedVector2Array(353.963, 123.873, 358.235, 164.595, 363.93, 195.064, 368.201, 235.501, 367.062, 259.137, 356.811, 269.388, 333.175, 272.236, 304.129, 276.507, 294.447, 269.388, 289.321, 246.037, 279.924, 241.766, 277.646, 197.058, 283.626, 195.919, 279.639, 118.747, 269.673, 112.198, 273.659, 102.801, 261.13, 80.8736, 267.679, 55.5295, 273.09, 56.9533, 281.918, 33.3178, 310.109, 19.9339, 346.274, 22.212, 366.208, 39.2979, 377.314, 59.2314, 379.592, 97.39, 374.181, 113.337)
 
+[node name="material_texture" type="Sprite2D" parent="Destructibles/left_upper/left_upper/left_upper"]
+material = ExtResource("7_pyv6p")
+position = Vector2(298.336, 116.482)
+rotation = 0.65715
+texture = ExtResource("9_647d2")
+
 [node name="body" type="AnimatableBody2D" parent="Destructibles"]
 position = Vector2(1, 24)
-rotation = 0.03902
-scale = Vector2(0.999996, 0.999996)
+rotation = 0.0390199
+scale = Vector2(0.999994, 0.999994)
 collision_layer = 2
 collision_mask = 2
 physics_material_override = SubResource("PhysicsMaterial_5elrg")
@@ -336,17 +283,23 @@ polygon = PackedVector2Array(757.249, 50.5679, 753.712, 59.9392, 747.878, 89.114
 script = ExtResource("4_euerh")
 
 [node name="body" type="Polygon2D" parent="Destructibles/body/body"]
+clip_children = 2
 texture = ExtResource("2_8cicw")
 polygon = PackedVector2Array(757.249, 50.5679, 753.712, 59.9392, 747.878, 89.114, 736.031, 115.99, 731.434, 132.788, 735.147, 150.469, 741.689, 158.426, 753.889, 203.338, 758.84, 214.831, 776.522, 215.892, 815.422, 219.605, 820.372, 216.245, 884.203, 218.013, 896.934, 210.41, 906.128, 189.369, 918.682, 149.055, 917.091, 134.556, 906.659, 104.851, 901.708, 63.8292, 893.044, 42.0807, 880.313, 34.124, 858.034, 33.4167, 853.791, 37.6603, 827.622, 38.5444, 784.125, 46.5011, 773.693, 49.8606)
 uv = PackedVector2Array(757.249, 50.5679, 753.712, 59.9392, 747.878, 89.114, 736.031, 115.99, 731.434, 132.788, 735.147, 150.469, 741.689, 158.426, 753.889, 203.338, 758.84, 214.831, 776.522, 215.892, 815.422, 219.605, 820.372, 216.245, 884.203, 218.013, 896.934, 210.41, 906.128, 189.369, 918.682, 149.055, 917.091, 134.556, 906.659, 104.851, 901.708, 63.8292, 893.044, 42.0807, 880.313, 34.124, 858.034, 33.4167, 853.791, 37.6603, 827.622, 38.5444, 784.125, 46.5011, 773.693, 49.8606)
 
+[node name="material_texture" type="Sprite2D" parent="Destructibles/body/body/body"]
+material = ExtResource("7_pyv6p")
+position = Vector2(811.443, 127.602)
+rotation = -0.29001
+scale = Vector2(0.999814, 0.999814)
+texture = ExtResource("10_85jmo")
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_d7a3b"),
-"default": ExtResource("5_jhrdh")
+"OneArmedBanditAnimations": ExtResource("5_jhrdh")
 }
 autoplay = "wave_arm"
-script = ExtResource("6_dcxw3")
 
 [node name="IKTargetLeftArm" type="Node2D" parent="."]
 
@@ -360,19 +313,19 @@ modification_stack = SubResource("SkeletonModificationStack2D_t3lrm")
 
 [node name="body_bone" type="Bone2D" parent="Skeleton2D"]
 rotation = 1.30053
-scale = Vector2(0.999996, 0.999996)
+scale = Vector2(0.999994, 0.999994)
 rest = Transform2D(0.266987, 0.963696, -0.963696, 0.266987, 0, 0)
 
 [node name="left_upper_bone" type="Bone2D" parent="Skeleton2D/body_bone"]
 position = Vector2(-37.9623, -49.557)
-rotation = 0.436387
-scale = Vector2(0.999923, 0.999923)
+rotation = 0.185005
+scale = Vector2(0.999921, 0.999921)
 rest = Transform2D(0.906215, 0.422635, -0.422635, 0.906215, -37.9623, -49.557)
 
 [node name="left_lower_bone" type="Bone2D" parent="Skeleton2D/body_bone/left_upper_bone"]
 position = Vector2(-170.813, -114.13)
-rotation = -0.938643
-scale = Vector2(0.999919, 0.999919)
+rotation = -0.61103
+scale = Vector2(0.999916, 0.999916)
 rest = Transform2D(0.590835, -0.806692, 0.806692, 0.590835, -170.813, -114.13)
 
 [node name="hand_bone" type="Bone2D" parent="Skeleton2D/body_bone/left_upper_bone/left_lower_bone"]
@@ -410,6 +363,10 @@ remote_path = NodePath("../../../Destructibles/body")
 [node name="remote_elec_body" type="RemoteTransform2D" parent="Skeleton2D/body_bone"]
 remote_path = NodePath("../../../ElectricBones/body_bolts")
 
+[node name="remote_heart" type="RemoteTransform2D" parent="Skeleton2D/body_bone"]
+position = Vector2(-127.411, -341.292)
+remote_path = NodePath("../../../Heart/heart_collision_poly")
+
 [node name="antenna_bone" type="Bone2D" parent="Skeleton2D/body_bone"]
 position = Vector2(35.3185, -69.4309)
 rest = Transform2D(1, 0, 0, 1, 31.3606, -68.2756)
@@ -419,3 +376,4 @@ rotation = 0.27599
 remote_path = NodePath("../../../../antenna")
 
 [connection signal="item_rect_changed" from="." to="." method="_on_item_rect_changed"]
+[connection signal="body_entered" from="Heart" to="Heart" method="_on_body_entered"]

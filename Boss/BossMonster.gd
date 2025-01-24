@@ -3,10 +3,15 @@ class_name BossMonster
 
 @onready var controller: BossController = $BossController
 @onready var destructibles: Node2D = $Destructibles
+@onready var heart: BossHeart = $Heart
 var arena: Arena
+
+@export var heart_location: DestructibleHitbox
+
 
 #func _init() -> void:
 	#tree_entered.connect(_add_to_arena)
+signal heart_revealed
 
 func _ready() -> void:
 	z_index = RenderLayer.ARENA_ENTITIES
@@ -16,17 +21,20 @@ func _ready() -> void:
 	#item_rect_changed.connect(_on_item_rect_changed)
 	for child in destructibles.get_children():
 		child.boss = self
-		child.tree_exited.connect(_on_shape_destroyed)
-	$Destructibles/left_lower.material_hardness = 3
-	$Destructibles/left_upper.material_hardness = 6
-	$Destructibles/body.material_hardness = 9
-	$Destructibles/left_lower.material_resistance = 2
-	$Destructibles/left_upper.material_resistance = 3
-	$Destructibles/body.material_resistance = 5
+		child.tree_exited.connect(_on_shape_destroyed.bind(child))
+	$Destructibles/left_lower.material_end_cut_threshold = 2
+	$Destructibles/left_upper.material_end_cut_threshold = 3
+	$Destructibles/body.material_end_cut_threshold = 7
+	$Destructibles/left_lower.material_begin_cut_threshold = 4
+	$Destructibles/left_upper.material_begin_cut_threshold = 8
+	$Destructibles/body.material_begin_cut_threshold = 10
 	if get_tree().get_root().get_children().has(self):
 		self.position = get_viewport_rect().size / 2
 
-func _on_shape_destroyed():
+func _on_shape_destroyed(node):
+	if node == heart_location:
+		
+		emit_signal("heart_revealed")
 	if destructibles.get_child_count() == 0:
 		queue_free()
 

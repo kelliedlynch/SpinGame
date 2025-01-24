@@ -16,7 +16,7 @@ func _ready() -> void:
 func execute_attack():
 	var ani = controller.animation_player
 	#_place_beam()
-	ani.play("default/extend_antenna")
+	ani.play("OneArmedBanditAnimations/extend_antenna")
 	atk_perform = create_tween()
 	atk_perform.tween_interval(1.1)
 	atk_perform.tween_callback(_place_beam_aura)
@@ -37,7 +37,7 @@ func _place_beam():
 	beam_line.add_point(beam_aura.points[0])
 	beam_line.add_point(beam_aura.points[1])
 	beam_line.width = beam_width
-	arena.add_child(beam_line)
+	BattleManager.arena.add_child(beam_line)
 	
 func _tween_curve():
 	var aura_tween = create_tween()
@@ -57,7 +57,7 @@ func _place_beam_aura():
 		target = orig_pos + orig_pos.direction_to(target) * ProjectSettings.get_setting("display/window/size/viewport_width")
 		
 	#var curve_ratio = (orig_pos - pos).length_squared() / (orig_pos - target).length_squared()
-	var curve_begin_value: int = beam_width / beam_aura_width
+	var curve_begin_value: float = beam_width / beam_aura_width
 
 	beam_aura = Line2D.new()
 	beam_aura.default_color = Color.CRIMSON
@@ -71,7 +71,7 @@ func _place_beam_aura():
 		#curve.add_point(Vector2(curve_ratio, 1))
 	beam_aura_width_curve.add_point(Vector2(1, 1))
 	beam_aura.width_curve = beam_aura_width_curve
-	arena.add_child(beam_aura)
+	BattleManager.arena.add_child(beam_aura)
 	
 func _remove_beam():
 	beam_aura.queue_free()
@@ -83,7 +83,6 @@ func _deal_damage():
 	ray.target_position = beam_line.points[1] - ray.position
 	add_child(ray)
 	ray.force_raycast_update()
-	var a = ray.get_collider()
 	if ray.get_collider() == Player.entity.hitbox:
 		Player.deal_damage(get_damage())
 	ray.queue_free()

@@ -1,0 +1,75 @@
+[gd_resource type="AnimationLibrary" load_steps=3 format=3 uid="uid://b6u0p2qags3gq"]
+
+[sub_resource type="Animation" id="Animation_pbctb"]
+resource_name = "heartbeat"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("heart_collision_poly/heart_visible_poly:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.633333, 0.8),
+"transitions": PackedFloat32Array(1, 2.2974, 0.353553, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.1, 1.1), Vector2(0.93, 0.93), Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("heart_collision_poly/heart_visible_poly:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.333333, 0.566667, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 0.0349066, 0.0258567, 0.0168069, 0.0]
+}
+
+[sub_resource type="Animation" id="Animation_7ebu6"]
+resource_name = "hurt"
+length = 0.24
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("heart_collision_poly/heart_visible_poly:skew")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0333333, 0.1, 0.133333, 0.166667, 0.2, 0.233333),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 0.165806, -0.289725, 0.0, 0.165806, -0.289725, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("heart_collision_poly/heart_visible_poly:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.0666667, 0.166667),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.35, 1.56), Vector2(1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("heart_collision_poly/heart_visible_poly:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.0666667, 0.133333, 0.233333),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(0.803922, 0.360784, 0.360784, 1), Color(1, 0.849703, 0.607065, 1), Color(1, 0.849703, 0.607065, 1), Color(0.803922, 0.360784, 0.360784, 1)]
+}
+
+[resource]
+_data = {
+"heartbeat": SubResource("Animation_pbctb"),
+"hurt": SubResource("Animation_7ebu6")
+}

@@ -1,7 +1,7 @@
 extends RigidHitbox
 class_name PlayerHitbox
 
-var input_vector := Vector2.ZERO
+
 var destructor: Destructor
 
 func _ready() -> void:
@@ -83,15 +83,13 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 
 	
 func _physics_process(delta: float) -> void:
-	linear_velocity += input_vector
-	input_vector = Vector2.ZERO
-	linear_velocity = linear_velocity.limit_length(Player.max_move_speed)
+
 	
 	if destructor.cut_state == Destructor.CutState.READY:
 		var test = move_and_collide(linear_velocity * delta, true, .08, true)
 		if test != null and test.get_collider() is DestructibleHitbox:
 			var destructible = test.get_collider()
-			if destructor.get_power() >= destructible.material_hardness:
+			if destructor.get_power() >= destructible.material_begin_cut_threshold:
 				destructor.cut_state = Destructor.CutState.BEGIN_CUT
 				destructor.target = destructible
 	elif destructor.cut_state == Destructor.CutState.BEGIN_CUT:

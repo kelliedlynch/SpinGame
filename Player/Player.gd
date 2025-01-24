@@ -39,10 +39,7 @@ func spawn_to_arena(a: Arena):
 	entity = preload("res://Player/PlayerEntity.tscn").instantiate()
 	entity.position = arena.spawn_point
 	arena.add_child(entity)
-	var root = arena.get_tree().root
-	var gui = arena.get_tree().root.find_child("BattleOverlay", true, false)
-	player_health_changed.connect(gui._on_player_health_changed)
-	emit_signal("player_health_changed", current_health, max_health)
+	
+	#emit_signal("player_health_changed", current_health, max_health)
 	took_damage.connect(entity._on_take_damage)
 	current_health = max_health
-	

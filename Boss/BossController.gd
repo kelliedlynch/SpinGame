@@ -12,15 +12,43 @@ var atk_perform: Tween
 var attacks: Array[Node] = []
 var attack_index = 0
 
+var _max_health: int = 100
+var max_health: int:
+	get:
+		return _max_health
+	set(value):
+		_max_health = value
+		emit_signal("boss_health_changed", _current_health, value)
+		
+var _current_health: int = _max_health
+var current_health: int:
+	get:
+		return _current_health
+	set(value):
+		_current_health = value
+		emit_signal("boss_health_changed", value, _max_health)
+		
+signal boss_health_changed
+
+var _boss_phase: BossPhase = BossPhase.NORMAL
+var boss_phase: BossPhase:
+	get: return _boss_phase
+	set(value):
+		emit_signal("boss_phase_changed", _boss_phase, value)
+		_boss_phase = value
+
+signal boss_phase_changed
+
 func _init() -> void:
 	process_mode = ProcessMode.PROCESS_MODE_DISABLED
 
 func _ready() -> void:
 	attacks.append(JumpAndSmash.new(boss, self))
 	attacks.append(LaserBeam.new(boss, self))
+	boss.heart_revealed.connect(set.bind("boss_phase", BossPhase.HEART_EXPOSED))
+	#boss_phase_changed.connect(_on_boss_phase_changed)
 	for atk in attacks:
 		#atk.boss = boss
-		atk.arena = arena
 		add_child(atk)
 		process_mode = ProcessMode.PROCESS_MODE_INHERIT
 
@@ -42,13 +70,23 @@ func attack():
 		attack_index += 1
 	else:
 		attack_index = 0
-		
-#func _on_exiting_tree():
-	#if atk_timer != null:
-		#atk_timer.kill()
-		#animation_player.stop()
+
+#func _on_boss_phase_changed(_old_val, _new_val):
+	#animation_player.get_animation("default/heartbeat").loop_mode = Animation.LOOP_LINEAR
+	#animation_player.play("default/heartbeat")
+	
+
+func deal_damage(dmg: int):
+	current_health -= dmg
+	if current_health <= 0:
+		boss.queue_free()
 
 enum BossState {
 	IDLE,
 	ATTACKING
+}
+
+enum BossPhase {
+	NORMAL,
+	HEART_EXPOSED
 }

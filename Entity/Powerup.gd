@@ -17,8 +17,8 @@ var in_world = false
 #var prev_speed = 0
 
 const SPIN_BOOST = 10
-const MAX_SPIN_BOOST = 6
-const SPIN_ACCEL_BOST = 4
+const MAX_SPIN_BOOST = 3
+const SPIN_ACCEL_BOOST = 1.5
 
 var call_on_collect: Callable = Callable(self, "_on_collect")
 var call_on_process: Callable = Callable(self, "_on_process")
@@ -62,9 +62,9 @@ func _collect(_node):
 		for poly in child.get_children():
 			if poly is not Polygon2D: continue
 			var color_before = Color(poly.color)
-			var gr_mask = Color.LIME_GREEN
+			var gr_mask = Color.DEEP_PINK
 			gr_mask.a = .5
-			var y_mask = Color.GREEN_YELLOW
+			var y_mask = Color.SALMON
 			y_mask.a = .5
 			var on_color = Color(color_before).blend(gr_mask)
 			var off_color = Color(color_before).blend(y_mask)
@@ -80,7 +80,7 @@ func _collect(_node):
 	#prev_speed = target.destructor.spin_speed
 	target.destructor.spin_speed += SPIN_BOOST
 	target.destructor.max_spin_speed += MAX_SPIN_BOOST
-	target.destructor.spin_accel += SPIN_ACCEL_BOST
+	target.destructor.spin_accel *= SPIN_ACCEL_BOOST
 	ticking_down = true
 	
 func _on_process(delta):
@@ -95,7 +95,7 @@ func _on_process(delta):
 func _on_expire():
 	
 	target.destructor.max_spin_speed -= MAX_SPIN_BOOST
-	target.destructor.spin_accel -= SPIN_ACCEL_BOST
+	target.destructor.spin_accel /= SPIN_ACCEL_BOOST
 	target.destructor.spin_speed = clamp(target.destructor.spin_speed, target.destructor.min_spin_speed, target.destructor.max_spin_speed)
 	queue_free()
 
