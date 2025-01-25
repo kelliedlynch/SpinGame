@@ -57,7 +57,7 @@ func _place_beam_aura():
 		target = orig_pos + orig_pos.direction_to(target) * ProjectSettings.get_setting("display/window/size/viewport_width")
 		
 	#var curve_ratio = (orig_pos - pos).length_squared() / (orig_pos - target).length_squared()
-	var curve_begin_value: float = beam_width / beam_aura_width
+	var curve_begin_value: float = beam_width / float(beam_aura_width)
 
 	beam_aura = Line2D.new()
 	beam_aura.default_color = Color.CRIMSON
@@ -84,7 +84,7 @@ func _deal_damage():
 	add_child(ray)
 	ray.force_raycast_update()
 	if ray.get_collider() == Player.entity.hitbox:
-		Player.deal_damage(get_damage())
+		Player.take_damage(get_damage())
 	ray.queue_free()
 	
 func _on_tree_exiting():

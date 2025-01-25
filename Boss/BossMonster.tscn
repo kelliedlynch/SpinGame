@@ -124,13 +124,13 @@ modulate = Color(0.0941176, 0.772549, 0.941176, 1)
 position = Vector2(-44.9998, -33.9998)
 rotation = -0.0500621
 scale = Vector2(0.999915, 0.999915)
-points = PackedVector2Array(-5.81909, -0.378855, -25.9986, -14.0917, -42.6453, -29.4903, -39.289, -50.3596, -52.7315, -75.3114, -74.9683, -73.4285, -80.0438, -92.4649, -87.8561, -112.155, -97.0723, -115.092, -112.111, -123.166, -120.267, -144.594, -124.747, -150.849)
+points = PackedVector2Array(-5.81909, -0.378855, -17.9646, -8.9634, -35.752, -20.5693, -44.442, -42.9593, -48.7734, -52.7712, -56.941, -80.6252, -69.9863, -82.3044, -79.309, -104.094, -84.8359, -113.106, -93.8269, -121.456, -109.45, -142.614, -124.747, -150.849)
 
 [node name="left_lower_bolt" parent="ElectricBones" instance=ExtResource("8_omfq0")]
 position = Vector2(-238.2, -246.93)
 rotation = -2.58525
 scale = Vector2(0.999831, 0.999831)
-points = PackedVector2Array(-93.6142, -30.6694, -100.962, -39.9876, -102.84, -53.6439, -98.2519, -75.5004, -93.3574, -97.7784, -99.6073, -112.636, -102.132, -119.04, -102.23, -136.939, -100.098, -148.182, -99.4666, -165.371, -94.9522, -182.372, -101.617, -187.648, -92.9605, -220.81, -91.8406, -240.724, -90.7321, -252.844, -94.9873, -249.847)
+points = PackedVector2Array(-93.6142, -30.6694, -85.9145, -56.4877, -99.4163, -67.7765, -82.8054, -87.8123, -85.1806, -108.944, -100.431, -107.893, -91.1245, -133.125, -98.944, -143.396, -88.3521, -180.199, -99.0566, -173.989, -94.7648, -203.611, -100.377, -217.536, -96.3559, -237.578, -94.4614, -250.231, -94.9873, -249.847)
 
 [node name="body_bolts" type="Node2D" parent="ElectricBones"]
 position = Vector2(1, 24)
@@ -141,59 +141,58 @@ scale = Vector2(0.999994, 0.999994)
 position = Vector2(1.89648, 22.9436)
 rotation = 0.03902
 scale = Vector2(0.999996, 0.999996)
-points = PackedVector2Array(46.9755, -91.9428, 32.5369, -95.9858, 14.8184, -88.6003, -5.17811, -90.6863, -20.6183, -91.5033, -42.3108, -92.8731, -49.7945, -84.3962)
+points = PackedVector2Array(46.9755, -91.9428, 31.3495, -87.2588, 14.7581, -98.9053, 4.60796, -94.3096, -15.1138, -76.5585, -34.2564, -73.7455, -49.7945, -84.3962)
 
 [node name="body_bolt2" parent="ElectricBones/body_bolts" instance=ExtResource("8_omfq0")]
 position = Vector2(1, 24)
 rotation = 0.03902
 scale = Vector2(0.999996, 0.999996)
-points = PackedVector2Array(78.4619, -9.16551, 72.7691, -22.1039, 61.3632, -28.7803, 63.7629, -43.9321, 62.4946, -57.1433, 51.7636, -68.2914, 53.2892, -78.1366, 47.986, -91.0395)
+points = PackedVector2Array(78.4619, -9.16551, 65.2967, -28.0943, 70.4811, -54.7148, 62.7735, -69.0897, 46.8241, -73.8332, 47.986, -91.0395)
 
 [node name="body_bolt3" parent="ElectricBones/body_bolts" instance=ExtResource("8_omfq0")]
 position = Vector2(1, 24)
 rotation = 0.03902
 scale = Vector2(0.999996, 0.999996)
-points = PackedVector2Array(60.8945, 48.3797, 60.7293, 33.9685, 78.7589, 16.3722, 67.5943, -8.03595, 75.9278, -14.2629, 79.8322, -17.2971)
+points = PackedVector2Array(60.8945, 48.3797, 73.9481, 40.7726, 78.1229, 21.2669, 60.8532, 7.6655, 78.8367, -4.82621, 79.8322, -17.2971)
 
 [node name="body_bolt4" parent="ElectricBones/body_bolts" instance=ExtResource("8_omfq0")]
 position = Vector2(-1.0364, 39.8178)
 rotation = 0.03902
 scale = Vector2(0.971612, 0.550062)
-points = PackedVector2Array(66.2691, 52.9747, 45.0793, 53.5932, 24.9373, 50.9934, 12.2166, 47.6423, 0.584597, 36.0421, -14.7656, 28.4509, -27.6877, 37.1096)
+points = PackedVector2Array(66.2691, 52.9747, 54.6084, 51.0439, 25.5695, 55.7795, 6.59257, 53.6641, -10.1032, 41.5751, -27.6877, 37.1096)
 
 [node name="body_bolt5" parent="ElectricBones/body_bolts" instance=ExtResource("8_omfq0")]
 position = Vector2(-23.7957, 56.9719)
 rotation = 0.03902
 scale = Vector2(0.999996, 0.999996)
-points = PackedVector2Array(0.0780182, 1.99849, 0.862381, -11.5494, -15.2, -6.7936, -17.8082, -16.7346, -28.9544, -37.1, -34.7695, -44.6778)
+points = PackedVector2Array(0.0780182, 1.99849, -10.2396, -11.0113, -10.0008, -29.5024, -19.3211, -36.6208, -29.3739, -30.6024, -34.0564, -34.9789, -34.7695, -44.6778)
 
 [node name="body_bolt6" parent="ElectricBones/body_bolts" instance=ExtResource("8_omfq0")]
 position = Vector2(1, 24)
 rotation = 0.03902
 scale = Vector2(0.999996, 0.999996)
-points = PackedVector2Array(-60.4446, -15.3552, -60.8849, -28.8965, -44.2442, -50.7623, -50.176, -48.8888, -50.8093, -50.7659, -37.6739, -79.8121, -36.7668, -84.3701, -37.675, -83.3378)
+points = PackedVector2Array(-60.4446, -15.3552, -50.7879, -32.7541, -48.8705, -47.2611, -45.9045, -59.9167, -38.7094, -75.5815, -43.4005, -71.4082, -37.675, -83.3378)
 
-[node name="Heart" type="RigidBody2D" parent="."]
+[node name="Heart" type="AnimatableBody2D" parent="."]
 position = Vector2(1, 24)
 rotation = 0.0390199
 scale = Vector2(0.999994, 0.999994)
 collision_layer = 16
 collision_mask = 0
 physics_material_override = SubResource("PhysicsMaterial_66ykw")
-contact_monitor = true
-max_contacts_reported = 5
 script = ExtResource("5_23db0")
 
 [node name="heart_collision_poly" type="CollisionPolygon2D" parent="Heart"]
-position = Vector2(-127.411, -341.292)
+position = Vector2(-122.376, -340.487)
 scale = Vector2(1, 1)
 polygon = PackedVector2Array(89.3019, 319.473, 82.4151, 303.604, 82.9142, 292.126, 96.1887, 282.344, 110.661, 285.039, 114.354, 276.855, 136.511, 278.053, 144.995, 287.534, 159.567, 283.941, 171.843, 284.939, 179.429, 295.519, 179.728, 313.285, 173.84, 323.865, 178.032, 335.243, 178.83, 354.007, 172.742, 363.389, 171.245, 384.947, 165.855, 399.719, 153.978, 408.303, 129.724, 406.306, 104.573, 384.548, 92.0966, 364.786, 91.7971, 358.698, 85.4094, 351.611, 82.1157, 337.538, 83.014, 326.16)
 script = ExtResource("4_euerh")
 
 [node name="heart_visible_poly" type="Polygon2D" parent="Heart/heart_collision_poly"]
 modulate = Color(1, 0.72549, 0.164706, 1)
-position = Vector2(123.086, 345.471)
-offset = Vector2(-123.086, -345.471)
+position = Vector2(133.303, 344.969)
+rotation = 0.0316757
+offset = Vector2(-133.303, -344.969)
 texture = ExtResource("2_8cicw")
 polygon = PackedVector2Array(89.3019, 319.473, 82.4151, 303.604, 82.9142, 292.126, 96.1887, 282.344, 110.661, 285.039, 114.354, 276.855, 136.511, 278.053, 144.995, 287.534, 159.567, 283.941, 171.843, 284.939, 179.429, 295.519, 179.728, 313.285, 173.84, 323.865, 178.032, 335.243, 178.83, 354.007, 172.742, 363.389, 171.245, 384.947, 165.855, 399.719, 153.978, 408.303, 129.724, 406.306, 104.573, 384.548, 92.0966, 364.786, 91.7971, 358.698, 85.4094, 351.611, 82.1157, 337.538, 83.014, 326.16)
 uv = PackedVector2Array(89.3019, 319.473, 82.4151, 303.604, 82.9142, 292.126, 96.1887, 282.344, 110.661, 285.039, 114.354, 276.855, 136.511, 278.053, 144.995, 287.534, 159.567, 283.941, 171.843, 284.939, 179.429, 295.519, 179.728, 313.285, 173.84, 323.865, 178.032, 335.243, 178.83, 354.007, 172.742, 363.389, 171.245, 384.947, 165.855, 399.719, 153.978, 408.303, 129.724, 406.306, 104.573, 384.548, 92.0966, 364.786, 91.7971, 358.698, 85.4094, 351.611, 82.1157, 337.538, 83.014, 326.16)
@@ -217,7 +216,7 @@ sync_to_physics = false
 script = ExtResource("3_yybww")
 
 [node name="left_lower" type="CollisionPolygon2D" parent="Destructibles/left_lower"]
-position = Vector2(-639.394, -338.407)
+position = Vector2(-636.852, -339.996)
 polygon = PackedVector2Array(516.279, 133.27, 515.995, 156.336, 519.127, 189.084, 523.683, 224.11, 526.246, 258.282, 532.796, 267.679, 576.934, 279.069, 592.027, 271.381, 596.014, 256.573, 594.305, 194.494, 590.888, 174.276, 592.027, 146.938, 588.04, 133.27, 598.292, 114.76, 600.57, 89.4159, 592.881, 70.9062, 562.981, 40.7211, 536.213, 35.8801, 517.988, 48.9793, 503.465, 65.2109, 498.909, 89.4159, 501.472, 115.614)
 script = ExtResource("4_euerh")
 
@@ -364,8 +363,7 @@ remote_path = NodePath("../../../Destructibles/body")
 remote_path = NodePath("../../../ElectricBones/body_bolts")
 
 [node name="remote_heart" type="RemoteTransform2D" parent="Skeleton2D/body_bone"]
-position = Vector2(-127.411, -341.292)
-remote_path = NodePath("../../../Heart/heart_collision_poly")
+remote_path = NodePath("../../../Heart")
 
 [node name="antenna_bone" type="Bone2D" parent="Skeleton2D/body_bone"]
 position = Vector2(35.3185, -69.4309)
@@ -375,5 +373,6 @@ rest = Transform2D(1, 0, 0, 1, 31.3606, -68.2756)
 rotation = 0.27599
 remote_path = NodePath("../../../../antenna")
 
-[connection signal="item_rect_changed" from="." to="." method="_on_item_rect_changed"]
-[connection signal="body_entered" from="Heart" to="Heart" method="_on_body_entered"]
+[connection signal="change_tangible_state" from="." to="." method="_on_change_tangible_state"]
+[connection signal="heart_revealed_changed" from="Heart" to="Heart" method="_on_heart_revealed_changed"]
+[connection signal="heart_revealed_changed" from="Heart" to="BossController" method="_on_heart_revealed_changed"]

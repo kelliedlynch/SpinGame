@@ -123,6 +123,9 @@ func _on_move_state_changed(prev: MoveState, curr: MoveState):
 	if prev == MoveState.DASHING and curr == MoveState.MOVING:
 		_end_dash()
 
+#TODO: fix timing and cleanup on dash charge stuff; indicator line should be removed if dash is 
+#		canceled, and new dash shouldn't start if mouse is clicked while space is down
+
 func _begin_dash_charge():
 	destructor.spin_state = PlayerDestructor.SpinState.DASH_CHARGE
 	if dash_tween: dash_tween.kill()
@@ -143,7 +146,7 @@ func _begin_dash_charge():
 	
 func _end_dash_charge():
 	if dash_tween: dash_tween.kill()
-	if dash_charge_indicator:
+	if dash_charge_indicator != null:
 		dash_charge_indicator.queue_free()
 		
 func _begin_dash():
@@ -158,6 +161,10 @@ func _begin_dash():
 
 func _end_dash():
 	destructor.spin_state = PlayerDestructor.SpinState.DEFAULT
+	
+func _exit_tree() -> void:
+	if dash_charge_indicator != null:
+		dash_charge_indicator.queue_free()
 	
 enum MoveState {
 	MOVING,

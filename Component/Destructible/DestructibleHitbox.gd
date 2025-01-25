@@ -31,7 +31,7 @@ var material_linear_damp = 30
 
 var boss: BossMonster
 
-#signal shape_destroyed
+signal shape_destroyed
 
 func _ready() -> void:
 	for child in get_children():
@@ -136,8 +136,8 @@ func apply_destructor(destructor_polys: Array[PackedVector2Array]) -> bool:
 			polys_after_destruct.remove_at(i)
 		i -= 1
 	if polys_after_destruct.is_empty():
-		#emit_signal("shape_destroyed")
-		queue_free()
+		shape_destroyed.emit()
+		#queue_free()
 		return true
 
 	var simplified_polygons: Array[PackedVector2Array] = []
@@ -159,8 +159,8 @@ func apply_destructor(destructor_polys: Array[PackedVector2Array]) -> bool:
 		decayed_polygons.append(simplified_polygons[i])
 
 	if decayed_polygons.is_empty():
-		#emit_signal("shape_destroyed")
-		queue_free()
+		shape_destroyed.emit()
+		#queue_free()
 		return true
 		
 	#if decayed_polygons.size() >= 1:
@@ -254,17 +254,8 @@ func generate_fragment(collision_poly: SGCollPoly, destructor_poly: PackedVector
 				break
 			if dist < closest_distance:
 				closest_distance = dist
-				closest_vertex = collision_poly.to_global(destructor_poly[i])
-	assert(closest_distance < SPARK_DISTANCE)
-	
-	
+				closest_vertex = collision_poly.to_global(destructor_poly[i])	
 
-	
-	#var frag = DebrisFragment.new()
-	#frag.polygon = _get_fragment(spark_size)
-	#frag.color = Color.YELLOW
-	#frag.position = boss.arena.to_local(closest_vertex)
-	#var d_size = PolygonMath.size_of_polygon(destructor_poly)
 	var min_pt = collision_poly.to_global(PolygonMath.min_point(destructor_poly))
 	var max_pt = collision_poly.to_global(PolygonMath.max_point(destructor_poly))
 	var center_point = (max_pt - min_pt) / 2 + min_pt

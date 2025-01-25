@@ -1,8 +1,9 @@
 extends RigidHitbox
 class_name PlayerHitbox
 
-
 var destructor: Destructor
+
+var queued_force: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
 	contact_monitor = true
@@ -18,32 +19,6 @@ func _on_body_entered(node):
 	if node is AnimatableBody2D:
 		pass
 
-#func _on_destroyed_destructible(node):
-	#if destructor.target == node:
-		#destructor.cut_state = Destructor.CutState.READY
-		#destructor.target = null
-
-#func _try_clip_destructible(state: PhysicsDirectBodyState2D) -> bool:
-	#if destructor.target == null:
-		#return false
-	#var destructible = destructor.target
-	#var power = destructor.get_power()
-	#if destructor.cut_state == Destructor.CutState.CUTTING or destructor.cut_state == Destructor.CutState.BEGIN_CUT:
-		#power += destructible.CUT_INERTIA
-	#if power < destructible.material_hardness:
-		#return false
-	#var material_limited_velocity = state.linear_velocity.limit_length(destructible.material_max_cut_speed)
-	#var travel = material_limited_velocity * state.step
-	#var next_frame_shape = destructor.get_next_frame_destructor(travel)
-	#var destructor_hit = destructible.apply_destructor(next_frame_shape)
-	#return destructor_hit
-
-#func _apply_destructible_forces(state: PhysicsDirectBodyState2D):
-	#if destructor.target == null:
-		#return
-	#var destructible = destructor.target
-	#state.linear_velocity.limit_length(state.linear_velocity.length() - destructible.material_linear_damp)
-	#state.linear_velocity = state.linear_velocity.limit_length(destructible.material_max_cut_speed)
 func _apply_destructible_forces(state: PhysicsDirectBodyState2D):
 	if destructor.target == null:
 		return
@@ -52,46 +27,25 @@ func _apply_destructible_forces(state: PhysicsDirectBodyState2D):
 
 
 func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
+	if queued_force != Vector2.ZERO:
+		state.linear_velocity = queued_force
+		queued_force = Vector2.ZERO
 	destructor._integrate_forces(state)
 	_apply_destructible_forces(state)
-	#if destructor.cut_state == Destructor.CutState.BEGIN_CUT:
-		#var clip = _try_clip_destructible(state)
-		#_apply_destructible_forces(state)
-		#if clip == true:
-			#destructor.cut_state = Destructor.CutState.CUTTING
-		#else:
-			#destructor.cut_state = Destructor.CutState.END_CUT
-	#elif destructor.cut_state == Destructor.CutState.CUTTING:
-		#var clip = _try_clip_destructible(state)
-		#_apply_destructible_forces(state)
-		#if clip == false:
-			#destructor.cut_state = Destructor.CutState.END_CUT
-	#elif destructor.cut_state == Destructor.CutState.END_CUT:
-		#var clip = _try_clip_destructible(state)
-		#_apply_destructible_forces(state)
-		#if clip == false:
-			#if destructor.target != null:
-				#for child in destructor.target.get_parent().get_children():
-					#if child == destructor.target:
-						#continue
-					##child.remove_collision_exception_with(self)
-				#destructor.target.tree_exiting.disconnect(_on_destroyed_destructible)
-				#destructor.target = null
-			#destructor.cut_state = Destructor.CutState.READY
-		#else:
-			#destructor.cut_state = Destructor.CutState.CUTTING
-
 	
 func _physics_process(delta: float) -> void:
-
-	
 	if destructor.cut_state == Destructor.CutState.READY:
 		var test = move_and_collide(linear_velocity * delta, true, .08, true)
-		if test != null and test.get_collider() is DestructibleHitbox:
-			var destructible = test.get_collider()
-			if destructor.get_power() >= destructible.material_begin_cut_threshold:
-				destructor.cut_state = Destructor.CutState.BEGIN_CUT
-				destructor.target = destructible
+		if test != null:
+			var collider = test.get_collider()
+			if collider is DestructibleHitbox:
+				var destructible = collider
+				if destructor.get_power() >= destructible.material_begin_cut_threshold:
+					destructor.cut_state = Destructor.CutState.BEGIN_CUT
+					destructor.target = destructible
+			elif collider is BossHeart:
+				collider.get_parent().controller.take_damage(destructor.get_power())
+				pass
 	elif destructor.cut_state == Destructor.CutState.BEGIN_CUT:
 		pass
 	elif destructor.cut_state == Destructor.CutState.CUTTING:

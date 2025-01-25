@@ -11,13 +11,17 @@ func _ready() -> void:
 	RenderingServer.set_default_clear_color(Color(.17, .18, .2, 1))
 	pg_overlay.player_btn.button_down.connect(Player.spawn_to_arena.bind($Arena))
 	BattleManager.spawn_boss_to_arena(null, $Arena)
-	pg_overlay.boss_btn.button_down.connect(BattleManager.spawn_boss_to_arena.bind(null, $Arena))
+	pg_overlay.boss_btn.button_down.connect(_respawn_boss)
 	#Player.spawn_to_arena($Arena)
 	#spawn_boss()
 	spawn_powerup()
 	BattleManager.spawn_player_to_arena($Arena)
-	BattleManager.begin_battle()
+	#BattleManager.begin_battle()
 
+func _respawn_boss():
+	BattleManager.end_battle()
+	BattleManager.spawn_boss_to_arena(null, $Arena)
+	#BattleManager.begin_battle()
 	
 func spawn_powerup():
 	powerup = preload("res://Entity/Powerup.tscn").instantiate()

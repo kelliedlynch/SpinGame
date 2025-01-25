@@ -1,4 +1,6 @@
-[gd_scene format=3 uid="uid://cerhctbexb5pp"]
+[gd_scene load_steps=2 format=3 uid="uid://cerhctbexb5pp"]
+
+[ext_resource type="Texture2D" uid="uid://digac255bew4o" path="res://Graphics/spark_particle_2.png" id="1_7g3qm"]
 
 [node name="DestructorSparks" type="CPUParticles2D"]
 emitting = false
@@ -7,12 +9,15 @@ one_shot = true
 speed_scale = 1.5
 randomness = 0.42
 lifetime_randomness = 0.81
+texture = ExtResource("1_7g3qm")
 spread = 6.0
 gravity = Vector2(0, 0)
 initial_velocity_min = 1000.0
 initial_velocity_max = 1200.0
 orbit_velocity_min = 0.1
 orbit_velocity_max = 0.12
-scale_amount_min = 2.0
-scale_amount_max = 4.0
+angle_min = -167.3
+angle_max = 160.0
+scale_amount_min = 0.03
+scale_amount_max = 0.1
 color = Color(1, 1, 0, 1)

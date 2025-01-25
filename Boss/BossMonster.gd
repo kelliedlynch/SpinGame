@@ -8,10 +8,13 @@ var arena: Arena
 
 @export var heart_location: DestructibleHitbox
 
-
-#func _init() -> void:
-	#tree_entered.connect(_add_to_arena)
-signal heart_revealed
+var _tangible: bool = false
+var tangible: bool:
+	get: return _tangible
+	set(value):
+		emit_signal("change_tangible_state", value)
+		_tangible = value
+signal change_tangible_state
 
 func _ready() -> void:
 	z_index = RenderLayer.ARENA_ENTITIES
@@ -21,7 +24,7 @@ func _ready() -> void:
 	#item_rect_changed.connect(_on_item_rect_changed)
 	for child in destructibles.get_children():
 		child.boss = self
-		child.tree_exited.connect(_on_shape_destroyed.bind(child))
+		child.shape_destroyed.connect(_on_shape_destroyed.bind(child))
 	$Destructibles/left_lower.material_end_cut_threshold = 2
 	$Destructibles/left_upper.material_end_cut_threshold = 3
 	$Destructibles/body.material_end_cut_threshold = 7
@@ -33,8 +36,7 @@ func _ready() -> void:
 
 func _on_shape_destroyed(node):
 	if node == heart_location:
-		
-		emit_signal("heart_revealed")
+		heart.revealed = true
 	if destructibles.get_child_count() == 0:
 		queue_free()
 
@@ -59,3 +61,11 @@ func move_to_position(pos: Vector2):
 		for coll in hitbox.get_children():
 			if coll is CollisionPolygon2D:
 				coll.position = pos
+
+func _on_change_tangible_state(val: bool) -> void:
+	var layer = CollisionLayer.ENEMY_HITBOX if val else CollisionLayer.INTANGIBLE_ENEMY
+	for child: DestructibleHitbox in destructibles.get_children():
+		child.collision_layer = layer
+	if controller.boss.heart.revealed == true:
+		heart.collision_layer = layer
+			

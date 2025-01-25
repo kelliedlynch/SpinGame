@@ -25,7 +25,7 @@ var arena: Arena
 signal took_damage
 signal player_health_changed
 
-func deal_damage(dmg: int) -> void:
+func take_damage(dmg: int) -> void:
 	current_health -= dmg
 	if current_health <= 0:
 		entity.queue_free()

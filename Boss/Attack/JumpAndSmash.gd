@@ -74,7 +74,7 @@ func execute_attack():
 	atk_perform.tween_interval(wave_time / 2)
 	atk_perform.tween_callback(_create_landing_area.bind(target))
 	atk_perform.tween_interval(wave_time / 2)
-	atk_perform.tween_callback(_toggle_collisions)
+	atk_perform.tween_callback(boss.set.bind("tangible", false))
 	atk_perform.tween_callback(ani.play.bind("OneArmedBanditAnimations/jump_up"))
 	var jump_time = ani.get_animation_library("OneArmedBanditAnimations").get_animation("jump_up").length
 	var land_time = ani.get_animation_library("OneArmedBanditAnimations").get_animation("jump_landing").length
@@ -85,21 +85,21 @@ func execute_attack():
 	atk_perform.tween_callback(ani.play.bind("OneArmedBanditAnimations/jump_landing"))
 	atk_perform.tween_interval(land_time * .5)
 	atk_perform.tween_callback(_deal_damage)
-	atk_perform.tween_callback(_toggle_collisions)
+	atk_perform.tween_callback(boss.set.bind("tangible", true))
 	atk_perform.tween_callback(_clear_indicator)
 	atk_perform.tween_callback(boss.controller.set.bind("boss_state", BossController.BossState.IDLE))
 
-func _toggle_collisions():
-	for child in boss.destructibles.get_children():
-		if!(child is PhysicsBody2D): continue
-		if child.collision_layer != CollisionLayer.INTANGIBLE_ENEMY:
-			child.collision_layer = CollisionLayer.INTANGIBLE_ENEMY
-		else:
-			child.collision_layer = CollisionLayer.ENEMY_HITBOX
+#func _toggle_collisions():
+	#for child in boss.destructibles.get_children():
+		#if!(child is PhysicsBody2D): continue
+		#if child.collision_layer != CollisionLayer.INTANGIBLE_ENEMY:
+			#child.collision_layer = CollisionLayer.INTANGIBLE_ENEMY
+		#else:
+			#child.collision_layer = CollisionLayer.ENEMY_HITBOX
 
 func _deal_damage():
 	for body in landing.get_overlapping_bodies():
 		if body is PlayerHitbox and body.owner == Player.entity:
-			Player.deal_damage(get_damage())
+			Player.take_damage(get_damage())
 			return
 	pass
