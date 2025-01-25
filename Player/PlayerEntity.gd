@@ -4,7 +4,7 @@ class_name PlayerEntity
 #var size: Vector2 = Vector2(100, 100)
 @onready var hitbox: PlayerHitbox = $Hitbox
 @onready var destructor: PlayerDestructor = $Hitbox/Destructor
-@onready var blade_sprite: Polygon2D = $Hitbox/saw_blade_coll/saw_blade_vis
+@onready var blade_sprite: Polygon2D = $Hitbox/saw_blade_coll/base_sprite
 @onready var googly_eyes: Node2D = $Hitbox/GooglyEyes
 @onready var animation: AnimationPlayer = $AnimationPlayer
 @onready var charge_sparks: CPUParticles2D = $Hitbox/charge_sparks
@@ -50,7 +50,8 @@ func _on_take_damage(dmg: int):
 
 func _input(event: InputEvent):
 	if event.is_action_pressed("gameplay_begin_dash"):
-		move_state = MoveState.DASH_CHARGING
+		if move_state != MoveState.DASH_CHARGING:
+			move_state = MoveState.DASH_CHARGING
 	elif event.is_action_released("gameplay_begin_dash"):
 		if move_state == MoveState.DASH_CHARGING:
 			move_state = MoveState.DASHING
@@ -151,7 +152,7 @@ func _end_dash_charge():
 		
 func _begin_dash():
 	if dash_tween: dash_tween.kill()
-	if dash_charge_indicator:
+	if dash_charge_indicator != null:
 		dash_charge_indicator.queue_free()
 	destructor.spin_state = PlayerDestructor.SpinState.DASHING
 	dash_tween = create_tween()

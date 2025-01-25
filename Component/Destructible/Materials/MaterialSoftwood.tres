@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="DestructibleMaterial" load_steps=3 format=3 uid="uid://hudkc6si2258"]
+
+[ext_resource type="Script" path="res://Component/Destructible/Materials/DestructibleMaterial.gd" id="1_7aa5h"]
+[ext_resource type="Texture2D" uid="uid://cshnk24yxcpkk" path="res://Graphics/wood5.png" id="2_me7q3"]
+
+[resource]
+script = ExtResource("1_7aa5h")
+texture = ExtResource("2_me7q3")
+begin_cut_threshold = 6.0
+end_cut_threshold = 3.0
+resistance = 2.0
+max_cut_speed = 200.0
+linear_damp = 40.0

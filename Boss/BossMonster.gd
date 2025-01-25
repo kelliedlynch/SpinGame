@@ -8,7 +8,7 @@ var arena: Arena
 
 @export var heart_location: DestructibleHitbox
 
-var _tangible: bool = false
+var _tangible: bool = true
 var tangible: bool:
 	get: return _tangible
 	set(value):
@@ -21,16 +21,9 @@ func _ready() -> void:
 	$shadow.z_index = RenderLayer.ENTITY_SHADOWS
 	$shadow.z_as_relative = false
 	controller.animation_player = $AnimationPlayer
-	#item_rect_changed.connect(_on_item_rect_changed)
 	for child in destructibles.get_children():
 		child.boss = self
-		child.shape_destroyed.connect(_on_shape_destroyed.bind(child))
-	$Destructibles/left_lower.material_end_cut_threshold = 2
-	$Destructibles/left_upper.material_end_cut_threshold = 3
-	$Destructibles/body.material_end_cut_threshold = 7
-	$Destructibles/left_lower.material_begin_cut_threshold = 4
-	$Destructibles/left_upper.material_begin_cut_threshold = 8
-	$Destructibles/body.material_begin_cut_threshold = 10
+		child.shape_destroyed.connect(_on_shape_destroyed)
 	if get_tree().get_root().get_children().has(self):
 		self.position = get_viewport_rect().size / 2
 

@@ -22,8 +22,8 @@ func _on_body_entered(node):
 func _apply_destructible_forces(state: PhysicsDirectBodyState2D):
 	if destructor.target == null:
 		return
-	state.linear_velocity.limit_length(state.linear_velocity.length() - destructor.target.material_linear_damp)
-	state.linear_velocity = state.linear_velocity.limit_length(destructor.target.material_max_cut_speed)
+	state.linear_velocity.limit_length(state.linear_velocity.length() - destructor.target.destructible_material.linear_damp)
+	state.linear_velocity = state.linear_velocity.limit_length(destructor.target.destructible_material.max_cut_speed)
 
 
 func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
@@ -40,7 +40,7 @@ func _physics_process(delta: float) -> void:
 			var collider = test.get_collider()
 			if collider is DestructibleHitbox:
 				var destructible = collider
-				if destructor.get_power() >= destructible.material_begin_cut_threshold:
+				if destructor.get_power() >= destructible.destructible_material.begin_cut_threshold:
 					destructor.cut_state = Destructor.CutState.BEGIN_CUT
 					destructor.target = destructible
 			elif collider is BossHeart:

@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://Player/PlayerEntity.gd" id="1_5veut"]
 [ext_resource type="Script" path="res://Player/PlayerHitbox.gd" id="2_fwe6s"]
 [ext_resource type="Texture2D" uid="uid://g2qfcmanid4n" path="res://Graphics/spark_particle_1.png" id="3_5edmp"]
-[ext_resource type="Script" path="res://Component/SGCollPoly.gd" id="3_vpjxd"]
+[ext_resource type="Script" path="res://Component/SGCollisionPoly.gd" id="3_vpjxd"]
 [ext_resource type="Texture2D" uid="uid://bihviwqlsm5s4" path="res://Graphics/saw blade sprite sheet.png" id="4_l18b3"]
 [ext_resource type="PackedScene" uid="uid://f83mqw1l7iv" path="res://Player/GooglyEyes.tscn" id="5_txnaa"]
 [ext_resource type="Script" path="res://Component/Destructor/PlayerDestructor.gd" id="6_f2o1g"]
@@ -24,7 +24,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Hitbox/saw_blade_coll/saw_blade_vis:position")
+tracks/0/path = NodePath("Hitbox/saw_blade_coll/base_sprite:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -60,7 +60,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Hitbox/saw_blade_coll/saw_blade_vis:color")
+tracks/3/path = NodePath("Hitbox/saw_blade_coll/base_sprite:color")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -76,7 +76,7 @@ length = 0.27
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Hitbox/saw_blade_coll/saw_blade_vis:position")
+tracks/0/path = NodePath("Hitbox/saw_blade_coll/base_sprite:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -112,7 +112,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Hitbox/saw_blade_coll/saw_blade_vis:color")
+tracks/3/path = NodePath("Hitbox/saw_blade_coll/base_sprite:color")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -163,7 +163,7 @@ position = Vector2(-63, -70)
 polygon = PackedVector2Array(46.4749, 9.13386, 18.0909, 27.2395, 4.36397, 53.5142, 4.19554, 86.2735, 21.9647, 114.317, 48.5763, 128.212, 80.3251, 128.044, 107.614, 111.033, 123.025, 83.2422, 122.183, 51.9146, 104.667, 21.6818, 75.8656, 8.2075)
 script = ExtResource("3_vpjxd")
 
-[node name="saw_blade_vis" type="Polygon2D" parent="Hitbox/saw_blade_coll"]
+[node name="base_sprite" type="Polygon2D" parent="Hitbox/saw_blade_coll"]
 position = Vector2(63, 69)
 offset = Vector2(-63, -69)
 texture = ExtResource("4_l18b3")

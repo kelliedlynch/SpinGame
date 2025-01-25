@@ -21,18 +21,18 @@ func _on_destroyed_destructible(node):
 		target = null
 
 func _try_clip_destructible(state: PhysicsDirectBodyState2D) -> bool:
-	if target == null:
+	if target == null or target.boss.tangible == false:
 		return false
 	var destructible = target
 	var power = get_power()
 	#if cut_state == CutState.CUTTING or cut_state == CutState.BEGIN_CUT:
 		#power += destructible.CUT_INERTIA
-	var threshold = destructible.material_end_cut_threshold
+	var threshold = destructible.destructible_material.end_cut_threshold
 	if cut_state == CutState.BEGIN_CUT:
-		threshold = destructible.material_begin_cut_threshold
+		threshold = destructible.destructible_material.begin_cut_threshold
 	if power < threshold:
 		return false
-	var material_limited_velocity = state.linear_velocity.limit_length(destructible.material_max_cut_speed)
+	var material_limited_velocity = state.linear_velocity.limit_length(destructible.destructible_material.max_cut_speed)
 	var travel = material_limited_velocity * state.step
 	var next_frame_shape = get_next_frame_destructor(travel)
 	var destructor_hit = destructible.apply_destructor(next_frame_shape)
@@ -80,7 +80,7 @@ func _physics_process(delta: float) -> void:
 			spin_speed -= spin_decel * delta
 		if spin_state & SpinState.MATERIAL_LIMITED:
 			if target != null:
-				spin_speed -= target.material_resistance * delta
+				spin_speed -= target.destructible_material.resistance * delta
 		if spin_state & SpinState.MIN_LIMITED:
 			spin_speed = clamp(spin_speed, min_spin_speed, INF)
 		if spin_state & SpinState.MAX_LIMITED:

@@ -1,14 +1,13 @@
 extends CollisionPolygon2D
-class_name SGCollPoly
+class_name SGCollisionPoly
 
-@onready var visible_polygon: Polygon2D = get_children()[0]
-
+@onready var base_sprite: Polygon2D = $base_sprite
 
 func find_remote_transform() -> RemoteTransform2D:
 	var remote = _check_children_for_remote(owner, self)
 	return remote
 	
-func _check_children_for_remote(node: Node, remote_node: SGCollPoly) -> RemoteTransform2D:
+func _check_children_for_remote(node: Node, remote_node: SGCollisionPoly) -> RemoteTransform2D:
 	for child in node.get_children():
 		if child is RemoteTransform2D and child.get_path_to(self) == child.remote_path:
 			return child

@@ -36,12 +36,12 @@ func spawn_player_to_arena(to_arena: Arena):
 
 func _on_boss_phase_changed(_phase):
 	boss.controller.process_mode = Node.PROCESS_MODE_DISABLED
-	Player.entity.process_mode = Node.PROCESS_MODE_DISABLED
+	Player.entity.set_deferred("process_mode", Node.PROCESS_MODE_DISABLED)
 	overlay.connect("transition_finished", _on_transition_finished)
 	#overlay._on_boss_phase_changed()
 	
 func _on_transition_finished():
 	boss.controller.process_mode = Node.PROCESS_MODE_INHERIT
-	Player.entity.process_mode = Node.PROCESS_MODE_INHERIT
+	Player.entity.set_deferred("process_mode", Node.PROCESS_MODE_INHERIT)
 	#boss.heart.revealed = true
 	overlay.disconnect("transition_finished", _on_transition_finished)

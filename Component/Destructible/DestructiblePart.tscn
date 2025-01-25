@@ -1,0 +1,15 @@
+[gd_scene load_steps=5 format=3 uid="uid://bls1lf78c4206"]
+
+[ext_resource type="Script" path="res://Component/Destructible/DestructibleHitbox.gd" id="1_douum"]
+[ext_resource type="PhysicsMaterial" uid="uid://bag12883r70j6" path="res://Component/Destructible/DestructiblePhysicsMaterial.tres" id="1_nhsyp"]
+[ext_resource type="Resource" uid="uid://b2crsx5ipyaol" path="res://Component/Destructible/Materials/MaterialHardwood.tres" id="3_p5j5d"]
+[ext_resource type="Texture2D" uid="uid://dwwvwtj3ntr1q" path="res://Graphics/robo_arm_1.png" id="4_bg8ra"]
+
+[node name="DestructiblePart" type="AnimatableBody2D"]
+collision_layer = 2
+collision_mask = 2
+physics_material_override = ExtResource("1_nhsyp")
+sync_to_physics = false
+script = ExtResource("1_douum")
+destructible_material = ExtResource("3_p5j5d")
+sprite_texture = ExtResource("4_bg8ra")

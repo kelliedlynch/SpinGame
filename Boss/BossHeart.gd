@@ -1,7 +1,7 @@
 extends AnimatableBody2D
 class_name BossHeart
 
-@onready var sprite: Polygon2D = $heart_collision_poly/heart_visible_poly
+@onready var sprite: Polygon2D = $SGCollisionPoly/base_sprite
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 var _revealed: bool = false

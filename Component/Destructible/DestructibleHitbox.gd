@@ -1,3 +1,4 @@
+@tool
 extends AnimatableBody2D
 class_name DestructibleHitbox
 
@@ -11,6 +12,8 @@ var SIMPLIFY_THRESHOLD = .005
 var PRUNE_THRESHOLD = .007
 # chunks smaller than this will break off and decay
 var DECAY_THRESHOLD = .015
+# randomly rotate the material texture so everything doesn't look the same
+var OVERLAY_ROTATION = randf_range(0, 2 * PI)
 
 # When generating sparks, look for a point on destructible polygon that's within this distance of
 # a point on destructor polygon
@@ -23,40 +26,76 @@ var SPARK_VERTEX_DRIFT = 6
 var material_chunk_quantity = 6
 
 const CUT_INERTIA = 2
-var material_begin_cut_threshold = 5
-var material_end_cut_threshold = 2
-var material_resistance = 4
-var material_max_cut_speed = 200
-var material_linear_damp = 30
+
+@export var destructible_material: DestructibleMaterial:
+	set(value):
+		destructible_material = value
+		for child in get_children():
+			if child is SGCollisionPoly:
+				_create_material_overlay(child)
+
+@export var sprite_texture: Texture2D:
+	set(value):
+		sprite_texture = value
+		_on_sprite_changed(value)
+		#sprite_texture.changed.connect(_on_sprite_changed)
+
+func _on_sprite_changed(tex: Texture2D):
+	for child in get_children():
+		if child is SGCollisionPoly:
+			child.queue_free()
+	var shape = SGCollisionPoly.new()
+	shape.name = "SGCollisionPoly"
+	var sprite = Polygon2D.new()
+	sprite.texture = tex
+	#sprite.centered = false
+	var polys = _polygons_from_texture(tex)
+	assert(polys.size() == 1)
+	shape.polygon = polys[0]
+	sprite.polygon = polys[0]
+	sprite.name = "base_sprite"
+	shape.base_sprite = sprite
+	sprite.clip_children = CanvasItem.CLIP_CHILDREN_AND_DRAW
+	shape.add_child(sprite)
+	add_child(shape)
+	#shape.owner = get_tree().edited_scene_root
+	#shape.set_deferred("owner", get_tree().edited_scene_root)
+	#sprite.owner = get_tree().edited_scene_root
+	shape.owner = self
+	sprite.owner = self
+	_create_material_overlay(shape)
+	
+func _create_material_overlay(shape: SGCollisionPoly):
+	for child in shape.base_sprite.get_children():
+		if child is Sprite2D:
+			child.queue_free()
+	var overlay = Sprite2D.new()
+	overlay.name = "material_overlay"
+	overlay.texture = destructible_material.texture
+	overlay.material = load("res://Component/Destructible/multiply_canvas_material.tres")
+	overlay.offset = -PolygonMath.size_of_polygon(shape.polygon) / 2
+	overlay.rotation = OVERLAY_ROTATION
+	shape.base_sprite.add_child(overlay)
+	overlay.owner = self
 
 var boss: BossMonster
 
 signal shape_destroyed
 
-func _ready() -> void:
-	for child in get_children():
-		if child is SGCollPoly:
-			#child.tree_exited.connect(_on_child_exited_tree)
-			child.visible_polygon.polygon = child.visible_polygon.uv
-			child.polygon = child.visible_polygon.polygon
-			#call_deferred("_set_color", child.visible_polygon)
+func _polygons_from_texture(tex: Texture2D) -> Array[PackedVector2Array]:
+	var bitmap = BitMap.new()
+	bitmap.create_from_image_alpha(tex.get_image())
+	var polys = bitmap.opaque_to_polygons(Rect2(Vector2.ZERO, tex.get_size()))
+	return polys
 
-#func _set_color(poly: Polygon2D) -> void:
-	#var mat_color = Color.CORNFLOWER_BLUE
-	#mat_color.a = (material_begin_cut_threshold + material_end_cut_threshold) / 10.0
-	#poly.modulate = poly.color.blend(mat_color)
-			
-#func _on_child_exited_tree():
-	#if get_child_count() == 0:
-		#emit_signal("shape_destroyed")
-
-#func _destroy_shape(shape: SGCollPoly) -> void:
-	##shape.tree_exited.connect(_on_shape_exited_tree)
-	#shape.queue_free()
-	#emit_signal("shape_destroyed")
-
-func _on_shape_exited_tree():
+func _enter_tree() -> void:
 	pass
+	
+func _ready() -> void:
+	shape_destroyed.connect(_on_shape_destroyed)
+	
+func _on_shape_destroyed(_node):
+	call_deferred("queue_free")
 	
 func _try_clip(poly: PackedVector2Array, clipper: Array[PackedVector2Array]) -> Array[PackedVector2Array]:
 	var clipped: Array[PackedVector2Array] = []
@@ -100,9 +139,9 @@ func _chunkify_destructor(destructor: Array[PackedVector2Array]) -> Array[Packed
 func apply_destructor(destructor_polys: Array[PackedVector2Array]) -> bool:
 	var screen_size = get_viewport_rect().size
 	var min_side_length = max(screen_size.x, screen_size.y) * SIMPLIFY_THRESHOLD
-	var hitbox_shapes: Array[SGCollPoly] = []
+	var hitbox_shapes: Array[SGCollisionPoly] = []
 	for child in get_children():
-		if child is SGCollPoly:
+		if child is SGCollisionPoly:
 			hitbox_shapes.append(child)
 	var destructor_polys_to_local: Array[PackedVector2Array] = []
 	for poly in destructor_polys:
@@ -136,7 +175,7 @@ func apply_destructor(destructor_polys: Array[PackedVector2Array]) -> bool:
 			polys_after_destruct.remove_at(i)
 		i -= 1
 	if polys_after_destruct.is_empty():
-		shape_destroyed.emit()
+		shape_destroyed.emit(self)
 		#queue_free()
 		return true
 
@@ -159,23 +198,13 @@ func apply_destructor(destructor_polys: Array[PackedVector2Array]) -> bool:
 		decayed_polygons.append(simplified_polygons[i])
 
 	if decayed_polygons.is_empty():
-		shape_destroyed.emit()
+		shape_destroyed.emit(self)
 		#queue_free()
 		return true
-		
-	#if decayed_polygons.size() >= 1:
-		#collision_poly.set_deferred("polygon", decayed_polygons[0])
-		#collision_poly.visible_polygon.set_deferred("polygon", decayed_polygons[0])
-	
-	#if decayed_polygons.size() > 1:
-	#var existing_shapes = hitbox_shapes.size()
+
 	for i in range(0, decayed_polygons.size()):
-		#var coll_shape: CollisionPolygon2D
-		#if existing_shapes > i:
-			#coll_shape = hitbox_shapes[0]
 		var new_coll = hitbox_shapes[0].duplicate()
 		new_coll.polygon = decayed_polygons[i]
-		#new_coll.tree_exited.connect(_on_child_exited_tree)
 		var vis = new_coll.get_children()[0]
 		vis.polygon = new_coll.polygon
 		call_deferred("add_child", new_coll)
@@ -184,9 +213,6 @@ func apply_destructor(destructor_polys: Array[PackedVector2Array]) -> bool:
 	if get_child_count() > 2:
 		pass
 	return true
-
-#func _set_remote_path(remote: RemoteTransform2D, target: SGCollPoly):
-	#remote.remote_path = remote.get_path_to(target)
 
 func _is_prunable(poly: PackedVector2Array) -> bool:
 	var screen_size = get_viewport_rect().size
@@ -236,7 +262,7 @@ func _triangle_fragment(size: Vector2):
 	var triangle = PackedVector2Array([Vector2(0, -size.y / 2.0), Vector2(size.x / 2.0, size.y / 2.0), Vector2(-size.x / 2.0, size.y / 2.0)])
 	return triangle
 	
-func generate_fragment(collision_poly: SGCollPoly, destructor_poly: PackedVector2Array):
+func generate_fragment(collision_poly: SGCollisionPoly, destructor_poly: PackedVector2Array):
 	var closest_vertex = collision_poly.to_global(destructor_poly[0])
 	var closest_distance = 1000000
 	for vertex in collision_poly.polygon:
@@ -270,3 +296,4 @@ func generate_fragment(collision_poly: SGCollPoly, destructor_poly: PackedVector
 	emitter.direction = out_vec
 	BattleManager.arena.add_child(emitter)
 	emitter.emitting = true
+	emitter.finished.connect(emitter.queue_free)
