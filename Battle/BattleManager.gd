@@ -14,6 +14,7 @@ func spawn_boss_to_arena(_b, to_arena: Arena):
 	to_arena.add_child(boss)
 	boss.controller.connect("boss_phase_changed", _on_boss_phase_changed)
 	boss_spawned.emit(boss)
+	boss.controller.boss_defeated.connect(overlay._on_boss_defeated)
 	#monsters.append(boss)
 
 func _ready() -> void:

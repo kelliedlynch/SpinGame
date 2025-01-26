@@ -4,8 +4,8 @@ class_name TargetIndicator
 var width: float
 var height: float
 var polygon: PackedVector2Array
-var line_width: float = 4
-var color: Color = Color(1, 0, 0, .5)
+var line_width: float = 8
+var color: Color = Color(1, .1, .1, .6)
 
 func _ready() -> void:
 	polygon = PolygonMath.generate_ellipse_polygon(width * .9, height * .9)

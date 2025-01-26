@@ -4,7 +4,9 @@ class_name BattleOverlay
 
 @onready var player_health_bar: TextureProgressBar = $VBoxContainer/footer/HBoxContainer/health_bar
 @onready var boss_health_bar: TextureProgressBar = $VBoxContainer/header/HBoxContainer/MarginContainer/boss_health_bar
-@onready var ani: AnimationPlayer = $AnimationPlayer
+@onready var ani_health: AnimationPlayer = $HealthBarAnimationPlayer
+@onready var ani_text: AnimationPlayer = $TextAnimationPlayer
+@onready var transition_text: Node2D = $VBoxContainer/main/transition_text
 
 signal transition_finished
 
@@ -29,7 +31,15 @@ func _on_boss_health_changed(current: int, max_val: int):
 	boss_health_bar.value = current
 	
 func _on_boss_phase_changed(_phase):
-	ani.play("heart_phase_transition")
+	transition_text.transition_text = "Heart Exposed"
+	ani_text.play("slam_transition_text")
 	var tween = create_tween()
-	tween.tween_interval(ani.current_animation_length * .9)
+	tween.tween_interval(.5)
+	tween.tween_callback(ani_health.play.bind("fill_boss_health_bar"))
+	tween.tween_interval(ani_text.current_animation_length * .9)
 	tween.tween_callback(transition_finished.emit)
+
+func _on_boss_defeated():
+	transition_text.transition_text = "You Win"
+	ani_text.play("slam_transition_text")
+	boss_health_bar.visible = false

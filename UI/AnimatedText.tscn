@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bdfc3wj5u7orn"]
+
+[ext_resource type="Script" path="res://AnimatedText.gd" id="1_ncwtw"]
+
+[node name="AnimatedText" type="Node2D"]
+script = ExtResource("1_ncwtw")

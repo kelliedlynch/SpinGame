@@ -19,7 +19,7 @@ var max_health: int:
 		return _max_health
 	set(value):
 		_max_health = value
-		emit_signal("boss_health_changed", _current_health, value)
+		boss_health_changed.emit(_current_health, value)
 		
 var _current_health: int = _max_health
 var current_health: int:
@@ -27,33 +27,33 @@ var current_health: int:
 		return _current_health
 	set(value):
 		_current_health = value
-		emit_signal("boss_health_changed", value, _max_health)
-		
+		boss_health_changed.emit(value, _max_health)
 signal boss_health_changed
 
 var _boss_phase: int = 0
 var boss_phase: int:
 	get: return _boss_phase
 	set(value):
-		emit_signal("boss_phase_changed", value)
+		boss_phase_changed.emit(value)
 		_boss_phase = value
-
 signal boss_phase_changed
 
 var _boss_state: BossState = BossState.IDLE
 var boss_state: BossState:
 	get: return _boss_state
 	set(value):
-		emit_signal("boss_state_changed", _boss_state, value)
+		boss_state_changed.emit(_boss_state, value)
 		_boss_state = value
 signal boss_state_changed
+
+signal boss_defeated
 
 func _init() -> void:
 	process_mode = ProcessMode.PROCESS_MODE_DISABLED
 
 func _ready() -> void:
-	#attacks.append(JumpAndSmash.new(boss, self))
-	#attacks.append(LaserBeam.new(boss, self))
+	attacks.append(JumpAndSmash.new(boss, self))
+	attacks.append(LaserBeam.new(boss, self))
 	attacks.append(AreaMissile.new(boss, self))
 	for atk in attacks:
 		add_child(atk)
@@ -82,6 +82,11 @@ func take_damage(dmg: int):
 	current_health -= dmg
 	boss.heart._on_dealt_damage()
 	if current_health <= 0:
+		var splat = load("res://BloodSplatParticles.tscn").instantiate()
+		splat.global_position = boss.heart.global_position
+		arena.add_child(splat)
+		splat.emitting = true
+		boss_defeated.emit()
 		boss.queue_free()
 		
 func _on_heart_revealed_changed(val: bool) -> void:

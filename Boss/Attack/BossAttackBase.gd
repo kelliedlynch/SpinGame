@@ -19,6 +19,6 @@ func get_damage():
 
 func _random_target_area(area_size: Vector2):
 	var rect: Rect2 = BattleManager.arena.active_area
-	var x = randi_range(rect.position.x + area_size.x / 2, rect.position.x + rect.size.x - area_size.x / 2)
-	var y = randi_range(rect.position.y + area_size.y / 2, rect.position.y + rect.size.y - area_size.y / 2)
+	var x = randi_range(int(rect.position.x + area_size.x / 2), int(rect.position.x + rect.size.x - area_size.x / 2))
+	var y = randi_range(int(rect.position.y + area_size.y / 2), int(rect.position.y + rect.size.y - area_size.y / 2.0))
 	return Vector2(x, y)

@@ -6,8 +6,8 @@
 [resource]
 script = ExtResource("1_wg74u")
 texture = ExtResource("2_hkv0f")
-begin_cut_threshold = 1.0
-end_cut_threshold = 1.0
-resistance = 1.0
-max_cut_speed = 1000.0
-linear_damp = 1.0
+begin_cut_threshold = 10.0
+end_cut_threshold = 6.0
+resistance = 7.0
+max_cut_speed = 200.0
+linear_damp = 40.0

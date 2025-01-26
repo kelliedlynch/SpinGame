@@ -3,7 +3,7 @@ class_name AreaMissile
 
 var missile: Sprite2D
 var target_position: Vector2
-var area_size: Vector2 = Vector2(500, 300)
+var area_size: Vector2 = Vector2(900, 500)
 var target_indicator: TargetIndicator
 var explosion: CPUParticles2D
 @onready var damage_area: Area2D = Area2D.new()
@@ -14,7 +14,7 @@ func _ready():
 func execute_attack():
 	var ani = controller.animation_player
 	ani.play("OneArmedBanditAnimations/fire_missile")
-	target_position = _random_target_area(boss.calculate_size())
+	target_position = _random_target_area(area_size)
 	_draw_target_indicator()
 	atk_perform = create_tween()
 	atk_perform.tween_interval(1.25)
@@ -68,7 +68,11 @@ func _draw_target_indicator():
 	target_indicator.z_index = RenderLayer.AREA_TARGET_INDICATORS
 	target_indicator.global_position = target_position
 	add_child(target_indicator)
-	
+	var tween = create_tween()
+	tween.tween_property(target_indicator, "modulate:a", .7, .1)
+	tween.tween_property(target_indicator, "modulate:a", .4, .1)
+	tween.set_loops(4)
+	tween.finished.connect(target_indicator.set.bind("modulate:a", target_indicator.color.a))
 	var coll = CollisionPolygon2D.new()
 	coll.polygon = target_indicator.polygon
 	coll.global_position = target_position

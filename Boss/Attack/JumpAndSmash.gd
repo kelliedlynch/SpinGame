@@ -24,7 +24,7 @@ func _on_tree_exiting():
 		blink.kill()
 	
 func _set_default_area_poly():
-	area_polygon = PolygonMath.generate_ellipse_polygon(boss.calculate_size().x * 1.7, boss.calculate_size().y * .7)
+	area_polygon = PolygonMath.generate_ellipse_polygon(boss.calculate_size().x * 2.5, boss.calculate_size().y * 1.7)
 	pass
 	
 func _create_landing_area(origin: Vector2):

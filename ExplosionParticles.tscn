@@ -12,18 +12,19 @@ colors = PackedColorArray(1, 1, 1, 1, 0.510499, 0, 0, 1)
 
 [node name="ExplosionParticles" type="CPUParticles2D"]
 emitting = false
-amount = 120
-lifetime = 0.7
+amount = 40
+lifetime = 0.5
 one_shot = true
 randomness = 1.0
 lifetime_randomness = 1.0
 texture = ExtResource("1_x2hdp")
 spread = 180.0
-gravity = Vector2(0, 0)
+gravity = Vector2(0, 500)
 initial_velocity_min = 50.36
 initial_velocity_max = 75.6
 angle_min = -167.3
 angle_max = 181.8
+scale_amount_max = 2.0
 scale_amount_curve = SubResource("Curve_7i611")
 color = Color(1, 1, 0, 1)
 color_ramp = SubResource("Gradient_cl1ta")

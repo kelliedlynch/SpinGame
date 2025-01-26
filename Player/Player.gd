@@ -9,7 +9,7 @@ var max_health: int:
 		return _max_health
 	set(value):
 		_max_health = value
-		emit_signal("player_health_changed", _current_health, value)
+		player_health_changed.emit(_current_health, value)
 		
 var _current_health: int = _max_health
 var current_health: int:
@@ -17,7 +17,7 @@ var current_health: int:
 		return _current_health
 	set(value):
 		_current_health = value
-		emit_signal("player_health_changed", value, _max_health)
+		player_health_changed.emit(value, _max_health)
 
 var entity: PlayerEntity
 var arena: Arena
