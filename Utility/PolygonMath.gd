@@ -20,8 +20,8 @@ static func generate_ellipse_polygon(w: float, h: float, vertex_count = 36) -> P
 	var vertices = PackedVector2Array()
 	var interval = 2 * PI / vertex_count
 	for i in vertex_count:
-		var x = w * cos(interval * i)
-		var y = h * sin(interval * i)
+		var x = w * cos(interval * i) / 2
+		var y = h * sin(interval * i) / 2
 		vertices.append(Vector2(x, y))
 	return vertices
 	

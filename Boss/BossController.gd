@@ -52,11 +52,12 @@ func _init() -> void:
 	process_mode = ProcessMode.PROCESS_MODE_DISABLED
 
 func _ready() -> void:
-	attacks.append(JumpAndSmash.new(boss, self))
-	attacks.append(LaserBeam.new(boss, self))
+	#attacks.append(JumpAndSmash.new(boss, self))
+	#attacks.append(LaserBeam.new(boss, self))
+	attacks.append(AreaMissile.new(boss, self))
 	for atk in attacks:
 		add_child(atk)
-		process_mode = ProcessMode.PROCESS_MODE_INHERIT
+	process_mode = ProcessMode.PROCESS_MODE_INHERIT
 
 func _process(_delta: float) -> void:
 	if boss_state == BossState.IDLE: 

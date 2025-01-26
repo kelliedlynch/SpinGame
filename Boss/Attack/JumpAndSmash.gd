@@ -26,16 +26,6 @@ func _on_tree_exiting():
 func _set_default_area_poly():
 	area_polygon = PolygonMath.generate_ellipse_polygon(boss.calculate_size().x * 1.7, boss.calculate_size().y * .7)
 	pass
-
-func _find_landing_spot():
-	#var arena = boss.get_parent().get_node("Arena")
-	var rect: Rect2 = BattleManager.arena.active_area
-	var full_size = boss.calculate_size()
-	#var walls = arena.get_node("ArenaBorder/LeftWall").shape.size.x
-	var x = randi_range(rect.position.x + full_size.x / 2, rect.position.x + rect.size.x - full_size.x / 2)
-	var y = randi_range(rect.position.y + full_size.y / 2, rect.position.y + rect.size.y - full_size.y / 2)
-	return Vector2(x, y)
-	#return rect.position
 	
 func _create_landing_area(origin: Vector2):
 	#landing = Area2D.new()
@@ -67,7 +57,7 @@ func _clear_indicator():
 
 func execute_attack():
 	var ani = controller.animation_player
-	var target = _find_landing_spot()
+	var target = _random_target_area(boss.calculate_size())
 	ani.play("OneArmedBanditAnimations/wave_arm")
 	atk_perform = create_tween()
 	var wave_time = ani.get_animation("OneArmedBanditAnimations/wave_arm").length

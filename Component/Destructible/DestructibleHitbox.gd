@@ -73,7 +73,7 @@ func _create_material_overlay(shape: SGCollisionPoly):
 	overlay.name = "material_overlay"
 	overlay.texture = destructible_material.texture
 	overlay.material = load("res://Component/Destructible/multiply_canvas_material.tres")
-	overlay.offset = -PolygonMath.size_of_polygon(shape.polygon) / 2
+	overlay.position = PolygonMath.size_of_polygon(shape.polygon) / 2
 	overlay.rotation = OVERLAY_ROTATION
 	shape.base_sprite.add_child(overlay)
 	overlay.owner = self
