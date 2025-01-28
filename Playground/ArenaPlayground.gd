@@ -16,6 +16,7 @@ func _ready() -> void:
 	#spawn_boss()
 	spawn_powerup()
 	BattleManager.spawn_player_to_arena($Arena)
+	BattleManager.begin_battle()
 	#BattleManager.begin_battle()
 
 func _respawn_boss():

@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://Component/Destructible/DestructibleHitbox.gd" id="1_douum"]
 [ext_resource type="PhysicsMaterial" uid="uid://bag12883r70j6" path="res://Component/Destructible/DestructiblePhysicsMaterial.tres" id="1_nhsyp"]
 [ext_resource type="Resource" uid="uid://b2crsx5ipyaol" path="res://Component/Destructible/Materials/MaterialHardwood.tres" id="3_p5j5d"]
-[ext_resource type="Texture2D" uid="uid://dwwvwtj3ntr1q" path="res://Graphics/robo_arm_1.png" id="4_bg8ra"]
+[ext_resource type="Texture2D" uid="uid://iyo1qq4qoah7" path="res://Graphics/robo_body_2.png" id="4_vbhn2"]
 [ext_resource type="Script" path="res://Component/SGCollisionPoly.gd" id="5_giudm"]
 [ext_resource type="Material" uid="uid://dgnrnngx1v76h" path="res://Component/Destructible/multiply_canvas_material.tres" id="6_my84t"]
 [ext_resource type="Texture2D" uid="uid://d4ato4o4ify22" path="res://Graphics/wood1.png" id="7_xr2ng"]
@@ -15,18 +15,20 @@ physics_material_override = ExtResource("1_nhsyp")
 sync_to_physics = false
 script = ExtResource("1_douum")
 destructible_material = ExtResource("3_p5j5d")
-sprite_texture = ExtResource("4_bg8ra")
+sprite_texture = ExtResource("4_vbhn2")
 
-[node name="@CollisionPolygon2D@39950" type="CollisionPolygon2D" parent="."]
-polygon = PackedVector2Array(37, 1, 32, 2, 29, 2, 12, 17, 11, 17, 4, 30, 3, 30, 1, 42, 0, 42, 2, 65, 2, 70, 16, 94, 17, 94, 18, 122, 18, 135, 28, 220, 28, 222, 36, 227, 36, 228, 67, 234, 67, 235, 79, 234, 82, 234, 90, 226, 91, 226, 92, 222, 92, 170, 89, 142, 89, 110, 85, 97, 85, 90, 93, 77, 94, 77, 96, 65, 97, 65, 96, 50, 96, 44, 85, 28, 85, 26, 62, 6, 62, 5, 50, 1, 50, 0, 37, 0)
+[node name="@CollisionPolygon2D@24430" type="CollisionPolygon2D" parent="."]
+position = Vector2(-126, -114.5)
+polygon = PackedVector2Array(115, 1, 96, 3, 94, 3, 88, 18, 88, 21, 61, 29, 58, 29, 33, 44, 31, 44, 12, 62, 11, 62, 3, 81, 2, 81, 0, 90, 0, 122, 6, 144, 6, 147, 21, 174, 21, 176, 40, 193, 41, 193, 44, 203, 44, 205, 57, 221, 57, 222, 73, 227, 73, 228, 123, 229, 137, 229, 177, 220, 179, 220, 185, 211, 186, 211, 188, 200, 188, 197, 210, 182, 212, 182, 227, 165, 228, 165, 247, 134, 248, 134, 251, 117, 252, 117, 251, 103, 251, 97, 245, 79, 245, 76, 234, 60, 234, 58, 219, 44, 219, 43, 202, 32, 202, 31, 181, 23, 177, 23, 177, 13, 172, 9, 172, 8, 139, 1, 139, 0, 115, 0)
 script = ExtResource("5_giudm")
 
-[node name="base_sprite" type="Polygon2D" parent="@CollisionPolygon2D@39950"]
+[node name="base_sprite" type="Polygon2D" parent="@CollisionPolygon2D@24430"]
 clip_children = 2
-texture = ExtResource("4_bg8ra")
-polygon = PackedVector2Array(37, 1, 32, 2, 29, 2, 12, 17, 11, 17, 4, 30, 3, 30, 1, 42, 0, 42, 2, 65, 2, 70, 16, 94, 17, 94, 18, 122, 18, 135, 28, 220, 28, 222, 36, 227, 36, 228, 67, 234, 67, 235, 79, 234, 82, 234, 90, 226, 91, 226, 92, 222, 92, 170, 89, 142, 89, 110, 85, 97, 85, 90, 93, 77, 94, 77, 96, 65, 97, 65, 96, 50, 96, 44, 85, 28, 85, 26, 62, 6, 62, 5, 50, 1, 50, 0, 37, 0)
+texture = ExtResource("4_vbhn2")
+polygon = PackedVector2Array(115, 1, 96, 3, 94, 3, 88, 18, 88, 21, 61, 29, 58, 29, 33, 44, 31, 44, 12, 62, 11, 62, 3, 81, 2, 81, 0, 90, 0, 122, 6, 144, 6, 147, 21, 174, 21, 176, 40, 193, 41, 193, 44, 203, 44, 205, 57, 221, 57, 222, 73, 227, 73, 228, 123, 229, 137, 229, 177, 220, 179, 220, 185, 211, 186, 211, 188, 200, 188, 197, 210, 182, 212, 182, 227, 165, 228, 165, 247, 134, 248, 134, 251, 117, 252, 117, 251, 103, 251, 97, 245, 79, 245, 76, 234, 60, 234, 58, 219, 44, 219, 43, 202, 32, 202, 31, 181, 23, 177, 23, 177, 13, 172, 9, 172, 8, 139, 1, 139, 0, 115, 0)
 
-[node name="material_overlay" type="Sprite2D" parent="@CollisionPolygon2D@39950/base_sprite"]
+[node name="material_overlay" type="Sprite2D" parent="@CollisionPolygon2D@24430/base_sprite"]
 material = ExtResource("6_my84t")
-rotation = 5.26102
+position = Vector2(126, 114.5)
+rotation = 5.98819
 texture = ExtResource("7_xr2ng")

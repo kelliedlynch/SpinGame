@@ -15,7 +15,7 @@
 [ext_resource type="Resource" uid="uid://djov4pn3fgrxx" path="res://Component/Destructible/Materials/MaterialMetal.tres" id="13_j404i"]
 [ext_resource type="Texture2D" uid="uid://eiqpr8h4r6tc" path="res://Graphics/robo_body_1.png" id="14_w5cts"]
 [ext_resource type="AnimationLibrary" uid="uid://big34j5uxesj8" path="res://Boss/OneArmedBanditAnimations.tres" id="15_w5uds"]
-[ext_resource type="Script" path="res://Boss/BossController.gd" id="16_rrtut"]
+[ext_resource type="Script" path="res://Boss/OneArmedBanditController.gd" id="16_umfap"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_66ykw"]
 bounce = 0.46
@@ -93,7 +93,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Skeleton2D/body_bone/left_upper_bone:rotation")
+tracks/2/path = NodePath("Skeleton2D/body_bone/l1_upper_bone:rotation")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -105,7 +105,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Skeleton2D/body_bone/left_upper_bone:position")
+tracks/3/path = NodePath("Skeleton2D/body_bone/l1_upper_bone:position")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -117,7 +117,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("Skeleton2D/body_bone/left_upper_bone/left_lower_bone:rotation")
+tracks/4/path = NodePath("Skeleton2D/body_bone/l1_upper_bone/l1_lower_bone:rotation")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -129,7 +129,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Skeleton2D/body_bone/left_upper_bone/remote_left_upper:scale")
+tracks/5/path = NodePath("Skeleton2D/body_bone/l1_upper_bone/remote_l1_upper:scale")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -141,7 +141,7 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("Destructibles/left_lower:visible")
+tracks/6/path = NodePath("Destructibles/l1_lower:visible")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
@@ -158,15 +158,15 @@ _data = {
 
 [sub_resource type="SkeletonModification2DCCDIK" id="SkeletonModification2DCCDIK_nxhb5"]
 target_nodepath = NodePath("../IKTargetLeftArm")
-tip_nodepath = NodePath("body_bone/left_upper_bone")
+tip_nodepath = NodePath("body_bone/l1_upper_bone")
 
 [sub_resource type="SkeletonModification2DCCDIK" id="SkeletonModification2DCCDIK_rddr3"]
 target_nodepath = NodePath("../IKTargetLeftArm")
-tip_nodepath = NodePath("body_bone/left_upper_bone/left_lower_bone")
+tip_nodepath = NodePath("body_bone/l1_upper_bone/l1_lower_bone")
 
 [sub_resource type="SkeletonModification2DCCDIK" id="SkeletonModification2DCCDIK_dio3r"]
 target_nodepath = NodePath("../IKTargetLeftArm")
-tip_nodepath = NodePath("body_bone/left_upper_bone/left_lower_bone/hand_bone")
+tip_nodepath = NodePath("body_bone/l1_upper_bone/l1_lower_bone/hand_bone")
 
 [sub_resource type="SkeletonModificationStack2D" id="SkeletonModificationStack2D_t3lrm"]
 enabled = true
@@ -190,9 +190,9 @@ uv = PackedVector2Array(862.917, 308.783, 840.266, 304.546, 820.685, 302.354, 79
 
 [node name="antenna" type="Polygon2D" parent="."]
 visible = false
-position = Vector2(38.9999, -43.9999)
+position = Vector2(38.9997, -43.9996)
 rotation = 0.31501
-scale = Vector2(0.999994, 0.999994)
+scale = Vector2(0.99999, 0.99999)
 offset = Vector2(-46.2597, -297.433)
 texture = ExtResource("2_i2rqr")
 polygon = PackedVector2Array(41.4161, 283.112, 28.6682, 286.725, 19.6015, 301.518, 17.6246, 322.787, 25.5324, 333.899, 25.5324, 368.802, 23.4872, 391.571, 30.4406, 398.866, 53.9594, 401.456, 59.6858, 399.547, 65.4803, 391.503, 65.0031, 360.008, 62.0717, 339.012, 78.7053, 320.947, 77.8191, 294.088, 74.0016, 287.748, 65.9574, 280.317, 45.4381, 280.044)
@@ -203,7 +203,6 @@ visible = false
 self_modulate = Color(1, 5.88204e-09, 5.88204e-09, 0)
 position = Vector2(2.83808, 10.6262)
 rotation = 0.0258593
-scale = Vector2(0.550411, 0.624485)
 texture = ExtResource("3_m8cmj")
 
 [node name="beam_origin" type="Marker2D" parent="antenna/laser_beam"]
@@ -212,62 +211,62 @@ texture = ExtResource("3_m8cmj")
 modulate = Color(0.0941176, 0.772549, 0.941176, 1)
 
 [node name="left_upper_bolt" parent="ElectricBones" instance=ExtResource("4_a1x6e")]
-position = Vector2(-42.9443, -36.2671)
+position = Vector2(-42.9441, -36.2668)
 rotation = 0.20132
-scale = Vector2(0.999913, 0.999913)
-points = PackedVector2Array(-5.81909, -0.378855, -1.34318, -15.0468, -27.3891, -13.3258, -20.8004, -33.9106, -35.6599, -30.3996, -50.2461, -41.899, -54.1192, -61.2547, -62.0411, -76.9566, -79.3338, -92.4465, -88.7167, -95.2845, -91.609, -121.844, -101.91, -132.179, -119.896, -136.289, -124.747, -150.849)
+scale = Vector2(0.999901, 0.999901)
+points = PackedVector2Array(-5.81909, -0.378855, -17.9453, -4.33271, -23.4013, -27.137, -29.1885, -40.7873, -42.7683, -39.055, -57.2785, -54.674, -57.5438, -70.4552, -72.558, -84.4123, -87.4333, -96.4586, -101.363, -110.238, -107.456, -136.16, -122.17, -137.806, -124.747, -150.849)
 
 [node name="left_lower_bolt" parent="ElectricBones" instance=ExtResource("4_a1x6e")]
-position = Vector2(-201.852, -272.427)
+position = Vector2(-201.849, -272.424)
 rotation = -2.66148
-scale = Vector2(0.999826, 0.999826)
-points = PackedVector2Array(-93.6142, -30.6694, -100.655, -47.1896, -99.0824, -57.0322, -93.2374, -68.0343, -84.4296, -97.3241, -86.9818, -113.769, -87.205, -127.071, -90.44, -148.768, -90.9681, -165.412, -95.9408, -171.263, -98.981, -183.854, -101.452, -199.536, -94.0745, -220.171, -99.8499, -219.943, -92.1212, -247.934, -94.9873, -249.847)
+scale = Vector2(0.999809, 0.999809)
+points = PackedVector2Array(-93.6142, -30.6694, -85.3333, -43.3874, -91.1906, -61.4834, -82.4043, -77.748, -99.7334, -88.4239, -84.3672, -114.304, -91.9989, -128.923, -94.9991, -145.555, -99.4931, -160.518, -94.0782, -190.336, -99.9827, -189.931, -98.9248, -216.8, -89.7212, -246.37, -97.0418, -243.928, -94.9873, -249.847)
 
 [node name="body_bolts" type="Node2D" parent="ElectricBones"]
 position = Vector2(1, 24)
 rotation = 0.0390199
-scale = Vector2(0.999994, 0.999994)
+scale = Vector2(0.99999, 0.99999)
 
 [node name="body_bolt" parent="ElectricBones/body_bolts" instance=ExtResource("4_a1x6e")]
 position = Vector2(1.89648, 22.9436)
 rotation = 0.03902
 scale = Vector2(0.999996, 0.999996)
-points = PackedVector2Array(46.9755, -91.9428, 36.3068, -85.105, 14.9058, -81.0811, -5.01861, -76.9966, -15.9766, -79.0971, -29.7635, -75.093, -49.7945, -84.3962)
+points = PackedVector2Array(46.9755, -91.9428, 26.2592, -78.9637, 13.0423, -82.4671, -0.875785, -93.6873, -9.00517, -75.7256, -27.8739, -74.3998, -41.4745, -74.6098, -49.7945, -84.3962)
 
 [node name="body_bolt2" parent="ElectricBones/body_bolts" instance=ExtResource("4_a1x6e")]
 position = Vector2(1, 24)
 rotation = 0.03902
 scale = Vector2(0.999996, 0.999996)
-points = PackedVector2Array(78.4619, -9.16551, 73.6697, -26.6577, 57.5894, -39.3058, 66.3257, -70.1825, 46.0476, -81.5618, 47.986, -91.0395)
+points = PackedVector2Array(78.4619, -9.16551, 83.7233, -20.6629, 75.9906, -37.6519, 57.2078, -38.184, 68.6632, -57.0818, 46.4125, -63.2679, 56.484, -83.2205, 56.6926, -99.1195, 47.986, -91.0395)
 
 [node name="body_bolt3" parent="ElectricBones/body_bolts" instance=ExtResource("4_a1x6e")]
 position = Vector2(1, 24)
 rotation = 0.03902
 scale = Vector2(0.999996, 0.999996)
-points = PackedVector2Array(60.8945, 48.3797, 67.1925, 42.7702, 57.2057, 18.4165, 65.7502, 9.32981, 82.474, -3.66278, 80.0697, -12.4706, 79.8322, -17.2971)
+points = PackedVector2Array(60.8945, 48.3797, 71.48, 38.6223, 78.2493, 16.2451, 79.7699, -1.44916, 90.2503, -15.3992, 79.8322, -17.2971)
 
 [node name="body_bolt4" parent="ElectricBones/body_bolts" instance=ExtResource("4_a1x6e")]
 position = Vector2(-1.0364, 39.8178)
 rotation = 0.03902
 scale = Vector2(0.971612, 0.550062)
-points = PackedVector2Array(66.2691, 52.9747, 42.7441, 49.8095, 23.1996, 45.3148, 3.83117, 51.6969, -4.13763, 40.0233, -23.9153, 31.8317, -27.6877, 37.1096)
+points = PackedVector2Array(66.2691, 52.9747, 52.0951, 48.6404, 34.8332, 47.6209, 18.7493, 48.884, 4.89166, 45.0032, -14.92, 45.7627, -27.6877, 37.1096)
 
 [node name="body_bolt5" parent="ElectricBones/body_bolts" instance=ExtResource("4_a1x6e")]
 position = Vector2(-23.7957, 56.9719)
 rotation = 0.03902
 scale = Vector2(0.999996, 0.999996)
-points = PackedVector2Array(0.0780182, 1.99849, -9.1898, -13.9169, -15.8917, -28.7764, -25.5123, -37.8683, -35.0027, -39.6271, -34.7695, -44.6778)
+points = PackedVector2Array(0.0780182, 1.99849, -13.1341, -3.51117, -20.6899, -26.3409, -28.4803, -20.7051, -33.5478, -49.6548, -34.7695, -44.6778)
 
 [node name="body_bolt6" parent="ElectricBones/body_bolts" instance=ExtResource("4_a1x6e")]
 position = Vector2(1, 24)
 rotation = 0.03902
 scale = Vector2(0.999996, 0.999996)
-points = PackedVector2Array(-60.4446, -15.3552, -45.4446, -32.4161, -50.0835, -40.4843, -52.7386, -46.8891, -37.6664, -80.939, -37.675, -83.3378)
+points = PackedVector2Array(-60.4446, -15.3552, -53.117, -35.1455, -53.6037, -44.0597, -49.1926, -55.6901, -35.5318, -84.024, -33.4721, -91.5403, -37.675, -83.3378)
 
 [node name="Heart" type="AnimatableBody2D" parent="."]
 position = Vector2(1, 24)
 rotation = 0.0390199
-scale = Vector2(0.999994, 0.999994)
+scale = Vector2(0.99999, 0.99999)
 collision_layer = 16
 collision_mask = 0
 physics_material_override = SubResource("PhysicsMaterial_66ykw")
@@ -295,26 +294,26 @@ libraries = {
 
 [node name="Destructibles" type="Node2D" parent="."]
 
-[node name="left_lower" type="AnimatableBody2D" parent="Destructibles"]
-position = Vector2(-211.001, 55.0014)
+[node name="l1_lower" type="AnimatableBody2D" parent="Destructibles"]
+position = Vector2(-210.998, 54.9992)
 rotation = -2.66148
-scale = Vector2(0.999826, 0.999826)
+scale = Vector2(0.999809, 0.999809)
 script = ExtResource("8_100vh")
 destructible_material = ExtResource("9_0vd4q")
 sprite_texture = ExtResource("10_xn47u")
 
-[node name="left_upper" type="AnimatableBody2D" parent="Destructibles"]
-position = Vector2(-201, -220.001)
+[node name="l1_upper" type="AnimatableBody2D" parent="Destructibles"]
+position = Vector2(-200.998, -219.998)
 rotation = -0.479069
-scale = Vector2(0.999913, 0.999913)
+scale = Vector2(0.999901, 0.999901)
 script = ExtResource("8_100vh")
 destructible_material = ExtResource("11_ytkgk")
 sprite_texture = ExtResource("12_b2po1")
 
 [node name="body" type="AnimatableBody2D" parent="Destructibles"]
-position = Vector2(-80.0001, -92.0004)
+position = Vector2(-79.9997, -92)
 rotation = 0.0390199
-scale = Vector2(0.999994, 0.999994)
+scale = Vector2(0.99999, 0.99999)
 script = ExtResource("8_100vh")
 destructible_material = ExtResource("13_j404i")
 sprite_texture = ExtResource("14_w5cts")
@@ -329,7 +328,7 @@ autoplay = "wave_arm"
 [node name="IKTargetLeftArm" type="Node2D" parent="."]
 
 [node name="BossController" type="Node2D" parent="."]
-script = ExtResource("16_rrtut")
+script = ExtResource("16_umfap")
 
 [node name="Skeleton2D" type="Skeleton2D" parent="."]
 position = Vector2(1, 24)
@@ -338,22 +337,22 @@ modification_stack = SubResource("SkeletonModificationStack2D_t3lrm")
 
 [node name="body_bone" type="Bone2D" parent="Skeleton2D"]
 rotation = 1.30053
-scale = Vector2(0.999994, 0.999994)
+scale = Vector2(0.99999, 0.99999)
 rest = Transform2D(0.266986, 0.963694, -0.963694, 0.266986, 0, 0)
 
-[node name="left_upper_bone" type="Bone2D" parent="Skeleton2D/body_bone"]
+[node name="l1_upper_bone" type="Bone2D" parent="Skeleton2D/body_bone"]
 position = Vector2(-37.9623, -49.557)
 rotation = 0.436387
-scale = Vector2(0.999919, 0.999919)
+scale = Vector2(0.999911, 0.999911)
 rest = Transform2D(0.906211, 0.422634, -0.422634, 0.906211, -37.9623, -49.557)
 
-[node name="left_lower_bone" type="Bone2D" parent="Skeleton2D/body_bone/left_upper_bone"]
+[node name="l1_lower_bone" type="Bone2D" parent="Skeleton2D/body_bone/l1_upper_bone"]
 position = Vector2(-170.813, -114.13)
 rotation = -0.938643
-scale = Vector2(0.999913, 0.999913)
+scale = Vector2(0.999908, 0.999908)
 rest = Transform2D(0.590832, -0.806687, 0.806687, 0.590832, -170.813, -114.13)
 
-[node name="hand_bone" type="Bone2D" parent="Skeleton2D/body_bone/left_upper_bone/left_lower_bone"]
+[node name="hand_bone" type="Bone2D" parent="Skeleton2D/body_bone/l1_upper_bone/l1_lower_bone"]
 position = Vector2(-178.261, 133.814)
 rotation = 0.337125
 scale = Vector2(0.999998, 0.999998)
@@ -362,22 +361,22 @@ auto_calculate_length_and_angle = false
 length = 37.039
 bone_angle = -190.643
 
-[node name="remote_left_lower" type="RemoteTransform2D" parent="Skeleton2D/body_bone/left_upper_bone/left_lower_bone"]
+[node name="remote_l1_lower" type="RemoteTransform2D" parent="Skeleton2D/body_bone/l1_upper_bone/l1_lower_bone"]
 position = Vector2(-185.272, 199.973)
 rotation = -2.19824
-remote_path = NodePath("../../../../../Destructibles/left_lower")
+remote_path = NodePath("../../../../../Destructibles/l1_lower")
 
-[node name="remote_elec_left_lower" type="RemoteTransform2D" parent="Skeleton2D/body_bone/left_upper_bone/left_lower_bone"]
+[node name="remote_elec_left_lower" type="RemoteTransform2D" parent="Skeleton2D/body_bone/l1_upper_bone/l1_lower_bone"]
 position = Vector2(-30.7501, -88.9102)
 rotation = -2.19824
 remote_path = NodePath("../../../../../ElectricBones/left_lower_bolt")
 
-[node name="remote_left_upper" type="RemoteTransform2D" parent="Skeleton2D/body_bone/left_upper_bone"]
+[node name="remote_l1_upper" type="RemoteTransform2D" parent="Skeleton2D/body_bone/l1_upper_bone"]
 position = Vector2(-235.949, -95.6281)
 rotation = -0.954476
-remote_path = NodePath("../../../../Destructibles/left_upper")
+remote_path = NodePath("../../../../Destructibles/l1_upper")
 
-[node name="remote_elec_left_upper" type="RemoteTransform2D" parent="Skeleton2D/body_bone/left_upper_bone"]
+[node name="remote_elec_left_upper" type="RemoteTransform2D" parent="Skeleton2D/body_bone/l1_upper_bone"]
 position = Vector2(-11.306, -4.60384)
 rotation = -0.274087
 remote_path = NodePath("../../../../ElectricBones/left_upper_bolt")

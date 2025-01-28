@@ -9,6 +9,8 @@ var max_damage: int = 20
 
 var atk_perform: Tween
 
+signal attack_finished
+
 func _init(boss_monster: BossMonster, boss_controller: BossController) -> void:
 	boss = boss_monster
 	controller = boss_controller

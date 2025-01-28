@@ -51,8 +51,10 @@ func _on_sprite_changed(tex: Texture2D):
 	#sprite.centered = false
 	var polys = _polygons_from_texture(tex)
 	assert(polys.size() == 1)
+	#var poly_size = PolygonMath.size_of_polygon(polys[0])
 	shape.polygon = polys[0]
 	sprite.polygon = polys[0]
+	#shape.position = -poly_size / 2
 	sprite.name = "base_sprite"
 	shape.base_sprite = sprite
 	sprite.clip_children = CanvasItem.CLIP_CHILDREN_AND_DRAW

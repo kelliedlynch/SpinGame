@@ -4,6 +4,7 @@ class_name BossMonster
 @onready var controller: BossController = $BossController
 @onready var destructibles: Node2D = $Destructibles
 @onready var heart: BossHeart = $Heart
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
 var arena: Arena
 
 @export var heart_location: DestructibleHitbox
@@ -20,7 +21,8 @@ func _ready() -> void:
 	z_index = RenderLayer.ARENA_ENTITIES
 	$shadow.z_index = RenderLayer.ENTITY_SHADOWS
 	$shadow.z_as_relative = false
-	controller.animation_player = $AnimationPlayer
+	#controller.animation_player = $AnimationPlayer
+	change_tangible_state.connect(_on_change_tangible_state)
 	for child in destructibles.get_children():
 		child.boss = self
 		child.shape_destroyed.connect(_on_shape_destroyed)
@@ -49,11 +51,11 @@ func calculate_size() -> Vector2:
 					if v.y > min_y: max_y = v.y
 	return Vector2(max_x - min_x, max_y - min_y)
 
-func move_to_position(pos: Vector2):
-	for hitbox in destructibles.get_children():
-		for coll in hitbox.get_children():
-			if coll is CollisionPolygon2D:
-				coll.position = pos
+#func move_to_position(pos: Vector2):
+	#for hitbox in destructibles.get_children():
+		#for coll in hitbox.get_children():
+			#if coll is CollisionPolygon2D:
+				#coll.position = pos
 
 func _on_change_tangible_state(val: bool) -> void:
 	var layer = CollisionLayer.ENEMY_HITBOX if val else CollisionLayer.INTANGIBLE_ENEMY

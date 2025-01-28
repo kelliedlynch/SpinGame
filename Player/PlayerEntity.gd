@@ -19,6 +19,8 @@ var move_state: MoveState:
 		_move_state = value
 signal move_state_changed
 
+var invincible_blink: Tween
+
 var input_vector := Vector2.ZERO
 
 var spin_spark_threshold: float = .9
@@ -44,6 +46,15 @@ func _ready() -> void:
 	hitbox.destructor = destructor
 	z_index = RenderLayer.ARENA_ENTITIES
 
+func _on_invincible_state_changed(new_val: bool):
+	if new_val == true:
+		invincible_blink = create_tween()
+		invincible_blink.tween_property(blade_sprite, "modulate:a", .1, .1)
+		invincible_blink.tween_property(blade_sprite, "modulate:a", .7, .1)
+		invincible_blink.set_loops(200)
+	else:
+		invincible_blink.stop()
+		blade_sprite.modulate.a = 1
 
 func _on_take_damage(dmg: int):
 	animation.play("hurt")

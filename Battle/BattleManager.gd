@@ -5,16 +5,18 @@ var boss: BossMonster
 var overlay: BattleOverlay
 
 signal boss_spawned
+signal battle_begun
 
 func spawn_boss_to_arena(_b, to_arena: Arena):
-	boss = preload("res://Boss/BossMonster.tscn").instantiate()
-	var spawn_loc = Vector2(800, 400)
+	boss = preload("res://Boss/SpiderBot.tscn").instantiate()
+	var spawn_loc = Vector2(300, 500)
 	boss.position = spawn_loc
 	boss.arena = to_arena
 	to_arena.add_child(boss)
 	boss.controller.connect("boss_phase_changed", _on_boss_phase_changed)
 	boss_spawned.emit(boss)
 	boss.controller.boss_defeated.connect(overlay._on_boss_defeated)
+	battle_begun.connect(boss.controller._on_battle_begun)
 	#monsters.append(boss)
 
 func _ready() -> void:
@@ -24,6 +26,9 @@ func _ready() -> void:
 	#if overlay == null:
 		#overlay = preload("res://UI/BattleOverlay.tscn").instantiate()
 		#root.add_child(overlay)
+func begin_battle():
+	battle_begun.emit()
+	pass
 	
 func end_battle():
 	if boss != null:
