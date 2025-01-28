@@ -12,8 +12,8 @@ func _ready():
 	add_child(damage_area)
 
 func execute_attack():
-	var ani = controller.animation_player
-	ani.play("OneArmedBanditAnimations/fire_missile")
+	var ani = boss.animation_player
+	ani.play("fire_missile")
 	target_position = _random_target_area(area_size)
 	_draw_target_indicator()
 	atk_perform = create_tween()

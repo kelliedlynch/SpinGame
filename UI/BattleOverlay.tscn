@@ -38,7 +38,7 @@ layout_mode = 2
 layout_mode = 2
 theme_override_constants/separation = 5
 
-[node name="health_label2" type="Label" parent="VBoxContainer/header/HBoxContainer"]
+[node name="boss_name" type="Label" parent="VBoxContainer/header/HBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_font_sizes/font_size = 36

@@ -483,9 +483,6 @@ tracks/10/keys = {
 "values": [-0.383801, -0.200924, -0.501461, -0.383801]
 }
 
-[sub_resource type="Animation" id="Animation_ck18i"]
-resource_name = "jump_up"
-
 [sub_resource type="Animation" id="Animation_tlxnt"]
 length = 0.001
 tracks/0/type = "value"
@@ -631,6 +628,54 @@ tracks/11/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [0.0]
+}
+tracks/12/type = "value"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath("Skeleton2D/body_bone/r2_upper_bone:position")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(91.8915, -4.58819)]
+}
+tracks/13/type = "value"
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/path = NodePath("Skeleton2D/body_bone/l2_upper_bone:position")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-82.2501, -4.79511)]
+}
+tracks/14/type = "value"
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/path = NodePath("Skeleton2D/body_bone/r1_upper_bone:position")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(66.2562, -71.6396)]
+}
+tracks/15/type = "value"
+tracks/15/imported = false
+tracks/15/enabled = true
+tracks/15/path = NodePath("Skeleton2D/body_bone/l1_upper_bone:position")
+tracks/15/interp = 1
+tracks/15/loop_wrap = true
+tracks/15/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-34.5505, -64.7018)]
 }
 
 [sub_resource type="Animation" id="Animation_7hmr6"]
@@ -846,12 +891,208 @@ tracks/14/keys = {
 "values": [0.0, -0.472757, 6.77331, 0.0]
 }
 
+[sub_resource type="Animation" id="Animation_no6lj"]
+resource_name = "fire_missile"
+length = 3.6
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Skeleton2D/body_bone/r2_upper_bone:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.233333, 0.533333, 0.866667, 2.46667, 3.06667, 3.26667, 3.56667),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 0.435275, 1, 1),
+"update": 0,
+"values": [-0.0275881, -0.0275881, -0.436094, 1.28595, 1.28595, -0.100148, -0.708217, -0.0275881]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Skeleton2D/body_bone:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.466667, 0.666667, 1.3, 1.5, 1.86667, 2.46667, 3.13333, 3.56667),
+"transitions": PackedFloat32Array(1, 1, 1, 0.25, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(-2.03428, 36.3437), Vector2(-2.03428, 36.3437), Vector2(1, -29), Vector2(1, -29), Vector2(2, 8), Vector2(3, -10), Vector2(3, -10), Vector2(-2.03428, 36.3437), Vector2(-2.03428, 36.3437)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Skeleton2D/body_bone/r2_upper_bone/r2_lower_bone:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.366667, 0.566667, 0.933333, 2.46667, 3.06667, 3.56667),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 0.435275, 1),
+"update": 0,
+"values": [0.397349, 0.397349, 1.74116, 1.31391, 1.31391, 1.95422, 0.397349]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Skeleton2D/body_bone/l1_upper_bone:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.466667, 1.3, 1.5, 1.86667, 2.46667, 3.06667, 3.56667),
+"transitions": PackedFloat32Array(1, 1, 0.25, 1, 2.63902, 2.63902, 1, 1),
+"update": 0,
+"values": [0.552959, -0.118841, -0.118841, 0.0541033, -0.0846054, -0.0846054, 0.469931, 0.552959]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Skeleton2D/body_bone/l1_upper_bone/l1_mid_bone:rotation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.466667, 0.666667, 1.3, 1.5, 1.86667, 2.46667, 3.06667, 3.56667),
+"transitions": PackedFloat32Array(1, 1, 1, 0.25, 1, 2.63902, 2.63902, 1, 1),
+"update": 0,
+"values": [-0.130746, -1.02137, -0.626322, -0.626322, -0.81628, -0.71544, -0.71544, -0.0967899, -0.130746]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Skeleton2D/body_bone/l1_upper_bone/l1_mid_bone/l1_lower_bone:rotation")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.466667, 0.666667, 1.3, 1.5, 2.46667, 3.06667, 3.56667),
+"transitions": PackedFloat32Array(1, 1, 1, 0.25, 1, 2.63902, 1, 1),
+"update": 0,
+"values": [1.32539, 3.54305, 2.68126, 2.68126, 2.87657, 2.87657, 1.32539, 1.32539]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Skeleton2D/body_bone/l2_upper_bone:rotation")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.233333, 0.533333, 0.933333, 2.46667, 3.06667, 3.26667, 3.56667),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 0.406126, 1, 1),
+"update": 0,
+"values": [0.460958, 0.460958, 0.871061, -1.03321, -1.03321, 0.755056, 1.06041, 0.460958]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Skeleton2D/body_bone/l2_upper_bone/l2_lower_bone:rotation")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.6, 0.933333, 2.46667, 3.06667, 3.56667),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 0.406126, 1),
+"update": 0,
+"values": [-0.383801, -0.383801, -1.73738, -1.12253, -1.12253, -1.98076, -0.383801]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("Skeleton2D/body_bone/r1_upper_bone:rotation")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0, 0.466667, 1.3, 1.5, 1.86667, 2.46667, 3.06667, 3.56667),
+"transitions": PackedFloat32Array(1, 1, 0.267943, 1, 2.63902, 2.63902, 1, 1),
+"update": 0,
+"values": [-0.0771687, 0.706504, 0.706504, 0.403305, 0.497568, 0.497568, -0.00788281, -0.0771687]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("Skeleton2D/body_bone/r1_upper_bone/r1_mid_bone:rotation")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0, 0.466667, 0.766667, 1.3, 1.5, 1.86667, 2.46667, 3.06667, 3.56667),
+"transitions": PackedFloat32Array(1, 1, 1, 0.267943, 1, 2.63902, 2.63902, 1, 1),
+"update": 0,
+"values": [0.521257, 1.48301, 1.21938, 1.21938, 1.41241, 1.36461, 1.36461, 0.521257, 0.521257]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("Skeleton2D/body_bone/r1_upper_bone/r1_mid_bone/r1_lower_bone:rotation")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0, 0.466667, 0.666667, 0.833333, 1.5, 2.46667, 3.06667, 3.56667),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 2.63902, 1, 1),
+"update": 0,
+"values": [-0.0600396, -2.51363, -1.91824, -1.91824, -1.86642, -1.86642, -0.0600396, -0.0600396]
+}
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("Skeleton2D/body_bone:rotation")
+tracks/11/interp = 3
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0, 0.266667, 0.5, 0.766667, 0.966667, 3.56667),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 0.0, 0.0154687, -0.016613, 0.0, 0.0]
+}
+tracks/12/type = "value"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath("Skeleton2D/body_bone/l2_upper_bone:position")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(0, 1.3, 1.5, 3.56667),
+"transitions": PackedFloat32Array(1, 0.267943, 1, 1),
+"update": 0,
+"values": [Vector2(-82.2501, -4.79511), Vector2(-82.2501, -4.79511), Vector2(-81.0005, -39.0002), Vector2(-82.2501, -4.79511)]
+}
+tracks/13/type = "value"
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/path = NodePath("Skeleton2D/body_bone/r2_upper_bone:position")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/keys = {
+"times": PackedFloat32Array(0, 1.3, 1.5, 3.56667),
+"transitions": PackedFloat32Array(1, 0.25, 1, 1),
+"update": 0,
+"values": [Vector2(91.8915, -4.58819), Vector2(91.8915, -4.58819), Vector2(90.0005, -48.0003), Vector2(91.8915, -4.58819)]
+}
+tracks/14/type = "value"
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/path = NodePath("Skeleton2D/body_bone/l1_upper_bone:position")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/keys = {
+"times": PackedFloat32Array(0, 1.3, 1.5, 3.06667, 3.56667),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(-34.5505, -64.7018), Vector2(-34.5505, -64.7018), Vector2(-33.0002, -62.0004), Vector2(-34.5505, -64.7018), Vector2(-34.5505, -64.7018)]
+}
+tracks/15/type = "value"
+tracks/15/imported = false
+tracks/15/enabled = true
+tracks/15/path = NodePath("Skeleton2D/body_bone/r1_upper_bone:position")
+tracks/15/interp = 1
+tracks/15/loop_wrap = true
+tracks/15/keys = {
+"times": PackedFloat32Array(0, 1.3, 1.5, 3.06667, 3.56667),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(66.2562, -71.6396), Vector2(66.2562, -71.6396), Vector2(67.0004, -63.0004), Vector2(66.2562, -71.6396), Vector2(66.2562, -71.6396)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_qlx21"]
 _data = {
 "RESET": SubResource("Animation_tlxnt"),
 "curl_up": SubResource("Animation_a5ypf"),
+"fire_missile": SubResource("Animation_no6lj"),
 "idle": SubResource("Animation_6v1me"),
-"jump_up": SubResource("Animation_ck18i"),
 "roll": SubResource("Animation_7hmr6"),
 "uncurl": SubResource("Animation_j807k")
 }
@@ -870,62 +1111,62 @@ modulate = Color(0.0941176, 0.772549, 0.941176, 1)
 position = Vector2(-43.7871, -38.2126)
 rotation = 0.278872
 scale = Vector2(0.999913, 0.999913)
-points = PackedVector2Array(-5.81909, -0.378855, -18.8922, -12.2557, -19.8883, -24.5992, -38.3851, -38.4617, -39.5008, -53.9428, -55.1925, -47.7273, -62.4451, -72.2935, -67.5345, -83.516, -82.2583, -80.5017, -94.0747, -120.309, -108.467, -123.722)
+points = PackedVector2Array(-5.81909, -0.378855, -10.6127, -22.0513, -22.343, -30.0852, -41.3747, -43.324, -49.3766, -59.1531, -57.6, -72.4687, -74.234, -78.9563, -82.279, -100.01, -93.9584, -94.5738, -103.984, -115.873, -108.467, -123.722)
 
 [node name="l1_mid_bolt" parent="ElectricBones" instance=ExtResource("4_0dv21")]
 position = Vector2(-113.702, -182.903)
 rotation = -1.77603
 scale = Vector2(0.999825, 0.999825)
-points = PackedVector2Array(7, 10, 19.0042, 1.62043, 1.01234, -18.819, 0.0157337, -33.3796, 13.4352, -46.4579, -8.44357, -53.1008, 9.10424, -80.1283, -10.4035, -91.06, -8.59786, -113.288, -5.58495, -139.532, -6.68289, -153.916)
+points = PackedVector2Array(7, 10, 2.18382, -5.43206, -2.20282, -16.8221, -2.48416, -25.6478, 6.871, -38.2896, -5.61717, -49.648, 3.80072, -61.5989, -3.95328, -73.3243, -1.96427, -93.0406, 4.9902, -118.167, -6.05386, -118.334, -2.41107, -146.598, -6.68289, -153.916)
 
 [node name="l1_lower_bolt" parent="ElectricBones" instance=ExtResource("4_0dv21")]
 position = Vector2(-276.896, -134.41)
 rotation = 0.559103
 scale = Vector2(0.959225, 0.904513)
 skew = 0.0638559
-points = PackedVector2Array(7, 10, 5.29155, 28.223, 4.50166, 51.2837, 13.0336, 61.176, -1.54145, 91.1555, 4.99757, 97.5097, 15.2171, 111.751, 7.8707, 128.274, 15.9898, 138.588, 3.57447, 167.419, 10.6738, 170.131)
+points = PackedVector2Array(7, 10, 17.3353, 18.1419, 9.69435, 38.1064, 4.07555, 59.016, 8.73247, 73.1256, 19.5643, 74.9294, 14.6234, 101.297, 11.8421, 119.305, 7.84568, 136.031, 4.68608, 157.5, 4.90547, 172.963, 10.6738, 170.131)
 
 [node name="r1_lower_bolt" parent="ElectricBones" instance=ExtResource("4_0dv21")]
 position = Vector2(289, -133)
 rotation = 0.384049
 scale = Vector2(0.999992, 0.999992)
-points = PackedVector2Array(7, 10, 20.623, 13.7412, 34.6503, 18.6264, 39.7522, 37.0995, 60.2483, 56.0648, 80.9416, 67.812, 98.5352, 78.2853, 117.145, 84.314, 130.491, 86.7886, 140.336, 102.868, 147.045, 96.9705)
+points = PackedVector2Array(7, 10, 11.4847, 18.2909, 28.8283, 10.8096, 32.3442, 26.2211, 42.7081, 41.5508, 63.9247, 54.0185, 73.8945, 51.2008, 87.7529, 64.8609, 99.0857, 78.3541, 108.924, 82.5857, 120.274, 84.0714, 130.802, 83.9696, 142.776, 87.4847, 147.045, 96.9705)
 
 [node name="r1_mid_bolt" parent="ElectricBones" instance=ExtResource("4_0dv21")]
 position = Vector2(126, -178)
 rotation = 0.444088
 scale = Vector2(0.999993, 0.999993)
-points = PackedVector2Array(7, 10, 15.5135, 4.29302, 23.1484, -1.49334, 45.0576, -1.98234, 63.8689, -10.3286, 81.4996, -16.9162, 99.3816, -11.9214, 104.672, -16.2341, 115.85, -31.8341, 144.212, -30.7693, 155.389, -37.9334, 164.464, -38.3819)
+points = PackedVector2Array(7, 10, 30.3155, 11.7423, 46.0407, -8.31098, 58.3511, -6.14999, 84.4145, -7.21073, 84.6106, -25.2063, 107.219, -13.4226, 111.28, -27.6553, 126.823, -29.7435, 134.203, -39.1247, 164.464, -38.3819)
 
 [node name="r1_upper_bolt" parent="ElectricBones" instance=ExtResource("4_0dv21")]
 position = Vector2(64.2215, -35.2955)
 rotation = -0.0771687
 scale = Vector2(0.999993, 0.999993)
-points = PackedVector2Array(14.9952, -24.0032, 20.1683, -39.0153, 34.2605, -46.7859, 31.5887, -58.1888, 46.6562, -74.15, 38.8248, -83.914, 33.3417, -92.0246, 48.914, -112.18, 68.5408, -134.889, 60.2748, -139.24, 66.157, -145.037)
+points = PackedVector2Array(14.9952, -24.0032, 10.4653, -37.8965, 23.3108, -48.2057, 35.1094, -59.815, 34.8569, -72.1588, 38.8934, -86.8757, 56.2846, -100.709, 62.49, -120.952, 47.2081, -121.584, 53.588, -132.52, 66.157, -145.037)
 
 [node name="r2_upper_bolt" parent="ElectricBones" instance=ExtResource("4_0dv21")]
 position = Vector2(89.8567, 31.7555)
-rotation = -0.027588
+rotation = -0.0275881
 scale = Vector2(0.999994, 0.999994)
-points = PackedVector2Array(-4.26578, 1.34284, 5.71768, 9.31766, 20.8618, -0.169617, 38.7393, -2.78267, 56.2009, -15.9275, 71.1032, -19.4396, 88.5784, -24.1603, 99.7289, -29.6326, 115.457, -32.4913, 136.707, -25.6401, 137.996, -28.9602)
+points = PackedVector2Array(-4.26578, 1.34284, 5.24598, 5.5113, 26.8179, 2.63039, 35.8842, -16.7951, 50.2864, -17.7156, 69.1297, -9.75284, 82.5882, -15.7504, 100.349, -21.928, 114.535, -22.8896, 131.128, -21.3861, 140.182, -23.2205, 137.996, -28.9602)
 
 [node name="r2_lower_bolt" parent="ElectricBones" instance=ExtResource("4_0dv21")]
-position = Vector2(218.644, -6.89702)
+position = Vector2(218.644, -6.89703)
 rotation = 0.369761
 scale = Vector2(0.999992, 0.999992)
-points = PackedVector2Array(190.067, 92.992, 175.494, 84.7261, 170.326, 77.8848, 145.95, 75.7331, 123.843, 65.916, 108.593, 52.6538, 80.225, 56.6692, 64.1959, 42.9649, 54.5002, 26.0459, 32.5294, 26.8116)
+points = PackedVector2Array(190.067, 92.992, 159.592, 89.0839, 166.702, 76.9578, 134.94, 73.9127, 109.112, 69.6801, 110.865, 59.6981, 84.1258, 52.7278, 74.8871, 48.7049, 52.1004, 40.1112, 29.265, 37.7461, 32.5294, 26.8116)
 
 [node name="l2_lower_bolt" parent="ElectricBones" instance=ExtResource("4_0dv21")]
 position = Vector2(-194.903, -13.9881)
 rotation = 0.0771569
 scale = Vector2(0.999994, 0.999994)
-points = PackedVector2Array(7, 10, -8.60948, 12.7718, -15.0713, 36.2132, -18.7629, 55.0972, -32.9046, 72.3441, -64.1004, 87.3763, -57.8529, 106.86, -83.2494, 118.91, -89.9211, 133.428, -98.3677, 142.996)
+points = PackedVector2Array(7, 10, 3.17755, 30.593, -20.397, 31.4749, -23.6853, 46.0132, -26.6327, 67.6093, -48.7368, 76.6517, -43.2985, 85.7097, -72.9403, 97.2152, -73.888, 112.872, -71.8988, 122.132, -91.9561, 134.193, -98.3677, 142.996)
 
 [node name="l2_upper_bolt" parent="ElectricBones" instance=ExtResource("4_0dv21")]
 position = Vector2(-84.2839, 31.5486)
 rotation = 0.460958
 scale = Vector2(0.999994, 0.999994)
-points = PackedVector2Array(-4.26578, 1.34284, -17.9039, -2.84066, -35.5057, -2.81736, -48.9026, -0.878421, -61.7762, 9.36045, -81.5929, 7.34953, -95.2304, 10.6197, -117.494, 2.11256, -123.437, 4.8642)
+points = PackedVector2Array(-4.26578, 1.34284, -15.269, -10.2361, -30.4883, 11.268, -50.5786, -1.07257, -75.2342, -3.01326, -82.1894, 1.97321, -102.232, -2.92545, -106.578, 6.29201, -123.437, 4.8642)
 
 [node name="body_bolts" type="Node2D" parent="ElectricBones"]
 position = Vector2(-2.03428, 36.3437)
@@ -935,36 +1176,36 @@ scale = Vector2(0.999994, 0.999994)
 position = Vector2(13.7944, -5.54237)
 rotation = 0.03902
 scale = Vector2(0.999996, 0.999996)
-points = PackedVector2Array(46.9755, -91.9428, 27.0582, -91.7913, 3.52925, -93.728, -4.27668, -88.1485, -21.2585, -78.2934, -39.9021, -95.1673, -56.8919, -78.1744, -61.7717, -84.4421)
+points = PackedVector2Array(46.9755, -91.9428, 25.8564, -97.7392, 7.45892, -83.3102, -3.42726, -92.5101, -21.9666, -93.2244, -34.5573, -95.2657, -43.4151, -97.5028, -63.2432, -90.8369, -61.7717, -84.4421)
 
 [node name="body_bolt2" parent="ElectricBones/body_bolts" instance=ExtResource("4_0dv21")]
 position = Vector2(59.8917, 21.6803)
 rotation = -0.391746
 scale = Vector2(0.999996, 0.999996)
-points = PackedVector2Array(74.8689, -6.53884, 59.8966, -21.8776, 74.2686, -44.6136, 63.0773, -53.4663, 53.5356, -70.6375, 61.8306, -97.0612, 49.953, -100.96)
+points = PackedVector2Array(74.8689, -6.53884, 75.7676, -24.552, 76.7663, -32.7293, 62.328, -43.354, 50.8913, -53.022, 50.6751, -70.191, 52.1571, -89.8825, 49.953, -100.96)
 
 [node name="body_bolt3" parent="ElectricBones/body_bolts" instance=ExtResource("4_0dv21")]
 position = Vector2(29.3532, -17.1582)
 rotation = 0.423614
 scale = Vector2(0.999996, 0.999996)
-points = PackedVector2Array(59.4025, 76.5345, 64.2544, 65.7263, 73.5702, 46.9759, 75.5957, 33.0505, 66.4121, 15.9319, 89.2586, 3.5279, 76.8501, -9.12454, 77.1935, -18.2527, 90.8097, -24.0577)
+points = PackedVector2Array(59.4025, 76.5345, 70.8069, 58.5856, 72.0136, 35.2402, 87.5568, 16.6279, 81.3013, 4.62576, 74.4153, -11.162, 90.8097, -24.0577)
 
 [node name="body_bolt4" parent="ElectricBones/body_bolts" instance=ExtResource("4_0dv21")]
 position = Vector2(-11.3518, 42.4754)
 rotation = 0.03902
-points = PackedVector2Array(74.2146, 38.3311, 53.6989, 39.8126, 36.3128, 45.6883, 14.1338, 36.0151, -7.12134, 52.956, -17.6738, 47.2118, -19.89, 62.3212, -36.8994, 54.0415)
+points = PackedVector2Array(74.2146, 38.3311, 60.1181, 48.8549, 51.7062, 45.8749, 38.1828, 40.7122, 14.822, 38.2998, -5.10246, 47.2334, -19.3154, 47.0273, -39.599, 47.2763, -36.8994, 54.0415)
 
 [node name="body_bolt5" parent="ElectricBones/body_bolts" instance=ExtResource("4_0dv21")]
 position = Vector2(-60.1977, 47.3846)
 rotation = 0.03902
 scale = Vector2(0.999996, 0.999996)
-points = PackedVector2Array(5.03443, 38.7258, -12.2592, 24.7002, -19.4142, 14.2865, -25.0615, -3.67037, -25.0249, -21.2155, -38.4548, -25.5443, -36.3382, -46.9684, -37.639, -45.2037)
+points = PackedVector2Array(5.03443, 38.7258, 5.06, 22.6426, 0.245773, 13.6578, -15.1624, -2.66219, -26.0832, -6.10932, -32.1653, -29.666, -37.639, -45.2037)
 
 [node name="body_bolt6" parent="ElectricBones/body_bolts" instance=ExtResource("4_0dv21")]
 position = Vector2(-48.4559, 14.9017)
 rotation = 0.336481
 scale = Vector2(0.999996, 0.999996)
-points = PackedVector2Array(-60.4446, -15.3552, -62.5757, -24.6932, -60.466, -40.4136, -45.6649, -62.5207, -39.9027, -77.4532, -28.1141, -101.721, -29.7682, -100.055)
+points = PackedVector2Array(-60.4446, -15.3552, -51.3757, -35.5033, -42.5888, -47.4728, -33.5046, -73.5605, -36.9917, -84.4268, -32.3685, -94.1729, -29.7682, -100.055)
 
 [node name="Heart" type="AnimatableBody2D" parent="."]
 position = Vector2(-2.03428, 36.3437)
@@ -1291,54 +1532,54 @@ scale = Vector2(0.158573, 0.158573)
 
 [node name="LightningBolt" parent="DamageBolts" instance=ExtResource("4_0dv21")]
 position = Vector2(-54.2634, 157.523)
-points = PackedVector2Array(92.7778, 57.7778, 75.8418, 55.4589, 67.619, 39.8433, 51.5481, 43.1234, 39.5741, 42.694, 30.609, 14.3792, 14.3761, 9.49016, -10.3854, 4.93116, -20.5272, -8.3077, -45.419, -3.49818, -58.579, -30.6653, -75.1815, -36.4959, -91.9119, -44.0312, -101.001, -44.0003)
+points = PackedVector2Array(92.7778, 57.7778, 78.8841, 58.4342, 81.7863, 43.1969, 65.1965, 41.2796, 49.2451, 34.8042, 36.9704, 34.3821, 31.0853, 26.6077, 26.7137, 9.82045, 8.71595, 12.2903, -6.38117, 6.30647, -28.167, -3.56409, -44.7804, -7.83685, -54.6158, -13.2525, -75.669, -26.2331, -94.0378, -36.8092, -101.001, -44.0003)
 width = 8.0
 default_color = Color(1, 0, 0.2, 1)
 
 [node name="LightningBolt2" parent="DamageBolts" instance=ExtResource("4_0dv21")]
 position = Vector2(187.738, 135.523)
 rotation = -1.03584
-points = PackedVector2Array(77.6918, 62.4507, 70.0918, 52.9373, 50.8511, 42.1158, 36.9184, 36.429, 21.7464, 33.5625, 8.24885, 29.4755, 10.2353, 4.93344, -10.7705, 8.87677, -20.6172, -11.0153, -44.2275, -10.3047, -58.7255, -16.5387, -73.3734, -29.3993, -88.076, -35.7712, -103.861, -62.597, -118.004, -54.4372, -129.994, -75.0119, -140.997, -95.2804, -142.395, -85.3285)
+points = PackedVector2Array(77.6918, 62.4507, 70.7164, 44.7237, 46.3389, 49.8428, 37.0274, 33.3343, 15.7756, 25.4417, 3.77438, 19.648, -12.194, 12.6429, -21.0818, -11.5196, -30.7153, -16.5013, -48.7886, -33.0468, -62.8541, -24.032, -71.3995, -34.1468, -85.0109, -39.816, -96.5083, -48.2326, -106.266, -52.8326, -118.834, -78.8303, -134.453, -72.4555, -142.395, -85.3285)
 width = 8.0
 default_color = Color(1, 0, 0.2, 1)
 
 [node name="LightningBolt3" parent="DamageBolts" instance=ExtResource("4_0dv21")]
 position = Vector2(246.738, 121.523)
 rotation = -1.72587
-points = PackedVector2Array(176, 105, 157.063, 102.162, 159.297, 93.597, 143.004, 83.3908, 116.946, 86.7467, 101.924, 79.0483, 102.068, 71.5707, 79.3903, 73.9625, 76.2594, 62.7319, 62.063, 50.3099, 48.3687, 46.1203, 21.1238, 47.2785, 25.0678, 40.3563)
+points = PackedVector2Array(176, 105, 166.692, 95.2142, 147.948, 86.3828, 113.618, 83.4386, 114.16, 74.6799, 83.2906, 68.926, 70.3974, 67.1654, 76.9699, 53.9276, 44.7665, 53.6076, 28.412, 51.6019, 25.0678, 40.3563)
 width = 8.0
 default_color = Color(1, 0, 0.2, 1)
 
 [node name="LightningBolt4" parent="DamageBolts" instance=ExtResource("4_0dv21")]
 position = Vector2(-161.264, 119.523)
 rotation = -2.25848
-points = PackedVector2Array(7, 10, 11.6132, 21.0589, 29.4936, 6.88546, 48.9486, 24.8475, 55.0103, 45.283, 71.8959, 37.832, 82.7708, 34.2048, 106.901, 60.6243, 114.944, 58.6925, 128.927, 74.509, 145.567, 70.848, 156.256, 79.1793)
+points = PackedVector2Array(7, 10, 20.1612, 4.25216, 27.7497, 9.26932, 35.0669, 16.5863, 48.187, 20.4975, 55.4366, 31.0053, 69.7159, 26.1856, 92.4535, 51.0233, 108.494, 52.119, 125.208, 68.3273, 143.254, 80.9135, 156.256, 79.1793)
 width = 8.0
 default_color = Color(1, 0, 0.2, 1)
 
 [node name="LightningBolt5" parent="DamageBolts" instance=ExtResource("4_0dv21")]
 position = Vector2(-209.264, -48.4781)
 rotation = -1.6016
-points = PackedVector2Array(7, 10, 15.704, 21.2824, 32.0826, 7.97483, 41.7918, 20.822, 55.9102, 36.9235, 72.1934, 32.4456, 91.4542, 38.7086, 103.594, 39.6178, 122.418, 42.7386, 137.535, 60.3707, 153.372, 70.9349, 168.099, 66.5451, 184.233, 70.0971, 208.299, 83.3688, 206.654, 79.4028)
+points = PackedVector2Array(7, 10, 27.569, 26.7075, 44.3731, 16.1902, 53.0803, 22.7151, 65.7807, 33.1123, 89.3887, 33.6738, 113.055, 54.5616, 132.286, 47.4476, 152.185, 57.7516, 176.33, 68.5134, 189.959, 81.1425, 193.21, 74.0962, 206.654, 79.4028)
 width = 8.0
 default_color = Color(1, 0, 0.2, 1)
 
 [node name="LightningBolt6" parent="DamageBolts" instance=ExtResource("4_0dv21")]
 position = Vector2(326.739, -60.4782)
 rotation = -2.71469
-points = PackedVector2Array(7, 10, 29.6994, 22.173, 39.4483, 21.7255, 59.5419, 27.5866, 75.5673, 56.5026, 99.2629, 54.9729, 115.665, 77.7515, 133.964, 84.763, 152.049, 104.113, 165.706, 112.334, 174.048, 111.717, 197.05, 130.844, 202.055, 127.81)
+points = PackedVector2Array(7, 10, 18.313, 25.3061, 44.1466, 19.7838, 63.7688, 32.193, 77.2593, 64.1256, 99.9265, 56.1355, 106.923, 79.3627, 128.777, 74.3994, 142.097, 87.3121, 157.83, 106.703, 176.282, 123.218, 190.767, 116.43, 202.055, 127.81)
 width = 8.0
 default_color = Color(1, 0, 0.2, 1)
 
 [node name="LightningBolt7" parent="DamageBolts" instance=ExtResource("4_0dv21")]
 position = Vector2(204.738, -256.479)
 rotation = -3.6533
-points = PackedVector2Array(7, 10, 19.2053, 7.81528, 25.0835, 34.5172, 41.5026, 44.7143, 60.1868, 53.2558, 76.0969, 55.8492, 99.3721, 69.6014, 123.508, 88.6742, 143.897, 96.8092, 156.714, 89.9574, 166.824, 112.145, 179.549, 113.501, 194.774, 103.671, 209.475, 112.247, 221.14, 139.082, 225.292, 121.796, 252.847, 158.057, 265.327, 153.35, 276.005, 168.575, 281.412, 162.63)
+points = PackedVector2Array(7, 10, 28.0602, 22.7979, 49.9189, 21.5962, 61.8144, 52.3557, 78.2094, 58.9949, 94.2671, 70.1694, 110.746, 78.074, 131.98, 75.5741, 154.599, 85.1423, 166.169, 111.344, 184.552, 121.917, 205.96, 125.521, 226.288, 142.157, 244.463, 137.197, 259.204, 148.192, 278.061, 167.108, 281.412, 162.63)
 width = 8.0
 default_color = Color(1, 0, 0.2, 1)
 
 [node name="Marker2D" type="Marker2D" parent="."]
-position = Vector2(-56, 144)
+position = Vector2(-348, -14)
 gizmo_extents = 546.8
 
 [connection signal="heart_revealed_changed" from="Heart" to="Heart" method="_on_heart_revealed_changed"]

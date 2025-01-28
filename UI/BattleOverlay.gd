@@ -3,6 +3,7 @@ extends AspectRatioContainer
 class_name BattleOverlay
 
 @onready var player_health_bar: TextureProgressBar = $VBoxContainer/footer/HBoxContainer/health_bar
+@onready var boss_name: Label = $VBoxContainer/header/HBoxContainer/boss_name
 @onready var boss_health_bar: TextureProgressBar = $VBoxContainer/header/HBoxContainer/MarginContainer/boss_health_bar
 @onready var ani_health: AnimationPlayer = $HealthBarAnimationPlayer
 @onready var ani_text: AnimationPlayer = $TextAnimationPlayer
@@ -21,6 +22,7 @@ func _ready() -> void:
 func _on_boss_spawned(boss: BossMonster):
 	boss.controller.boss_health_changed.connect(_on_boss_health_changed)
 	boss.controller.connect("boss_phase_changed", _on_boss_phase_changed)
+	boss_name.text = boss.boss_name
 
 func _on_player_health_changed(current: int, max_val: int):
 	player_health_bar.max_value = max_val

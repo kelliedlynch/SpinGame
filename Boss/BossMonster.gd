@@ -1,6 +1,7 @@
 extends Node2D
 class_name BossMonster
 
+var boss_name = "Boss Name"
 @onready var controller: BossController = $BossController
 @onready var destructibles: Node2D = $Destructibles
 @onready var heart: BossHeart = $Heart
