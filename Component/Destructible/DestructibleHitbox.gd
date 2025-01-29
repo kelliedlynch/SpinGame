@@ -38,7 +38,6 @@ const CUT_INERTIA = 2
 	set(value):
 		sprite_texture = value
 		_on_sprite_changed(value)
-		#sprite_texture.changed.connect(_on_sprite_changed)
 
 func _on_sprite_changed(tex: Texture2D):
 	for child in get_children():
@@ -48,21 +47,15 @@ func _on_sprite_changed(tex: Texture2D):
 	shape.name = "SGCollisionPoly"
 	var sprite = Polygon2D.new()
 	sprite.texture = tex
-	#sprite.centered = false
-	var polys = _polygons_from_texture(tex)
+	var polys = PolygonMath.polygons_from_texture(tex)
 	assert(polys.size() == 1)
-	#var poly_size = PolygonMath.size_of_polygon(polys[0])
 	shape.polygon = polys[0]
 	sprite.polygon = polys[0]
-	#shape.position = -poly_size / 2
 	sprite.name = "base_sprite"
 	shape.base_sprite = sprite
 	sprite.clip_children = CanvasItem.CLIP_CHILDREN_AND_DRAW
 	shape.add_child(sprite)
 	add_child(shape)
-	#shape.owner = get_tree().edited_scene_root
-	#shape.set_deferred("owner", get_tree().edited_scene_root)
-	#sprite.owner = get_tree().edited_scene_root
 	shape.owner = self
 	sprite.owner = self
 	_create_material_overlay(shape)
@@ -83,12 +76,6 @@ func _create_material_overlay(shape: SGCollisionPoly):
 var boss: BossMonster
 
 signal shape_destroyed
-
-func _polygons_from_texture(tex: Texture2D) -> Array[PackedVector2Array]:
-	var bitmap = BitMap.new()
-	bitmap.create_from_image_alpha(tex.get_image())
-	var polys = bitmap.opaque_to_polygons(Rect2(Vector2.ZERO, tex.get_size()))
-	return polys
 
 func _enter_tree() -> void:
 	pass

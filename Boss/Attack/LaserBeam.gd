@@ -14,9 +14,9 @@ func _ready() -> void:
 	tree_exiting.connect(_on_tree_exiting)
 
 func execute_attack():
-	var ani = controller.animation_player
+	var ani = boss.animation_player
 	#_place_beam()
-	ani.play("OneArmedBanditAnimations/extend_antenna")
+	ani.play("extend_antenna")
 	atk_perform = create_tween()
 	atk_perform.tween_interval(1.1)
 	atk_perform.tween_callback(_place_beam_aura)
@@ -27,6 +27,7 @@ func execute_attack():
 	atk_perform.tween_callback(_deal_damage)
 	atk_perform.tween_interval(.2)
 	atk_perform.tween_callback(_remove_beam)
+	atk_perform.tween_interval(.55)
 	atk_perform.tween_callback(boss.controller.set.bind("boss_state", BossController.BossState.IDLE))
 	
 func _place_beam():

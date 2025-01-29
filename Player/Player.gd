@@ -35,11 +35,13 @@ var hitbox: PlayerHitbox:
 
 signal took_damage
 signal player_health_changed
+signal player_defeated
 
 func take_damage(dmg: int) -> void:
 	if invincible == true: return
 	current_health -= dmg
 	if current_health <= 0:
+		player_defeated.emit()
 		entity.queue_free()
 	else:
 		invincible = true

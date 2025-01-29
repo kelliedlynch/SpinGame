@@ -1,3 +1,4 @@
+@tool
 extends Destructor
 class_name PlayerDestructor
 

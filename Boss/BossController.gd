@@ -62,10 +62,14 @@ func _ready() -> void:
 func _on_battle_begun():
 	process_mode = ProcessMode.PROCESS_MODE_INHERIT
 	boss_state = BossState.IDLE
+	
+func _on_battle_ended():
+	process_mode = ProcessMode.PROCESS_MODE_DISABLED
+	boss_state = BossState.IDLE
 
 func _on_boss_state_changed(prev: BossState, curr: BossState):
 	if curr == BossState.IDLE:
-		boss.animation_player.play("idle")
+		boss.animation_player.queue("idle")
 	pass
 
 func _process(_delta: float) -> void:
@@ -108,7 +112,7 @@ func _on_heart_revealed_changed(val: bool) -> void:
 		BattleManager.overlay.transition_finished.connect(_on_battle_transition_finished)
 		boss_phase += 1
 	
-func _on_battle_transition_finished():
+func _on_battle_transition_finished(_foo = null):
 	
 	#await boss.heart.heart_revealed_changed
 	call_deferred("_post_transition_knockback")

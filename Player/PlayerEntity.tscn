@@ -1,12 +1,12 @@
-[gd_scene load_steps=13 format=3 uid="uid://dmbienyglkltx"]
+[gd_scene load_steps=10 format=3 uid="uid://dmbienyglkltx"]
 
 [ext_resource type="Script" path="res://Player/PlayerEntity.gd" id="1_5veut"]
 [ext_resource type="Script" path="res://Player/PlayerHitbox.gd" id="2_fwe6s"]
+[ext_resource type="Texture2D" uid="uid://dwk2osnipsfju" path="res://Graphics/saw_blade_isolated.png" id="2_ghaw7"]
 [ext_resource type="Texture2D" uid="uid://g2qfcmanid4n" path="res://Graphics/spark_particle_1.png" id="3_5edmp"]
-[ext_resource type="Script" path="res://Component/SGCollisionPoly.gd" id="3_vpjxd"]
-[ext_resource type="Texture2D" uid="uid://bihviwqlsm5s4" path="res://Graphics/saw blade sprite sheet.png" id="4_l18b3"]
 [ext_resource type="PackedScene" uid="uid://f83mqw1l7iv" path="res://Player/GooglyEyes.tscn" id="5_txnaa"]
 [ext_resource type="Script" path="res://Component/Destructor/PlayerDestructor.gd" id="6_f2o1g"]
+[ext_resource type="AnimationLibrary" uid="uid://dhtth3isor6w3" path="res://Player/UnknownAnimationLibrary.tres" id="7_5hore"]
 
 [sub_resource type="Gradient" id="Gradient_konno"]
 offsets = PackedFloat32Array(0.344316, 0.61039, 0.70346, 0.794069)
@@ -19,121 +19,18 @@ height = 116
 fill = 1
 fill_from = Vector2(0.491453, 0.504274)
 
-[sub_resource type="Animation" id="Animation_wyd3m"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Hitbox/saw_blade_coll/base_sprite:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(63, 69)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Hitbox/GooglyEyes:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, 0)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Hitbox/GooglyEyes:scale")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(1, 1)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Hitbox/saw_blade_coll/base_sprite:color")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 1)]
-}
-
-[sub_resource type="Animation" id="Animation_ovptv"]
-resource_name = "hurt"
-length = 0.27
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Hitbox/saw_blade_coll/base_sprite:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.0333333, 0.0666667, 0.133333, 0.2, 0.233333, 0.266667),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
-"update": 0,
-"values": [Vector2(63, 69), Vector2(63, 69), Vector2(51, 61), Vector2(75, 82), Vector2(95, 59), Vector2(63, 69), Vector2(63, 69)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Hitbox/GooglyEyes:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, 0)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Hitbox/GooglyEyes:scale")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.0666667, 0.133333, 0.266667),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
-"values": [Vector2(1, 1), Vector2(1.62007, 1.96656), Vector2(1.62007, 1.96656), Vector2(1, 1)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Hitbox/saw_blade_coll/base_sprite:color")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.0333333, 0.166667, 0.233333, 0.266667),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 1), Color(0.997254, 0.532333, 0.612383, 1), Color(1, 0.113725, 0.192157, 1), Color(0.997254, 0.532333, 0.612383, 1), Color(1, 1, 1, 1)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_yty7l"]
-_data = {
-"RESET": SubResource("Animation_wyd3m"),
-"hurt": SubResource("Animation_ovptv")
-}
-
 [node name="PlayerEntity" type="Node2D"]
 script = ExtResource("1_5veut")
+sprite_texture = ExtResource("2_ghaw7")
 
 [node name="Hitbox" type="RigidBody2D" parent="."]
+z_index = 30
+z_as_relative = false
 collision_mask = 3
 input_pickable = true
+lock_rotation = true
+contact_monitor = true
+max_contacts_reported = 5
 script = ExtResource("2_fwe6s")
 
 [node name="charge_sparks" type="CPUParticles2D" parent="Hitbox"]
@@ -158,18 +55,6 @@ scale_amount_min = 0.08
 scale_amount_max = 0.25
 color = Color(0.694118, 0.0980392, 0.662745, 1)
 
-[node name="saw_blade_coll" type="CollisionPolygon2D" parent="Hitbox"]
-position = Vector2(-63, -70)
-polygon = PackedVector2Array(46.4749, 9.13386, 18.0909, 27.2395, 4.36397, 53.5142, 4.19554, 86.2735, 21.9647, 114.317, 48.5763, 128.212, 80.3251, 128.044, 107.614, 111.033, 123.025, 83.2422, 122.183, 51.9146, 104.667, 21.6818, 75.8656, 8.2075)
-script = ExtResource("3_vpjxd")
-
-[node name="base_sprite" type="Polygon2D" parent="Hitbox/saw_blade_coll"]
-position = Vector2(63, 69)
-offset = Vector2(-63, -69)
-texture = ExtResource("4_l18b3")
-polygon = PackedVector2Array(44.8709, 11.5756, 18.0909, 27.2395, 4.36397, 53.5142, 4.19554, 86.2735, 21.9647, 114.317, 48.5763, 128.212, 80.3251, 128.044, 107.695, 111.875, 122.857, 83.4949, 122.183, 51.9146, 104.667, 21.6818, 75.8656, 8.2075)
-uv = PackedVector2Array(46.4749, 9.13386, 18.0909, 27.2395, 4.36397, 53.5142, 4.19554, 86.2735, 21.9647, 114.317, 48.5763, 128.212, 80.3251, 128.044, 107.614, 111.033, 123.025, 83.2422, 122.183, 51.9146, 104.667, 21.6818, 75.8656, 8.2075)
-
 [node name="charge_glow" type="Sprite2D" parent="Hitbox"]
 visible = false
 modulate = Color(1, 1, 1, 0.501961)
@@ -178,7 +63,6 @@ texture = SubResource("GradientTexture2D_fhte0")
 [node name="GooglyEyes" parent="Hitbox" instance=ExtResource("5_txnaa")]
 
 [node name="Destructor" type="Area2D" parent="Hitbox"]
-visible = false
 position = Vector2(-63, -70)
 collision_mask = 3
 script = ExtResource("6_f2o1g")
@@ -186,9 +70,21 @@ script = ExtResource("6_f2o1g")
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Hitbox/Destructor"]
 polygon = PackedVector2Array(46.4749, 9.13386, 18.0909, 27.2395, 4.36397, 53.5142, 4.19554, 86.2735, 21.9647, 114.317, 48.5763, 128.212, 80.3251, 128.044, 107.614, 111.033, 123.025, 83.2422, 122.183, 51.9146, 104.667, 21.6818, 75.8656, 8.2075)
 
+[node name="saw_blade_coll" type="CollisionPolygon2D" parent="Hitbox"]
+position = Vector2(-62, -62)
+polygon = PackedVector2Array(45, 1, 43, 3, 42, 3, 45, 9, 45, 10, 39, 7, 32, 7, 19, 16, 17, 16, 16, 17, 16, 23, 21, 25, 21, 26, 12, 28, 10, 28, 1, 44, 0, 44, 3, 51, 8, 51, 0, 57, 0, 80, 8, 80, 10, 80, 7, 86, 7, 92, 15, 104, 15, 106, 17, 108, 23, 108, 25, 103, 26, 103, 27, 107, 27, 113, 30, 115, 30, 116, 44, 123, 44, 124, 49, 122, 51, 122, 51, 116, 52, 116, 58, 124, 79, 124, 81, 121, 82, 121, 80, 116, 80, 115, 85, 117, 91, 117, 102, 110, 105, 110, 108, 107, 108, 101, 102, 99, 102, 98, 111, 97, 113, 97, 123, 80, 124, 80, 121, 74, 121, 73, 117, 74, 115, 74, 124, 67, 124, 45, 115, 45, 114, 45, 117, 39, 117, 32, 109, 20, 109, 18, 107, 16, 101, 16, 99, 21, 98, 21, 97, 15, 97, 11, 79, 1, 79, 0, 73, 3, 73, 8, 66, 1, 66, 0, 45, 0)
+
+[node name="base_sprite" type="Polygon2D" parent="Hitbox/saw_blade_coll"]
+clip_children = 2
+position = Vector2(63, 69)
+offset = Vector2(-62, -62)
+texture = ExtResource("2_ghaw7")
+texture_offset = Vector2(62, 62)
+polygon = PackedVector2Array(45, 1, 43, 3, 42, 3, 45, 9, 45, 10, 39, 7, 32, 7, 19, 16, 17, 16, 16, 17, 16, 23, 21, 25, 21, 26, 12, 28, 10, 28, 1, 44, 0, 44, 3, 51, 8, 51, 0, 57, 0, 80, 8, 80, 10, 80, 7, 86, 7, 92, 15, 104, 15, 106, 17, 108, 23, 108, 25, 103, 26, 103, 27, 107, 27, 113, 30, 115, 30, 116, 44, 123, 44, 124, 49, 122, 51, 122, 51, 116, 52, 116, 58, 124, 79, 124, 81, 121, 82, 121, 80, 116, 80, 115, 85, 117, 91, 117, 102, 110, 105, 110, 108, 107, 108, 101, 102, 99, 102, 98, 111, 97, 113, 97, 123, 80, 124, 80, 121, 74, 121, 73, 117, 74, 115, 74, 124, 67, 124, 45, 115, 45, 114, 45, 117, 39, 117, 32, 109, 20, 109, 18, 107, 16, 101, 16, 99, 21, 98, 21, 97, 15, 97, 11, 79, 1, 79, 0, 73, 3, 73, 8, 66, 1, 66, 0, 45, 0)
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_yty7l")
+"": ExtResource("7_5hore")
 }
 
 [connection signal="body_entered" from="Hitbox" to="Hitbox" method="_on_body_entered"]

@@ -1,4 +1,55 @@
-[gd_resource type="AnimationLibrary" load_steps=6 format=3 uid="uid://big34j5uxesj8"]
+[gd_resource type="AnimationLibrary" load_steps=8 format=3 uid="uid://big34j5uxesj8"]
+
+[sub_resource type="Animation" id="Animation_n381f"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Skeleton2D/body_bone/l1_upper_bone/l1_lower_bone:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-0.938643]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Skeleton2D/body_bone/l1_upper_bone:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.436387]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Skeleton2D/body_bone/l1_upper_bone:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-37.9623, -49.557)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Skeleton2D/body_bone/l1_upper_bone/l1_lower_bone:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-170.813, -114.13)]
+}
 
 [sub_resource type="Animation" id="Animation_1uw7d"]
 resource_name = "extend_antenna"
@@ -194,7 +245,7 @@ tracks/6/path = NodePath("Skeleton2D/body_bone/l1_upper_bone/remote_l1_upper:sca
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
-"times": PackedFloat32Array(1.06667, 1.33333, 1.53333, 1.7),
+"times": PackedFloat32Array(0, 1.33333, 1.53333, 1.7),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
 "values": [Vector2(1, 1), Vector2(1, 1), Vector2(1, 0.7), Vector2(1, 1)]
@@ -210,6 +261,35 @@ tracks/7/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 1,
 "values": [true, true, false, false, true]
+}
+
+[sub_resource type="Animation" id="Animation_y2csi"]
+resource_name = "idle"
+length = 1.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Skeleton2D/body_bone/l1_upper_bone:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.433333, 0.633333, 0.866667, 1.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.436387, 0.386238, 0.489008, 0.438121, 0.630184, 0.436387]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Skeleton2D/body_bone/l1_upper_bone/l1_lower_bone:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.133333, 0.366667, 0.633333, 0.933333, 1.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [-0.938643, -1.16039, -0.790052, -1.18428, -1.04353, -0.938643]
 }
 
 [sub_resource type="Animation" id="Animation_wj7qt"]
@@ -442,8 +522,10 @@ tracks/5/keys = {
 
 [resource]
 _data = {
+"RESET": SubResource("Animation_n381f"),
 "extend_antenna": SubResource("Animation_1uw7d"),
 "fire_missile": SubResource("Animation_h7x58"),
+"idle": SubResource("Animation_y2csi"),
 "jump_landing": SubResource("Animation_wj7qt"),
 "jump_up": SubResource("Animation_g56qv"),
 "wave_arm": SubResource("Animation_1bsfj")

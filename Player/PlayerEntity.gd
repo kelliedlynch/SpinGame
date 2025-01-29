@@ -1,3 +1,4 @@
+@tool
 extends Node2D
 class_name PlayerEntity
 
@@ -35,6 +36,44 @@ var dash_tween: Tween
 var dash_charge_angle: float
 var dash_charge_indicator: Line2D
 
+@export var sprite_texture: Texture2D:
+	set(value):
+		sprite_texture = value
+		_on_sprite_changed(value)
+
+func _on_sprite_changed(tex: Texture2D):
+	if hitbox == null: return
+	var shape = hitbox.get_node("saw_blade_coll")
+	if shape == null:
+		shape = CollisionPolygon2D.new()
+		shape.name = "saw_blade_coll"
+		hitbox.add_child(shape)
+		shape.owner = self
+	else:
+		for child in shape.get_children():
+			child.free()
+	var sprite = Polygon2D.new()
+	sprite.texture = tex
+	
+	var polys = PolygonMath.polygons_from_texture(tex)
+	assert(polys.size() == 1)
+	shape.polygon = polys[0]
+	sprite.polygon = polys[0]
+	sprite.name = "base_sprite"
+	#shape.base_sprite = sprite
+	sprite.clip_children = CanvasItem.CLIP_CHILDREN_AND_DRAW
+	var offset = sprite.texture.get_size() / 2
+	sprite.offset = -offset
+	sprite.texture_offset = offset
+	sprite.position = offset
+	blade_sprite = sprite
+	sprite.scale = scale
+	shape.scale = Vector2.ONE
+	shape.call_deferred("add_child", sprite)
+	#shape.position = -sprite.texture.get_size() / 2
+	#sprite.owner = self
+	sprite.set_deferred("owner", self)
+
 var spin_curve: Curve = load("res://Component/Destructor/PlayerSpinCurve.tres")
 
 func _ready() -> void:
@@ -44,7 +83,12 @@ func _ready() -> void:
 	googly_eyes.hitbox = hitbox
 	destructor.hitbox = hitbox
 	hitbox.destructor = destructor
-	z_index = RenderLayer.ARENA_ENTITIES
+	#z_index = RenderLayer.ARENA_ENTITIES
+	#z_as_relative = false
+	_on_sprite_changed(sprite_texture)
+	if Engine.is_editor_hint() == true:
+		#charge_glow.visible = true
+		set_process_input(false)
 
 func _on_invincible_state_changed(new_val: bool):
 	if new_val == true:
@@ -69,6 +113,7 @@ func _input(event: InputEvent):
 
 		
 func _physics_process(delta: float) -> void:
+	if Engine.is_editor_hint() == true: return
 	hitbox.linear_velocity += input_vector
 	input_vector = Vector2.ZERO
 	if move_state == MoveState.DASHING:
@@ -79,46 +124,47 @@ func _physics_process(delta: float) -> void:
 	
 func _process(delta: float) -> void:
 	var r = spin_curve.sample(destructor.spin_speed / destructor.max_spin_speed) * delta
-	blade_sprite.rotate(-r)
+	$Hitbox/saw_blade_coll/base_sprite.rotate(-r)
+	#hitbox.rotate_sprite(-r)
 	
-	
-	var power = Player.move_power
-	if Input.is_action_pressed("ui_left"):
-		if move_state == MoveState.DASH_CHARGING:
-			dash_charge_angle -= delta * 3.6
-		else:
-			input_vector += Vector2(-power * delta, 0)
-	if Input.is_action_pressed("ui_right"):
-		if move_state == MoveState.DASH_CHARGING:
-			dash_charge_angle += delta * 3.6
-		else:
-			input_vector += Vector2(power * delta, 0)
-	if Input.is_action_pressed("ui_up"):
-		if move_state == MoveState.DASH_CHARGING:
-			dash_charge_angle -= delta * 3.6
-		else:
-			input_vector += (Vector2(0, -power * delta))
-	if Input.is_action_pressed("ui_down"):
-		if move_state == MoveState.DASH_CHARGING:
-			dash_charge_angle += delta * 3.6
-		else:
-			input_vector += (Vector2(0, power * delta))
+	if is_processing_input() == true:
+		var power = Player.move_power
+		if Input.is_action_pressed("ui_left"):
+			if move_state == MoveState.DASH_CHARGING:
+				dash_charge_angle -= delta * 3.6
+			else:
+				input_vector += Vector2(-power * delta, 0)
+		if Input.is_action_pressed("ui_right"):
+			if move_state == MoveState.DASH_CHARGING:
+				dash_charge_angle += delta * 3.6
+			else:
+				input_vector += Vector2(power * delta, 0)
+		if Input.is_action_pressed("ui_up"):
+			if move_state == MoveState.DASH_CHARGING:
+				dash_charge_angle -= delta * 3.6
+			else:
+				input_vector += (Vector2(0, -power * delta))
+		if Input.is_action_pressed("ui_down"):
+			if move_state == MoveState.DASH_CHARGING:
+				dash_charge_angle += delta * 3.6
+			else:
+				input_vector += (Vector2(0, power * delta))
 
-	if move_state == MoveState.DASHING:
-		input_vector += Vector2.from_angle(dash_charge_angle) * power * delta
+		if move_state == MoveState.DASHING:
+			input_vector += Vector2.from_angle(dash_charge_angle) * power * delta
+				
+		if dash_charge_indicator != null:
+			var indicator_length = max(get_viewport_rect().size.x, get_viewport_rect().size.y) * 2
+			dash_charge_indicator.points[1] = Vector2.from_angle(dash_charge_angle) * indicator_length + dash_charge_indicator.points[0] 
 			
-	if dash_charge_indicator != null:
-		var indicator_length = max(get_viewport_rect().size.x, get_viewport_rect().size.y) * 2
-		dash_charge_indicator.points[1] = Vector2.from_angle(dash_charge_angle) * indicator_length + dash_charge_indicator.points[0] 
-		
-	if destructor.spin_speed > destructor.max_spin_speed * .9:
-		charge_sparks.emitting = true
-		charge_glow.visible = true
-	else:
-		charge_sparks.emitting = false
-		charge_glow.visible = false
-	if charge_sparks.emitting:
-		charge_sparks.rotate(r/3)
+		if destructor.spin_speed > destructor.max_spin_speed * .9:
+			charge_sparks.emitting = true
+			charge_glow.visible = true
+		else:
+			charge_sparks.emitting = false
+			charge_glow.visible = false
+		if charge_sparks.emitting:
+			charge_sparks.rotate(r/3)
 		
 func _on_hitbox_body_entered(node):
 	if move_state == MoveState.DASH_CHARGING:

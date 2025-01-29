@@ -1,6 +1,6 @@
 [gd_scene load_steps=24 format=3 uid="uid://c6gjlw2ovn1pp"]
 
-[ext_resource type="Script" path="res://Boss/BossMonster.gd" id="1_g60gi"]
+[ext_resource type="Script" path="res://Boss/OneArmedBandit.gd" id="1_salgv"]
 [ext_resource type="Texture2D" uid="uid://dl8h3mfcqqnep" path="res://Graphics/robo_parts_sprite_sheet.png" id="2_i2rqr"]
 [ext_resource type="Texture2D" uid="uid://bysihkuh51bjw" path="res://Graphics/laser_dot.tres" id="3_m8cmj"]
 [ext_resource type="PackedScene" uid="uid://cluulgc5hgdrb" path="res://Playground/LightningBolt.tscn" id="4_a1x6e"]
@@ -85,7 +85,7 @@ modifications/2 = SubResource("SkeletonModification2DCCDIK_dio3r")
 
 [node name="OneArmedBandit" type="Node2D" node_paths=PackedStringArray("heart_location")]
 position = Vector2(75, 28)
-script = ExtResource("1_g60gi")
+script = ExtResource("1_salgv")
 heart_location = NodePath("Destructibles/body")
 
 [node name="shadow" type="Polygon2D" parent="."]
@@ -98,9 +98,9 @@ uv = PackedVector2Array(862.917, 308.783, 840.266, 304.546, 820.685, 302.354, 79
 
 [node name="antenna" type="Polygon2D" parent="."]
 visible = false
-position = Vector2(38.9997, -43.9996)
+position = Vector2(38.9997, -43.9995)
 rotation = 0.31501
-scale = Vector2(0.99999, 0.99999)
+scale = Vector2(0.999988, 0.999988)
 offset = Vector2(-46.2597, -297.433)
 texture = ExtResource("2_i2rqr")
 polygon = PackedVector2Array(41.4161, 283.112, 28.6682, 286.725, 19.6015, 301.518, 17.6246, 322.787, 25.5324, 333.899, 25.5324, 368.802, 23.4872, 391.571, 30.4406, 398.866, 53.9594, 401.456, 59.6858, 399.547, 65.4803, 391.503, 65.0031, 360.008, 62.0717, 339.012, 78.7053, 320.947, 77.8191, 294.088, 74.0016, 287.748, 65.9574, 280.317, 45.4381, 280.044)
@@ -119,62 +119,62 @@ texture = ExtResource("3_m8cmj")
 modulate = Color(0.0941176, 0.772549, 0.941176, 1)
 
 [node name="left_upper_bolt" parent="ElectricBones" instance=ExtResource("4_a1x6e")]
-position = Vector2(-42.9441, -36.2668)
+position = Vector2(-42.944, -36.2667)
 rotation = 0.20132
-scale = Vector2(0.999901, 0.999901)
-points = PackedVector2Array(-5.81909, -0.378855, -6.77134, -18.064, -28.7986, -18.7887, -34.3702, -35.5697, -38.3132, -42.7321, -49.8149, -47.0956, -62.2374, -59.1243, -74.9544, -79.3361, -82.3561, -107.712, -97.8121, -128.303, -106.375, -120.45, -115.706, -145.767, -124.747, -150.849)
+scale = Vector2(0.999904, 0.999904)
+points = PackedVector2Array(-5.81909, -0.378855, -23.6517, -14.927, -32.2573, -25.1566, -46.6506, -31.9698, -51.1124, -40.581, -54.9204, -47.5641, -61.2821, -53.1492, -61.3306, -76.5321, -66.2416, -89.0169, -80.7596, -85.2693, -81.9941, -113.971, -92.795, -108.261, -99.9748, -135.189, -117.751, -132.4, -123.374, -158.617, -124.747, -150.849)
 
 [node name="left_lower_bolt" parent="ElectricBones" instance=ExtResource("4_a1x6e")]
-position = Vector2(-201.849, -272.424)
+position = Vector2(-201.85, -272.424)
 rotation = -2.66148
-scale = Vector2(0.999809, 0.999809)
-points = PackedVector2Array(-93.6142, -30.6694, -103.98, -46.8352, -90.4938, -76.6428, -97.8484, -80.0478, -86.6032, -114.303, -91.638, -121.922, -90.5667, -149.869, -100.004, -150.727, -97.0704, -166.888, -91.2408, -197.791, -98.7139, -200.329, -95.1501, -216.221, -91.9009, -247.359, -94.9873, -249.847)
+scale = Vector2(0.999814, 0.999814)
+points = PackedVector2Array(-93.6142, -30.6694, -93.411, -54.7623, -99.4611, -68.9429, -102.47, -86.2436, -86.875, -110.91, -91.5349, -119.614, -97.1787, -133.459, -97.7427, -152.591, -98.1197, -162.376, -98.889, -182.568, -88.7528, -212.939, -96.6637, -223.712, -94.9873, -249.847)
 
 [node name="body_bolts" type="Node2D" parent="ElectricBones"]
 position = Vector2(1, 24)
 rotation = 0.0390199
-scale = Vector2(0.99999, 0.99999)
+scale = Vector2(0.999988, 0.999988)
 
 [node name="body_bolt" parent="ElectricBones/body_bolts" instance=ExtResource("4_a1x6e")]
 position = Vector2(1.89648, 22.9436)
 rotation = 0.03902
 scale = Vector2(0.999996, 0.999996)
-points = PackedVector2Array(46.9755, -91.9428, 26.4996, -79.1578, 7.38719, -96.1438, -11.6063, -95.0525, -34.3761, -92.5168, -46.7841, -77.4567, -49.7945, -84.3962)
+points = PackedVector2Array(46.9755, -91.9428, 28.5068, -99.6086, 4.52334, -95.0994, -13.2466, -85.279, -21.178, -83.9823, -39.3751, -92.6802, -50.1398, -95.1886, -49.7945, -84.3962)
 
 [node name="body_bolt2" parent="ElectricBones/body_bolts" instance=ExtResource("4_a1x6e")]
 position = Vector2(1, 24)
 rotation = 0.03902
 scale = Vector2(0.999996, 0.999996)
-points = PackedVector2Array(78.4619, -9.16551, 76.4774, -32.8456, 59.2541, -37.2878, 58.8056, -46.0295, 55.4755, -67.2326, 52.2342, -92.6572, 47.986, -91.0395)
+points = PackedVector2Array(78.4619, -9.16551, 68.936, -18.5135, 72.4844, -41.4893, 66.5487, -65.4247, 56.82, -79.1914, 58.67, -91.8044, 47.986, -91.0395)
 
 [node name="body_bolt3" parent="ElectricBones/body_bolts" instance=ExtResource("4_a1x6e")]
 position = Vector2(1, 24)
 rotation = 0.03902
 scale = Vector2(0.999996, 0.999996)
-points = PackedVector2Array(60.8945, 48.3797, 74.6233, 31.1882, 82.3226, 10.8147, 66.5261, -0.631376, 86.0366, -5.79852, 79.8322, -17.2971)
+points = PackedVector2Array(60.8945, 48.3797, 58.9192, 38.1469, 55.8298, 26.7695, 82.0954, 14.6932, 63.5566, 2.31906, 79.9706, -14.2118, 79.8322, -17.2971)
 
 [node name="body_bolt4" parent="ElectricBones/body_bolts" instance=ExtResource("4_a1x6e")]
 position = Vector2(-1.0364, 39.8178)
 rotation = 0.03902
 scale = Vector2(0.971612, 0.550062)
-points = PackedVector2Array(66.2691, 52.9747, 56.5775, 45.8973, 35.1102, 49.4203, 25.1389, 45.7346, 5.46139, 53.1728, -6.24555, 28.4051, -22.466, 32.8502, -27.6877, 37.1096)
+points = PackedVector2Array(66.2691, 52.9747, 46.1832, 49.7669, 44.2031, 42.4706, 16.8141, 54.892, 7.37956, 44.1912, -7.48704, 51.0722, -13.7936, 38.218, -22.6208, 43.5064, -27.6877, 37.1096)
 
 [node name="body_bolt5" parent="ElectricBones/body_bolts" instance=ExtResource("4_a1x6e")]
 position = Vector2(-23.7957, 56.9719)
 rotation = 0.03902
 scale = Vector2(0.999996, 0.999996)
-points = PackedVector2Array(0.0780182, 1.99849, -7.12118, -12.5454, -17.0167, -23.5916, -25.7545, -45.8339, -34.7695, -44.6778)
+points = PackedVector2Array(0.0780182, 1.99849, -17.4828, -8.82898, -21.3506, -29.1168, -34.7695, -44.6778)
 
 [node name="body_bolt6" parent="ElectricBones/body_bolts" instance=ExtResource("4_a1x6e")]
 position = Vector2(1, 24)
 rotation = 0.03902
 scale = Vector2(0.999996, 0.999996)
-points = PackedVector2Array(-60.4446, -15.3552, -56.8085, -32.3743, -47.5642, -53.5344, -46.6117, -60.8786, -35.1643, -87.0412, -37.675, -83.3378)
+points = PackedVector2Array(-60.4446, -15.3552, -46.8196, -36.9694, -49.4575, -44.5107, -47.2395, -52.9856, -45.1723, -64.2401, -34.5898, -88.6332, -37.675, -83.3378)
 
 [node name="Heart" type="AnimatableBody2D" parent="."]
 position = Vector2(1, 24)
 rotation = 0.0390199
-scale = Vector2(0.99999, 0.99999)
+scale = Vector2(0.999988, 0.999988)
 collision_layer = 16
 collision_mask = 0
 physics_material_override = SubResource("PhysicsMaterial_66ykw")
@@ -203,25 +203,25 @@ libraries = {
 [node name="Destructibles" type="Node2D" parent="."]
 
 [node name="l1_lower" type="AnimatableBody2D" parent="Destructibles"]
-position = Vector2(-210.998, 54.9992)
+position = Vector2(-210.999, 55)
 rotation = -2.66148
-scale = Vector2(0.999809, 0.999809)
+scale = Vector2(0.999814, 0.999814)
 script = ExtResource("8_100vh")
 destructible_material = ExtResource("9_0vd4q")
 sprite_texture = ExtResource("10_xn47u")
 
 [node name="l1_upper" type="AnimatableBody2D" parent="Destructibles"]
-position = Vector2(-200.998, -219.998)
+position = Vector2(-200.999, -219.999)
 rotation = -0.479069
-scale = Vector2(0.999901, 0.999901)
+scale = Vector2(0.999904, 0.999904)
 script = ExtResource("8_100vh")
 destructible_material = ExtResource("11_ytkgk")
 sprite_texture = ExtResource("12_b2po1")
 
 [node name="body" type="AnimatableBody2D" parent="Destructibles"]
-position = Vector2(-79.9997, -92)
+position = Vector2(-79.9996, -91.9997)
 rotation = 0.0390199
-scale = Vector2(0.99999, 0.99999)
+scale = Vector2(0.999988, 0.999988)
 script = ExtResource("8_100vh")
 destructible_material = ExtResource("13_j404i")
 sprite_texture = ExtResource("14_w5cts")
@@ -244,19 +244,19 @@ modification_stack = SubResource("SkeletonModificationStack2D_t3lrm")
 
 [node name="body_bone" type="Bone2D" parent="Skeleton2D"]
 rotation = 1.30053
-scale = Vector2(0.99999, 0.99999)
+scale = Vector2(0.999988, 0.999988)
 rest = Transform2D(0.266986, 0.963694, -0.963694, 0.266986, 0, 0)
 
 [node name="l1_upper_bone" type="Bone2D" parent="Skeleton2D/body_bone"]
 position = Vector2(-37.9623, -49.557)
 rotation = 0.436387
-scale = Vector2(0.999911, 0.999911)
+scale = Vector2(0.999916, 0.999916)
 rest = Transform2D(0.906211, 0.422634, -0.422634, 0.906211, -37.9623, -49.557)
 
 [node name="l1_lower_bone" type="Bone2D" parent="Skeleton2D/body_bone/l1_upper_bone"]
 position = Vector2(-170.813, -114.13)
 rotation = -0.938643
-scale = Vector2(0.999908, 0.999908)
+scale = Vector2(0.999909, 0.999909)
 rest = Transform2D(0.590832, -0.806687, 0.806687, 0.590832, -170.813, -114.13)
 
 [node name="hand_bone" type="Bone2D" parent="Skeleton2D/body_bone/l1_upper_bone/l1_lower_bone"]
@@ -312,6 +312,5 @@ auto_calculate_length_and_angle = false
 length = 16.0
 bone_angle = 0.0
 
-[connection signal="change_tangible_state" from="." to="." method="_on_change_tangible_state"]
 [connection signal="heart_revealed_changed" from="Heart" to="Heart" method="_on_heart_revealed_changed"]
 [connection signal="heart_revealed_changed" from="Heart" to="BossController" method="_on_heart_revealed_changed"]

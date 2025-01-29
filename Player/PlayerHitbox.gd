@@ -1,4 +1,5 @@
-extends RigidHitbox
+@tool
+extends RigidBody2D
 class_name PlayerHitbox
 
 var destructor: Destructor
@@ -10,6 +11,8 @@ func _ready() -> void:
 	max_contacts_reported = 5
 	lock_rotation = true
 	collision_mask = CollisionLayer.PLAYER_HITBOX + CollisionLayer.ENEMY_HITBOX
+	z_index = RenderLayer.ARENA_ENTITIES
+	z_as_relative = false
 	
 func _on_body_exited(node):
 	if node is AnimatableBody2D:
@@ -18,6 +21,10 @@ func _on_body_exited(node):
 func _on_body_entered(node):
 	if node is AnimatableBody2D:
 		pass
+
+#func rotate_sprite(rad: float):
+	#var sprite = get_node("saw_blade_coll/base_sprite")
+	#sprite.rotate(rad)
 
 func _apply_destructible_forces(state: PhysicsDirectBodyState2D):
 	if destructor.target == null:
@@ -34,6 +41,7 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 	_apply_destructible_forces(state)
 	
 func _physics_process(delta: float) -> void:
+	if Engine.is_editor_hint() == true: return
 	if destructor.cut_state == Destructor.CutState.READY:
 		var test = move_and_collide(linear_velocity * delta, true, .08, true)
 		if test != null:

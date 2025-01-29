@@ -10,7 +10,7 @@ var powerup: Powerup = null
 func _ready() -> void:
 	RenderingServer.set_default_clear_color(Color(.17, .18, .2, 1))
 	pg_overlay.player_btn.button_down.connect(Player.spawn_to_arena.bind($Arena))
-	BattleManager.spawn_boss_to_arena(null, $Arena)
+	BattleManager.spawn_boss_to_arena("", $Arena)
 	pg_overlay.boss_btn.button_down.connect(_respawn_boss)
 	#Player.spawn_to_arena($Arena)
 	#spawn_boss()
@@ -21,7 +21,7 @@ func _ready() -> void:
 
 func _respawn_boss():
 	BattleManager.end_battle()
-	BattleManager.spawn_boss_to_arena(null, $Arena)
+	BattleManager.spawn_boss_to_arena("", $Arena)
 	#BattleManager.begin_battle()
 	
 func spawn_powerup():

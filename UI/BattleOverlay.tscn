@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://b7l060catm3gw"]
+[gd_scene load_steps=9 format=3 uid="uid://b7l060catm3gw"]
 
 [ext_resource type="Script" path="res://UI/BattleOverlay.gd" id="1_r7r0q"]
 [ext_resource type="Theme" uid="uid://bu7g0naukxglx" path="res://UI/ui_theme.tres" id="2_ufawk"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://bwofoiotocxv3" path="res://Graphics/bar_white_fill_3patch.png" id="4_2bgbc"]
 [ext_resource type="Script" path="res://UI/TransitionText.gd" id="5_x76gp"]
 [ext_resource type="AnimationLibrary" uid="uid://bofm42j6opm13" path="res://UI/OverlayAnimationLibrary.tres" id="6_3a4cx"]
+[ext_resource type="PackedScene" uid="uid://cluulgc5hgdrb" path="res://Playground/LightningBolt.tscn" id="6_ssos4"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_nl1sl"]
 font_size = 26
@@ -14,19 +15,25 @@ outline_color = Color(0, 0, 0, 1)
 shadow_size = 3
 shadow_color = Color(0, 0, 0, 0.443137)
 
-[node name="BattleOverlay" type="AspectRatioContainer"]
+[node name="BattleOverlay" type="Control"]
 z_index = 500
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 theme = ExtResource("2_ufawk")
-ratio = 1.7777
 script = ExtResource("1_r7r0q")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
+offset_left = 6.10352e-05
+offset_top = -0.0236206
+offset_right = 1920.0
+offset_bottom = 1080.02
 size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 1
@@ -38,7 +45,14 @@ layout_mode = 2
 layout_mode = 2
 theme_override_constants/separation = 5
 
-[node name="boss_name" type="Label" parent="VBoxContainer/header/HBoxContainer"]
+[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer/header/HBoxContainer"]
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_bottom = 0
+
+[node name="boss_name" type="Label" parent="VBoxContainer/header/HBoxContainer/MarginContainer2"]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_font_sizes/font_size = 36
@@ -70,11 +84,39 @@ size_flags_vertical = 3
 [node name="transition_text" type="Node2D" parent="VBoxContainer/main"]
 visible = false
 modulate = Color(1, 1, 1, 0)
-position = Vector2(959.5, 420.5)
+position = Vector2(959.5, 455)
 rotation = 0.0837758
 scale = Vector2(1.2572, 1.2572)
 script = ExtResource("5_x76gp")
-transition_text = "You Win"
+text = null
+
+[node name="round_number_bolt" parent="VBoxContainer/main" instance=ExtResource("6_ssos4")]
+visible = false
+position = Vector2(0, 231.024)
+points = PackedVector2Array(0, 0, 38.3473, -14.7818, 96.9805, -15.6041, 117.76, -15.3564, 141.572, 23.407, 175.4, -4.24625, 225.212, 21.7694, 269.035, 24.5806, 291.212, 29.9147, 326.459, -24.4574, 354.589, -28.6569, 425.365, 25.8837, 471.521, 3.6688, 482.733, -25.2421, 521.575, 17.0247, 550.733, 11.3976, 580.892, 20.9645, 615.892, -9.63417, 668.104, 11.4164, 697.977, -2.4489, 739.552, 13.1954, 771.941, 16.8687, 786.62, -19.9365, 849.991, 13.2751, 866.677, -17.0523, 930.251, -8.43346, 973.669, -10.3177, 1031.66, -5.54209, 1079.38, -16.9419, 1121.27, -21.4082, 1168.6, 14.7589, 1216.78, 9.41948, 1242.94, 15.9612, 1282.72, -9.79279, 1356.02, 22.1427, 1381.08, -21.5029, 1453.88, -0.256409, 1498.76, 10.6957, 1511.53, -18.5184, 1553.57, 10.5099, 1585.06, -8.21078, 1654.96, 5.5098, 1657.52, -18.1838, 1698.14, -7.98179, 1758.54, 10.9089, 1822.8, 15.6884, 1838.32, -12.4765, 1871.71, -2.65839, 1912.48, 7.56126, 1920, 0)
+width = 8.0
+default_color = Color(1, 1, 0, 1)
+
+[node name="boss_name_bolt" parent="VBoxContainer/main" instance=ExtResource("6_ssos4")]
+visible = false
+position = Vector2(1920, 492.024)
+points = PackedVector2Array(0, 0, 19.5395, 5.73533, 75.7959, -20.3037, 127.644, -27.6503, 176.782, -26.1197, 216.664, 21.3354, 263.928, -23.3402, 311.634, -6.59471, 340.889, 11.2698, 394.704, -3.05876, 451.998, 23.4299, 470.119, -4.88881, 494.095, -16.7602, 527.328, -29.7535, 555.567, 2.42167, 606.07, 28.0441, 643.402, 5.70058, 655.186, -24.4615, 702.696, -13.4228, 730.952, 9.85881, 786.316, 13.0861, 815.728, -5.01499, 857.838, 11.181, 869.783, -4.35956, 934.028, 14.2381, 947.907, 2.66285, 973.937, -7.08019, 1032.4, 26.7489, 1036.6, -25.6266, 1117.84, 16.6823, 1134.25, -1.60356, 1185.29, 4.24551, 1232.77, 16.3909, 1261.64, 10.9635, 1313.81, 6.96397, 1374, 23.1859, 1398.4, 24.7326, 1400.19, -3.69321, 1449.19, -8.7932, 1493.83, 17.2386, 1516.91, 5.41523, 1557.93, -2.13791, 1595.55, -10.1336, 1670.74, 15.1225, 1695.81, 22.3122, 1700.5, -1.44112, 1747.45, 3.40893, 1786.02, 19.6468, 1827, 21.4797, 1866.1, 10.7822, 1918.18, 7.44873, 1920, 0)
+width = 8.0
+default_color = Color(1, 1, 0, 1)
+
+[node name="round_number" type="Node2D" parent="VBoxContainer/main"]
+visible = false
+position = Vector2(959.5, 301.024)
+script = ExtResource("5_x76gp")
+text = null
+font_size = 180
+
+[node name="boss_name" type="Node2D" parent="VBoxContainer/main"]
+visible = false
+position = Vector2(959.5, 540.024)
+script = ExtResource("5_x76gp")
+text = null
+font_size = 140
 
 [node name="footer" type="MarginContainer" parent="VBoxContainer"]
 layout_mode = 2
@@ -85,12 +127,14 @@ layout_mode = 2
 theme_override_constants/separation = 5
 
 [node name="health_label" type="Label" parent="VBoxContainer/footer/HBoxContainer"]
+visible = false
 layout_mode = 2
 text = "Health"
 label_settings = SubResource("LabelSettings_nl1sl")
 justification_flags = 0
 
 [node name="health_bar" type="TextureProgressBar" parent="VBoxContainer/footer/HBoxContainer"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 value = 50.0

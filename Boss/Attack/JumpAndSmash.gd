@@ -56,23 +56,23 @@ func _clear_indicator():
 	BattleManager.arena.remove_child(landing)
 
 func execute_attack():
-	var ani = controller.animation_player
+	var ani = boss.animation_player
 	var target = _random_target_area(boss.calculate_size())
-	ani.play("OneArmedBanditAnimations/wave_arm")
+	ani.play("wave_arm")
 	atk_perform = create_tween()
-	var wave_time = ani.get_animation("OneArmedBanditAnimations/wave_arm").length
+	var wave_time = ani.get_animation("wave_arm").length
 	atk_perform.tween_interval(wave_time / 2)
 	atk_perform.tween_callback(_create_landing_area.bind(target))
 	atk_perform.tween_interval(wave_time / 2)
 	atk_perform.tween_callback(boss.set.bind("tangible", false))
-	atk_perform.tween_callback(ani.play.bind("OneArmedBanditAnimations/jump_up"))
-	var jump_time = ani.get_animation_library("OneArmedBanditAnimations").get_animation("jump_up").length
-	var land_time = ani.get_animation_library("OneArmedBanditAnimations").get_animation("jump_landing").length
+	atk_perform.tween_callback(ani.play.bind("jump_up"))
+	var jump_time = ani.get_animation_library("").get_animation("jump_up").length
+	var land_time = ani.get_animation_library("").get_animation("jump_landing").length
 	atk_perform.tween_interval(jump_time * .5)
 	atk_perform.tween_property(boss, "position", target, jump_time * .5 + land_time * .5)
 	#var pos = boss.position
 	#atk_perform.tween_method(boss.move_to_position, pos, target, jump_time * .5 + land_time * .5)
-	atk_perform.tween_callback(ani.play.bind("OneArmedBanditAnimations/jump_landing"))
+	atk_perform.tween_callback(ani.play.bind("jump_landing"))
 	atk_perform.tween_interval(land_time * .5)
 	atk_perform.tween_callback(_deal_damage)
 	atk_perform.tween_callback(boss.set.bind("tangible", true))

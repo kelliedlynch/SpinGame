@@ -107,6 +107,12 @@ static func area_of_polygon(poly: PackedVector2Array) -> float:
 	b += poly[-1].y * poly[0].x
 	return (a - b) / 2
 	
+static func polygons_from_texture(tex: Texture2D) -> Array[PackedVector2Array]:
+	var bitmap = BitMap.new()
+	bitmap.create_from_image_alpha(tex.get_image())
+	var polys = bitmap.opaque_to_polygons(Rect2(Vector2.ZERO, tex.get_size()))
+	return polys
+	
 static func clip_multiple(base: Array[PackedVector2Array], clipper: Array[PackedVector2Array], remove_holes) -> Array[PackedVector2Array]:
 	if base.is_empty() or clipper.is_empty(): 
 		return base

@@ -1,0 +1,14 @@
+[gd_resource type="StyleBoxTexture" load_steps=2 format=3 uid="uid://bwa6pdfkfp8pl"]
+
+[ext_resource type="Texture2D" uid="uid://bu6wgn67g0hvl" path="res://Graphics/blue_border_button_pressed.png" id="1_7xwfr"]
+
+[resource]
+content_margin_left = 16.0
+content_margin_top = 22.0
+content_margin_right = 16.0
+content_margin_bottom = 16.0
+texture = ExtResource("1_7xwfr")
+texture_margin_left = 6.0
+texture_margin_top = 10.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
