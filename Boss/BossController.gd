@@ -64,6 +64,9 @@ func _on_battle_begun():
 	boss_state = BossState.IDLE
 	
 func _on_battle_ended():
+	for child in get_children():
+		if child is BossAttackBase:
+			child.queue_free()
 	process_mode = ProcessMode.PROCESS_MODE_DISABLED
 	boss_state = BossState.IDLE
 
@@ -98,6 +101,7 @@ func _on_attack_finished():
 func take_damage(dmg: int):
 	current_health -= dmg
 	boss.heart._on_dealt_damage()
+	boss.tangible = false
 	if current_health <= 0:
 		var splat = load("res://BloodSplatParticles.tscn").instantiate()
 		splat.global_position = boss.heart.global_position
@@ -105,6 +109,8 @@ func take_damage(dmg: int):
 		splat.emitting = true
 		boss_defeated.emit()
 		boss.queue_free()
+		return
+	_post_transition_knockback()
 		
 func _on_heart_revealed_changed(val: bool) -> void:
 	if val == true:

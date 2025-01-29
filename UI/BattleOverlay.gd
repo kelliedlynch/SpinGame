@@ -10,6 +10,8 @@ class_name BattleOverlay
 @onready var transition_text: Node2D = $VBoxContainer/main/transition_text
 @onready var boss_intro_name: Node2D = $VBoxContainer/main/boss_name
 @onready var boss_intro_round: Node2D = $VBoxContainer/main/round_number
+@onready var retry_button: Button = $VBoxContainer/main/MarginContainer/retry_button
+var dash_charge_bar: TextureProgressBar
 
 signal transition_finished
 
@@ -18,6 +20,9 @@ func _init() -> void:
 	z_index = RenderLayer.BATTLE_OVERLAY
 
 func _ready() -> void:
+	retry_button.pressed.connect(BattleManager.begin_battle)
+	retry_button.pressed.connect(retry_button.set.bind("visible", false))
+	BattleManager.player_spawned.connect(_on_player_spawned)
 	BattleManager.boss_spawned.connect(_on_boss_spawned)
 	Player.player_health_changed.connect(_on_player_health_changed)
 	
@@ -28,7 +33,32 @@ func _on_boss_spawned(boss: BossMonster):
 	boss_intro_round.text = "Round " + str(BattleManager.current_boss + 1)
 	boss_intro_name.text = boss.boss_name
 	ani_text.play("boss_intro")
-	ani_text.animation_finished.connect(transition_finished.emit)
+	ani_text.animation_finished.connect(transition_finished.emit, ConnectFlags.CONNECT_ONE_SHOT)
+	
+func _on_player_spawned():
+	dash_charge_bar = load("res://UI/DashChargeBar.tscn").instantiate()
+	Player.entity.hitbox.add_child(dash_charge_bar)
+	dash_charge_bar.position += Vector2(0, 80)
+	Player.entity.dash_cooldown_changed.connect(_on_dash_cooldown_changed)
+	Player.entity.dash_ready.connect(_on_dash_ready)
+	
+func _on_dash_ready():
+	var ready_text = TransitionText.new()
+	ready_text.text = "Dash Ready!"
+	ready_text.font_size = 30
+	ready_text.modulate = Color.LIME_GREEN
+	#ready_text.outline = 2
+	Player.entity.hitbox.add_child(ready_text)
+	ready_text.position += Vector2(0, 80)
+	var tween = create_tween()
+	tween.set_parallel()
+	tween.tween_property(ready_text, "scale", Vector2(2, 2), 1.3)
+	tween.tween_property(ready_text, "modulate:a", .2, 1.3).set_ease(Tween.EASE_OUT)
+	tween.tween_property(ready_text, "position:y", ready_text.position.y - 100, 1.3)
+	tween.finished.connect(ready_text.queue_free)
+	
+func _on_dash_cooldown_changed(val: float):
+	dash_charge_bar.value = val
 
 func _on_player_health_changed(current: int, max_val: int):
 	player_health_bar.max_value = max_val
@@ -51,10 +81,13 @@ func _on_boss_defeated():
 	transition_text.text = "You Win"
 	ani_text.play("slam_transition_text")
 	boss_health_bar.visible = false
-	ani_text.animation_finished.connect(transition_finished.emit)
+	ani_text.animation_finished.connect(transition_finished.emit, ConnectFlags.CONNECT_ONE_SHOT)
 
 func _on_player_defeated():
 	transition_text.text = "You Lose"
 	ani_text.play("slam_transition_text")
 	boss_health_bar.visible = false
-	ani_text.animation_finished.connect(transition_finished.emit)
+	ani_text.animation_finished.connect(transition_finished.emit, ConnectFlags.CONNECT_ONE_SHOT)
+	await ani_text.animation_finished
+	retry_button.visible = true
+	

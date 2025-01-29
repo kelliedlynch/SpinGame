@@ -26,15 +26,19 @@ var input_vector := Vector2.ZERO
 
 var spin_spark_threshold: float = .9
 
-var dash_ready_max: float = 1
-var dash_ready_curr: float = 0
-var dash_charge_max: float = .7
-var dash_charge_curr: float = 0
+var dash_cooldown: float = 1
+var dash_cooldown_percent: float = 0:
+	set(value):
+		dash_cooldown_changed.emit(value)
+		dash_cooldown_percent = value
+var dash_charge_time: float = .2
 var dash_duration: float = 1.5
 var dash_speed = 1.8
 var dash_tween: Tween
 var dash_charge_angle: float
 var dash_charge_indicator: Line2D
+signal dash_ready
+signal dash_cooldown_changed
 
 @export var sprite_texture: Texture2D:
 	set(value):
@@ -89,6 +93,7 @@ func _ready() -> void:
 	if Engine.is_editor_hint() == true:
 		#charge_glow.visible = true
 		set_process_input(false)
+	_begin_dash_cooldown()
 
 func _on_invincible_state_changed(new_val: bool):
 	if new_val == true:
@@ -104,7 +109,7 @@ func _on_take_damage(dmg: int):
 	animation.play("hurt")
 
 func _input(event: InputEvent):
-	if event.is_action_pressed("gameplay_begin_dash"):
+	if event.is_action_pressed("gameplay_begin_dash") and dash_cooldown_percent >= 100:
 		if move_state != MoveState.DASH_CHARGING:
 			move_state = MoveState.DASH_CHARGING
 	elif event.is_action_released("gameplay_begin_dash"):
@@ -172,6 +177,9 @@ func _on_hitbox_body_entered(node):
 			move_state = MoveState.MOVING
 
 func _on_move_state_changed(prev: MoveState, curr: MoveState):
+	if curr == MoveState.MOVING and dash_tween == null:
+		_begin_dash_cooldown()
+		
 	if curr == MoveState.DASH_CHARGING:
 		_begin_dash_charge()
 	if prev == MoveState.DASH_CHARGING and curr == MoveState.MOVING:
@@ -181,6 +189,11 @@ func _on_move_state_changed(prev: MoveState, curr: MoveState):
 	if prev == MoveState.DASHING and curr == MoveState.MOVING:
 		_end_dash()
 
+func _begin_dash_cooldown():
+	dash_tween = create_tween()
+	dash_tween.tween_property(self, "dash_cooldown_percent", 100, dash_cooldown)
+	dash_tween.tween_callback(dash_ready.emit)
+
 #TODO: fix timing and cleanup on dash charge stuff; indicator line should be removed if dash is 
 #		canceled, and new dash shouldn't start if mouse is clicked while space is down
 
@@ -188,7 +201,7 @@ func _begin_dash_charge():
 	destructor.spin_state = PlayerDestructor.SpinState.DASH_CHARGE
 	if dash_tween: dash_tween.kill()
 	dash_tween = create_tween()
-	dash_tween.tween_property(destructor, "spin_speed", destructor.max_spin_speed, .2)
+	dash_tween.tween_property(destructor, "spin_speed", destructor.max_spin_speed, dash_charge_time)
 	dash_charge_angle = hitbox.linear_velocity.angle()
 	hitbox.linear_velocity = Vector2.ZERO
 	var indicator_length = max(get_viewport_rect().size.x, get_viewport_rect().size.y) * 2
@@ -213,12 +226,15 @@ func _begin_dash():
 		dash_charge_indicator.queue_free()
 	destructor.spin_state = PlayerDestructor.SpinState.DASHING
 	dash_tween = create_tween()
+	dash_tween.tween_property(self, "dash_cooldown_percent", 0, .2)
 	dash_tween.tween_interval(dash_duration)
 	dash_tween.tween_callback(set.bind("move_state", MoveState.MOVING))
+	
 	hitbox.linear_velocity = Vector2.from_angle(dash_charge_angle) * Player.max_move_speed * dash_speed
 
 func _end_dash():
 	destructor.spin_state = PlayerDestructor.SpinState.DEFAULT
+	_begin_dash_cooldown()
 	
 func _exit_tree() -> void:
 	if dash_charge_indicator != null:

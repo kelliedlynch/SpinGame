@@ -77,6 +77,7 @@ polygon = PackedVector2Array(45, 1, 43, 3, 42, 3, 45, 9, 45, 10, 39, 7, 32, 7, 1
 [node name="base_sprite" type="Polygon2D" parent="Hitbox/saw_blade_coll"]
 clip_children = 2
 position = Vector2(63, 69)
+rotation = -24.6419
 offset = Vector2(-62, -62)
 texture = ExtResource("2_ghaw7")
 texture_offset = Vector2(62, 62)

@@ -12,6 +12,8 @@ var beam_aura_width_curve: Curve
 func _ready() -> void:
 	origin = boss.get_node("antenna/laser_beam/beam_origin")
 	tree_exiting.connect(_on_tree_exiting)
+	min_damage = 100
+	max_damage = 100
 
 func execute_attack():
 	var ani = boss.animation_player

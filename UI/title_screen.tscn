@@ -28,7 +28,7 @@ texture = ExtResource("2_l2kg0")
 
 [node name="saw_blade" type="Sprite2D" parent="."]
 position = Vector2(1430, 249)
-rotation = -44969.5
+rotation = -80198.3
 scale = Vector2(1.78117, 1.78117)
 texture = ExtResource("3_nfxrs")
 
@@ -71,6 +71,7 @@ theme_override_font_sizes/font_size = 60
 text = "New Game"
 
 [node name="CheckButton" type="CheckBox" parent="VBoxContainer/VBoxContainer"]
+visible = false
 layout_mode = 2
 focus_mode = 0
 theme_override_font_sizes/font_size = 50

@@ -121,14 +121,14 @@ modulate = Color(0.0941176, 0.772549, 0.941176, 1)
 [node name="left_upper_bolt" parent="ElectricBones" instance=ExtResource("4_a1x6e")]
 position = Vector2(-42.944, -36.2667)
 rotation = 0.20132
-scale = Vector2(0.999904, 0.999904)
-points = PackedVector2Array(-5.81909, -0.378855, -23.6517, -14.927, -32.2573, -25.1566, -46.6506, -31.9698, -51.1124, -40.581, -54.9204, -47.5641, -61.2821, -53.1492, -61.3306, -76.5321, -66.2416, -89.0169, -80.7596, -85.2693, -81.9941, -113.971, -92.795, -108.261, -99.9748, -135.189, -117.751, -132.4, -123.374, -158.617, -124.747, -150.849)
+scale = Vector2(0.999903, 0.999903)
+points = PackedVector2Array(-5.81909, -0.378855, -8.33155, -9.97474, -20.1517, -27.7081, -34.433, -45.4607, -56.829, -52.3732, -56.6434, -70.9273, -68.3787, -63.1166, -71.5222, -74.7439, -71.3873, -94.208, -83.8577, -107.568, -99.9175, -124.078, -113.901, -145.294, -124.747, -150.849)
 
 [node name="left_lower_bolt" parent="ElectricBones" instance=ExtResource("4_a1x6e")]
 position = Vector2(-201.85, -272.424)
 rotation = -2.66148
-scale = Vector2(0.999814, 0.999814)
-points = PackedVector2Array(-93.6142, -30.6694, -93.411, -54.7623, -99.4611, -68.9429, -102.47, -86.2436, -86.875, -110.91, -91.5349, -119.614, -97.1787, -133.459, -97.7427, -152.591, -98.1197, -162.376, -98.889, -182.568, -88.7528, -212.939, -96.6637, -223.712, -94.9873, -249.847)
+scale = Vector2(0.999812, 0.999812)
+points = PackedVector2Array(-93.6142, -30.6694, -84.1823, -42.4934, -97.5212, -58.9844, -96.9781, -75.0269, -104.145, -92.9881, -89.7448, -128.74, -89.7222, -147.606, -100.01, -154.387, -91.0967, -182.903, -101.48, -189.044, -97.3025, -209.901, -99.5798, -229.361, -94.9873, -249.847)
 
 [node name="body_bolts" type="Node2D" parent="ElectricBones"]
 position = Vector2(1, 24)
@@ -139,37 +139,37 @@ scale = Vector2(0.999988, 0.999988)
 position = Vector2(1.89648, 22.9436)
 rotation = 0.03902
 scale = Vector2(0.999996, 0.999996)
-points = PackedVector2Array(46.9755, -91.9428, 28.5068, -99.6086, 4.52334, -95.0994, -13.2466, -85.279, -21.178, -83.9823, -39.3751, -92.6802, -50.1398, -95.1886, -49.7945, -84.3962)
+points = PackedVector2Array(46.9755, -91.9428, 27.7626, -92.9715, 7.6934, -78.6171, -13.8247, -80.7628, -38.3723, -96.8905, -45.3406, -94.133, -49.7945, -84.3962)
 
 [node name="body_bolt2" parent="ElectricBones/body_bolts" instance=ExtResource("4_a1x6e")]
 position = Vector2(1, 24)
 rotation = 0.03902
 scale = Vector2(0.999996, 0.999996)
-points = PackedVector2Array(78.4619, -9.16551, 68.936, -18.5135, 72.4844, -41.4893, 66.5487, -65.4247, 56.82, -79.1914, 58.67, -91.8044, 47.986, -91.0395)
+points = PackedVector2Array(78.4619, -9.16551, 63.6066, -20.9486, 58.8158, -28.0001, 61.0485, -43.855, 63.6943, -71.3583, 46.6132, -79.4082, 47.986, -91.0395)
 
 [node name="body_bolt3" parent="ElectricBones/body_bolts" instance=ExtResource("4_a1x6e")]
 position = Vector2(1, 24)
 rotation = 0.03902
 scale = Vector2(0.999996, 0.999996)
-points = PackedVector2Array(60.8945, 48.3797, 58.9192, 38.1469, 55.8298, 26.7695, 82.0954, 14.6932, 63.5566, 2.31906, 79.9706, -14.2118, 79.8322, -17.2971)
+points = PackedVector2Array(60.8945, 48.3797, 71.3142, 29.1402, 75.3332, 20.4097, 66.1964, 6.46914, 70.2849, -10.9393, 79.8322, -17.2971)
 
 [node name="body_bolt4" parent="ElectricBones/body_bolts" instance=ExtResource("4_a1x6e")]
 position = Vector2(-1.0364, 39.8178)
 rotation = 0.03902
 scale = Vector2(0.971612, 0.550062)
-points = PackedVector2Array(66.2691, 52.9747, 46.1832, 49.7669, 44.2031, 42.4706, 16.8141, 54.892, 7.37956, 44.1912, -7.48704, 51.0722, -13.7936, 38.218, -22.6208, 43.5064, -27.6877, 37.1096)
+points = PackedVector2Array(66.2691, 52.9747, 48.0068, 48.2119, 23.0525, 54.3162, 14.6592, 52.7577, 11.6007, 45.4651, 2.67557, 47.2499, -14.4609, 46.3524, -23.1685, 44.8953, -27.6877, 37.1096)
 
 [node name="body_bolt5" parent="ElectricBones/body_bolts" instance=ExtResource("4_a1x6e")]
 position = Vector2(-23.7957, 56.9719)
 rotation = 0.03902
 scale = Vector2(0.999996, 0.999996)
-points = PackedVector2Array(0.0780182, 1.99849, -17.4828, -8.82898, -21.3506, -29.1168, -34.7695, -44.6778)
+points = PackedVector2Array(0.0780182, 1.99849, -10.5595, -11.7262, -24.5203, -23.1872, -28.6458, -29.8103, -34.7695, -44.6778)
 
 [node name="body_bolt6" parent="ElectricBones/body_bolts" instance=ExtResource("4_a1x6e")]
 position = Vector2(1, 24)
 rotation = 0.03902
 scale = Vector2(0.999996, 0.999996)
-points = PackedVector2Array(-60.4446, -15.3552, -46.8196, -36.9694, -49.4575, -44.5107, -47.2395, -52.9856, -45.1723, -64.2401, -34.5898, -88.6332, -37.675, -83.3378)
+points = PackedVector2Array(-60.4446, -15.3552, -49.6449, -35.1434, -51.5531, -43.1475, -48.4176, -54.7755, -42.3668, -70.9526, -37.675, -83.3378)
 
 [node name="Heart" type="AnimatableBody2D" parent="."]
 position = Vector2(1, 24)
@@ -203,17 +203,17 @@ libraries = {
 [node name="Destructibles" type="Node2D" parent="."]
 
 [node name="l1_lower" type="AnimatableBody2D" parent="Destructibles"]
-position = Vector2(-210.999, 55)
+position = Vector2(-210.999, 54.9997)
 rotation = -2.66148
-scale = Vector2(0.999814, 0.999814)
+scale = Vector2(0.999812, 0.999812)
 script = ExtResource("8_100vh")
 destructible_material = ExtResource("9_0vd4q")
 sprite_texture = ExtResource("10_xn47u")
 
 [node name="l1_upper" type="AnimatableBody2D" parent="Destructibles"]
-position = Vector2(-200.999, -219.999)
+position = Vector2(-200.998, -219.998)
 rotation = -0.479069
-scale = Vector2(0.999904, 0.999904)
+scale = Vector2(0.999903, 0.999903)
 script = ExtResource("8_100vh")
 destructible_material = ExtResource("11_ytkgk")
 sprite_texture = ExtResource("12_b2po1")
@@ -250,7 +250,7 @@ rest = Transform2D(0.266986, 0.963694, -0.963694, 0.266986, 0, 0)
 [node name="l1_upper_bone" type="Bone2D" parent="Skeleton2D/body_bone"]
 position = Vector2(-37.9623, -49.557)
 rotation = 0.436387
-scale = Vector2(0.999916, 0.999916)
+scale = Vector2(0.999915, 0.999915)
 rest = Transform2D(0.906211, 0.422634, -0.422634, 0.906211, -37.9623, -49.557)
 
 [node name="l1_lower_bone" type="Bone2D" parent="Skeleton2D/body_bone/l1_upper_bone"]

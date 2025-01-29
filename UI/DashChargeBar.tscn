@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3 uid="uid://dytg2qhqo145k"]
+
+[ext_resource type="Texture2D" uid="uid://d3p284w2ffe5b" path="res://Graphics/bar_shadow_3patch.png" id="1_wtr7d"]
+[ext_resource type="Texture2D" uid="uid://bwofoiotocxv3" path="res://Graphics/bar_white_fill_3patch.png" id="2_bih6l"]
+
+[node name="DashChargeBar" type="TextureProgressBar"]
+z_index = 500
+z_as_relative = false
+custom_minimum_size = Vector2(100, 6)
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -50.0
+offset_top = -12.0
+offset_right = 50.0
+grow_horizontal = 2
+grow_vertical = 0
+value = 50.0
+nine_patch_stretch = true
+stretch_margin_left = 6
+stretch_margin_top = 6
+stretch_margin_right = 6
+stretch_margin_bottom = 6
+texture_under = ExtResource("1_wtr7d")
+texture_progress = ExtResource("2_bih6l")
+tint_progress = Color(0, 0.87451, 0, 1)

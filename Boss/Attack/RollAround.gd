@@ -62,8 +62,11 @@ func _remove_damage_area_shapes():
 		child.queue_free()
 
 func _roll_to_position():
+	boss.tangible = false
 	var tween = create_tween()
 	tween.tween_property(boss, "position", target, .6)
+	tween.tween_interval(.1)
+	tween.tween_callback(boss.set.bind("tangible", true))
 
 func _pick_target_spot():
 	target = Player.entity.hitbox.global_position
