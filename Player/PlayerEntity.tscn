@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dmbienyglkltx"]
+[gd_scene load_steps=13 format=3 uid="uid://dmbienyglkltx"]
 
 [ext_resource type="Script" path="res://Player/PlayerEntity.gd" id="1_5veut"]
 [ext_resource type="Script" path="res://Player/PlayerHitbox.gd" id="2_fwe6s"]
@@ -7,6 +7,9 @@
 [ext_resource type="PackedScene" uid="uid://f83mqw1l7iv" path="res://Player/GooglyEyes.tscn" id="5_txnaa"]
 [ext_resource type="Script" path="res://Component/Destructor/PlayerDestructor.gd" id="6_f2o1g"]
 [ext_resource type="AnimationLibrary" uid="uid://dhtth3isor6w3" path="res://Player/UnknownAnimationLibrary.tres" id="7_5hore"]
+[ext_resource type="AudioStream" uid="uid://lckbvwt1rlbn" path="res://Audio/saw_idle.tres" id="8_vio6s"]
+[ext_resource type="Script" path="res://Player/SawNoisePlayer.gd" id="9_275rt"]
+[ext_resource type="AudioStream" uid="uid://biy7yiw2thuyb" path="res://Audio/saw_rev_up.tres" id="10_748fd"]
 
 [sub_resource type="Gradient" id="Gradient_konno"]
 offsets = PackedFloat32Array(0.344316, 0.61039, 0.70346, 0.794069)
@@ -77,7 +80,7 @@ polygon = PackedVector2Array(45, 1, 43, 3, 42, 3, 45, 9, 45, 10, 39, 7, 32, 7, 1
 [node name="base_sprite" type="Polygon2D" parent="Hitbox/saw_blade_coll"]
 clip_children = 2
 position = Vector2(63, 69)
-rotation = -24.6419
+rotation = -77376.0
 offset = Vector2(-62, -62)
 texture = ExtResource("2_ghaw7")
 texture_offset = Vector2(62, 62)
@@ -87,6 +90,18 @@ polygon = PackedVector2Array(45, 1, 43, 3, 42, 3, 45, 9, 45, 10, 39, 7, 32, 7, 1
 libraries = {
 "": ExtResource("7_5hore")
 }
+
+[node name="AudioManager" type="Node" parent="."]
+script = ExtResource("9_275rt")
+
+[node name="RunSound" type="AudioStreamPlayer" parent="AudioManager"]
+stream = ExtResource("8_vio6s")
+volume_db = -18.508
+autoplay = true
+
+[node name="RevSound" type="AudioStreamPlayer" parent="AudioManager"]
+stream = ExtResource("10_748fd")
+volume_db = -20.0
 
 [connection signal="body_entered" from="Hitbox" to="Hitbox" method="_on_body_entered"]
 [connection signal="body_exited" from="Hitbox" to="Hitbox" method="_on_body_exited"]

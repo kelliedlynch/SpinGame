@@ -9,7 +9,7 @@ var current_boss: int = 0
 
 var powerup: Powerup
 var powerup_spawn: Tween
-var powerup_spawn_time: float = 2
+var powerup_spawn_time: float = 3
 
 signal player_spawned
 signal boss_spawned
@@ -73,12 +73,17 @@ func _on_boss_defeated():
 		
 func _on_player_defeated():
 	battle_ended.emit()
-	await get_tree().create_timer(1).timeout
-	Player.player_defeated.disconnect(overlay._on_player_defeated)
-	Player.player_defeated.disconnect(_on_player_defeated)
+	#await get_tree().create_timer(1).timeout
+	#Player.player_defeated.disconnect(overlay._on_player_defeated)
+	#Player.player_defeated.disconnect(_on_player_defeated)
 	#get_tree().change_scene_to_file("res://UI/title_screen.tscn")
 	
 func _on_battle_ended():
+	if powerup != null:
+		powerup.queue_free()
+		powerup_spawn.kill()
+	Player.player_defeated.disconnect(overlay._on_player_defeated)
+	Player.player_defeated.disconnect(_on_player_defeated)
 	battle_ended.disconnect(boss.controller._on_battle_ended)
 	battle_ended.disconnect(_on_battle_ended)
 	battle_begun.disconnect(boss.controller._on_battle_begun)
@@ -102,6 +107,9 @@ func _on_transition_finished(_foo = null):
 	Player.entity.set_deferred("process_mode", Node.PROCESS_MODE_INHERIT)
 
 func spawn_powerup():
+	if powerup != null:
+		powerup.queue_free()
+		powerup_spawn.kill()
 	powerup = preload("res://Entity/Powerup.tscn").instantiate()
 	var spawn_loc = Vector2(randi_range(600, 820), randi_range(100, 300))
 	spawn_loc.y = spawn_loc.y if randi() % 2 == 0 else arena.get_viewport_rect().size.y - spawn_loc.y

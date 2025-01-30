@@ -10,6 +10,7 @@ class_name PlayerEntity
 @onready var animation: AnimationPlayer = $AnimationPlayer
 @onready var charge_sparks: CPUParticles2D = $Hitbox/charge_sparks
 @onready var charge_glow: Sprite2D = $Hitbox/charge_glow
+@onready var audio: Node = $AudioManager
 
 var _move_state: MoveState = MoveState.MOVING
 var move_state: MoveState:
@@ -90,6 +91,8 @@ func _ready() -> void:
 	#z_index = RenderLayer.ARENA_ENTITIES
 	#z_as_relative = false
 	_on_sprite_changed(sprite_texture)
+	move_state_changed.connect(audio._on_move_state_changed)
+	destructor.cut_state_changed.connect(audio._on_cut_state_changed)
 	if Engine.is_editor_hint() == true:
 		#charge_glow.visible = true
 		set_process_input(false)

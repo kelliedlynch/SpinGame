@@ -1,7 +1,11 @@
 extends Area2D
 class_name Destructor
 
-var cut_state = CutState.READY
+var cut_state: CutState = CutState.READY:
+	set(value):
+		cut_state_changed.emit(cut_state, value)
+		cut_state = value
+signal cut_state_changed
 
 var target: DestructibleHitbox = null
 

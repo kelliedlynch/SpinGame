@@ -67,6 +67,7 @@ func _on_battle_ended():
 	for child in get_children():
 		if child is BossAttackBase:
 			child.queue_free()
+	BattleManager.overlay.transition_finished.disconnect(_post_transition_knockback)
 	process_mode = ProcessMode.PROCESS_MODE_DISABLED
 	boss_state = BossState.IDLE
 
@@ -88,7 +89,7 @@ func _process(_delta: float) -> void:
 func attack():
 	boss_state = BossState.ATTACKING
 	atk_timer = null
-	
+	if attacks.is_empty(): return
 	attacks[attack_index].execute_attack()
 	if attack_index < attacks.size() - 1:
 		attack_index += 1
@@ -115,15 +116,14 @@ func take_damage(dmg: int):
 func _on_heart_revealed_changed(val: bool) -> void:
 	if val == true:
 		boss.tangible = false
-		BattleManager.overlay.transition_finished.connect(_on_battle_transition_finished)
+		BattleManager.overlay.transition_finished.connect(_post_transition_knockback)
 		boss_phase += 1
 	
-func _on_battle_transition_finished(_foo = null):
-	
-	#await boss.heart.heart_revealed_changed
-	call_deferred("_post_transition_knockback")
+#func _on_battle_transition_finished(_foo = null):
+	#call_deferred("_post_transition_knockback")
+	#boss.heart.tangible = true
 
-func _post_transition_knockback():
+func _post_transition_knockback(_foo = null):
 	var angle = boss.heart.global_position.angle_to_point(Player.entity.hitbox.global_position)
 	var vec = Vector2.from_angle(angle) * transition_knockback_force
 	Player.entity.move_state = PlayerEntity.MoveState.MOVING

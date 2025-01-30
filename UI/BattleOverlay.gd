@@ -7,9 +7,9 @@ class_name BattleOverlay
 @onready var boss_health_bar: TextureProgressBar = $VBoxContainer/header/HBoxContainer/MarginContainer/boss_health_bar
 @onready var ani_health: AnimationPlayer = $HealthBarAnimationPlayer
 @onready var ani_text: AnimationPlayer = $TextAnimationPlayer
-@onready var transition_text: Node2D = $VBoxContainer/main/transition_text
-@onready var boss_intro_name: Node2D = $VBoxContainer/main/boss_name
-@onready var boss_intro_round: Node2D = $VBoxContainer/main/round_number
+@onready var transition_text: Label = $VBoxContainer/main/animated_text/transition_text
+@onready var boss_intro_name: Label = $VBoxContainer/main/animated_text/boss_name
+@onready var boss_intro_round: Label = $VBoxContainer/main/animated_text/round_number
 @onready var retry_button: Button = $VBoxContainer/main/MarginContainer/retry_button
 var dash_charge_bar: TextureProgressBar
 
@@ -26,6 +26,10 @@ func _ready() -> void:
 	BattleManager.boss_spawned.connect(_on_boss_spawned)
 	Player.player_health_changed.connect(_on_player_health_changed)
 	
+#func _process(delta: float) -> void:
+	#if Player.entity != null and Player.entity.destructor != null:
+		#$VBoxContainer/footer/HBoxContainer/cut_power.text = str(Player.entity.destructor.get_power())
+
 func _on_boss_spawned(boss: BossMonster):
 	boss.controller.boss_health_changed.connect(_on_boss_health_changed)
 	boss.controller.connect("boss_phase_changed", _on_boss_phase_changed)
@@ -47,7 +51,7 @@ func _on_dash_ready():
 	ready_text.text = "Dash Ready!"
 	ready_text.font_size = 30
 	ready_text.modulate = Color.LIME_GREEN
-	#ready_text.outline = 2
+	ready_text.outline = 1
 	Player.entity.hitbox.add_child(ready_text)
 	ready_text.position += Vector2(0, 80)
 	var tween = create_tween()
@@ -72,22 +76,32 @@ func _on_boss_phase_changed(_phase):
 	transition_text.text = "Heart Exposed"
 	ani_text.play("slam_transition_text")
 	var tween = create_tween()
-	tween.tween_interval(.5)
+	tween.tween_interval(ani_text.get_animation("slam_transition_text").length + .4)
 	tween.tween_callback(ani_health.play.bind("fill_boss_health_bar"))
-	tween.tween_interval(ani_text.current_animation_length * .9)
+	var fill_time = ani_text.get_animation("fill_boss_health_bar").length
+	tween.tween_interval(fill_time * .5)
+	tween.tween_callback(transition_text.set.bind("visible", false))
+	tween.tween_interval(fill_time * .4)
 	tween.tween_callback(transition_finished.emit)
 
 func _on_boss_defeated():
 	transition_text.text = "You Win"
 	ani_text.play("slam_transition_text")
 	boss_health_bar.visible = false
-	ani_text.animation_finished.connect(transition_finished.emit, ConnectFlags.CONNECT_ONE_SHOT)
+	var tween = create_tween()
+	tween.tween_interval(ani_text.get_animation("slam_transition_text").length + 2)
+	tween.tween_callback(transition_text.set.bind("visible", false))
+	tween.tween_callback(transition_finished.emit.bind(ConnectFlags.CONNECT_ONE_SHOT))
+	#ani_text.animation_finished.connect(transition_finished.emit, ConnectFlags.CONNECT_ONE_SHOT)
 
 func _on_player_defeated():
 	transition_text.text = "You Lose"
 	ani_text.play("slam_transition_text")
 	boss_health_bar.visible = false
-	ani_text.animation_finished.connect(transition_finished.emit, ConnectFlags.CONNECT_ONE_SHOT)
-	await ani_text.animation_finished
-	retry_button.visible = true
+	var tween = create_tween()
+	tween.tween_interval(ani_text.get_animation("slam_transition_text").length + 2)
+	#tween.tween_callback(transition_text.set.bind("visible", false))
+	tween.tween_callback(transition_finished.emit.bind(ConnectFlags.CONNECT_ONE_SHOT))
+	tween.tween_callback(retry_button.set.bind("visible", true))
+	#retry_button.visible = true
 	

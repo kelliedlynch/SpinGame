@@ -1,4 +1,4 @@
-[gd_resource type="AnimationLibrary" load_steps=3 format=3 uid="uid://b6u0p2qags3gq"]
+[gd_resource type="AnimationLibrary" load_steps=4 format=3 uid="uid://b6u0p2qags3gq"]
 
 [sub_resource type="Animation" id="Animation_pbctb"]
 resource_name = "heartbeat"
@@ -62,14 +62,32 @@ tracks/2/path = NodePath("SGCollisionPoly/base_sprite:modulate")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.0666667, 0.133333, 0.233333),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.0666667, 0.233333),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Color(0.803922, 0.360784, 0.360784, 1), Color(1, 0.849703, 0.607065, 1), Color(1, 0.849703, 0.607065, 1), Color(0.803922, 0.360784, 0.360784, 1)]
+"values": [Color(0.803922, 0.360784, 0.360784, 1), Color(1, 0.85098, 0, 1), Color(0.803922, 0.360784, 0.360784, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_dsof1"]
+resource_name = "flash"
+length = 0.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SGCollisionPoly/base_sprite:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(0.803922, 0.360784, 0.360784, 1), Color(0.803922, 0.517647, 0.360784, 0.517647), Color(0.803922, 0.360784, 0.360784, 1)]
 }
 
 [resource]
 _data = {
+"flash": SubResource("Animation_dsof1"),
 "heartbeat": SubResource("Animation_pbctb"),
 "hurt": SubResource("Animation_7ebu6")
 }

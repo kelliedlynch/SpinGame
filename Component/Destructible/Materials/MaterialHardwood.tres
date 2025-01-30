@@ -6,8 +6,8 @@
 [resource]
 script = ExtResource("1_86rtg")
 texture = ExtResource("2_6eptj")
-begin_cut_threshold = 8.0
-end_cut_threshold = 6.0
-resistance = 6.0
+begin_cut_threshold = 7.0
+end_cut_threshold = 4.0
+resistance = 5.0
 max_cut_speed = 200.0
 linear_damp = 40.0

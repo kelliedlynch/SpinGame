@@ -10,12 +10,10 @@ var arena: Arena
 
 @export var heart_location: DestructibleHitbox
 
-var _tangible: bool = true
-var tangible: bool:
-	get: return _tangible
+var tangible: bool = true:
 	set(value):
 		change_tangible_state.emit(value)
-		_tangible = value
+		tangible = value
 signal change_tangible_state
 
 func _ready() -> void:

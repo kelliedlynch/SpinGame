@@ -83,6 +83,73 @@ tint_progress = Color(1, 0.14, 0.14, 1)
 layout_mode = 2
 size_flags_vertical = 3
 
+[node name="round_number_bolt" parent="VBoxContainer/main" instance=ExtResource("6_ssos4")]
+visible = false
+position = Vector2(0, 231.024)
+points = PackedVector2Array(0, 0, 50.7541, -18.4437, 68.422, -23.1775, 109.124, -10.5891, 163.795, -8.1875, 226.795, 30.7849, 258.808, 17.5417, 292.641, 6.72059, 334.164, 8.40739, 381.55, 4.45131, 434.919, -19.136, 457.251, -29.306, 492.895, 27.541, 525.244, 13.8006, 576.398, -13.9751, 600.035, -20.0012, 652.246, 25.761, 666.933, 10.2825, 728.384, 28.0785, 769.23, -9.77441, 809.173, -16.5806, 872.058, 4.44604, 894.637, -16.4951, 955.219, -12.4963, 988.352, -16.88, 1035.11, -12.7084, 1055.74, -10.7842, 1120.78, 25.006, 1145.59, 25.8463, 1146.32, -18.4388, 1186.8, -10.4785, 1227.89, 3.36429, 1244.49, -2.74685, 1282.65, -24.3504, 1351.37, 9.27139, 1393.15, -6.95547, 1442.89, 21.449, 1465.56, -16.5065, 1497.79, -21.0731, 1564.66, 5.22459, 1601.67, 11.9771, 1631.19, 8.94541, 1681.38, 2.9841, 1697.38, -20.4419, 1734.78, -15.9927, 1773.86, -19.2354, 1830.1, 19.0702, 1861.14, -4.61727, 1920, 0)
+width = 8.0
+default_color = Color(1, 1, 0, 1)
+
+[node name="boss_name_bolt" parent="VBoxContainer/main" instance=ExtResource("6_ssos4")]
+visible = false
+position = Vector2(1920, 492.024)
+points = PackedVector2Array(0, 0, 59.9814, 11.3112, 81.5051, 10.7794, 109.128, -20.0231, 141.085, -19.012, 192.595, 7.53604, 238.68, 23.367, 294.402, -6.44252, 316.882, -13.7258, 341.957, -14.8829, 378.432, 1.93091, 393, -21.6323, 443.493, -26.4072, 504.754, -9.87549, 529.01, -5.88475, 569.99, 20.5058, 589.87, -26.9929, 619.564, -7.79228, 676.411, 4.49667, 705.239, -24.7617, 755.65, -18.8568, 825.353, 6.18668, 862.329, 8.4759, 886.447, 19.7349, 891.372, -24.9284, 939.729, -27.0295, 989.13, 19.4594, 1042.87, 25.6272, 1070.56, 15.8174, 1096.36, 6.46202, 1150.77, 10.0694, 1192.5, 19.0721, 1204.36, 5.18033, 1231.37, -10.4502, 1276.73, -21.557, 1344.16, 15.7863, 1400.88, 18.9317, 1427.1, 5.28109, 1452.03, -10.6121, 1511.73, 8.82255, 1559.44, 18.2055, 1607.88, 22.995, 1621.26, 9.19921, 1648.13, -7.9315, 1665.5, -16.891, 1702.13, -9.47321, 1737.26, -0.364861, 1799.82, 16.1299, 1840, 4.42253, 1869.47, -19.075, 1920, 0)
+width = 8.0
+default_color = Color(1, 1, 0, 1)
+
+[node name="animated_text" type="Node2D" parent="VBoxContainer/main"]
+
+[node name="round_number" type="Label" parent="VBoxContainer/main/animated_text"]
+offset_left = -1100.0
+offset_top = 135.024
+offset_right = 820.0
+offset_bottom = 1215.02
+pivot_offset = Vector2(960, 540)
+size_flags_horizontal = 4
+theme = ExtResource("2_ufawk")
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 8
+theme_override_constants/shadow_outline_size = 16
+theme_override_font_sizes/font_size = 160
+text = "Text
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="boss_name" type="Label" parent="VBoxContainer/main/animated_text"]
+offset_left = 2900.0
+offset_top = 416.024
+offset_right = 4820.0
+offset_bottom = 1496.02
+pivot_offset = Vector2(960, 540)
+size_flags_horizontal = 4
+theme = ExtResource("2_ufawk")
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 8
+theme_override_constants/shadow_outline_size = 16
+theme_override_font_sizes/font_size = 120
+text = "Text"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="transition_text" type="Label" parent="VBoxContainer/main/animated_text"]
+visible = false
+offset_left = 744.0
+offset_top = 351.0
+offset_right = 1174.0
+offset_bottom = 570.0
+scale = Vector2(1.2572, 1.2572)
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 160
+text = "Text"
+horizontal_alignment = 1
+
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/main"]
 layout_mode = 2
 theme_override_constants/margin_top = 400
@@ -96,7 +163,7 @@ focus_mode = 0
 theme_override_font_sizes/font_size = 50
 text = "Try Again"
 
-[node name="transition_text" type="Node2D" parent="VBoxContainer/main"]
+[node name="transition_text_old" type="Node2D" parent="VBoxContainer/main"]
 visible = false
 modulate = Color(1, 1, 1, 0)
 position = Vector2(959.5, 431.5)
@@ -105,33 +172,21 @@ scale = Vector2(1.2572, 1.2572)
 script = ExtResource("5_x76gp")
 font = ExtResource("6_7nwrg")
 
-[node name="round_number_bolt" parent="VBoxContainer/main" instance=ExtResource("6_ssos4")]
-visible = false
-position = Vector2(0, 231.024)
-points = PackedVector2Array(0, 0, 50.6607, 11.9558, 106.767, -21.6442, 153.194, -28.6469, 180.027, -22.4602, 202.051, -22.3495, 245.014, -26.9217, 275.465, -3.04223, 293.005, -12.648, 332.055, 20.9995, 365.064, -18.5314, 407.552, 25.579, 467.225, 24.8746, 519.821, 19.5127, 534.664, -12.3413, 573.68, 9.36989, 609.811, -2.02993, 652.978, 13.2523, 704.127, -0.538016, 751.727, 4.64489, 777.61, -6.86464, 810.702, 8.52051, 835.301, -21.126, 886.931, -21.0714, 944.279, 6.41551, 986.848, -4.70745, 1013.85, -12.9607, 1050.51, 14.4416, 1093.37, 7.73123, 1140.61, -11.0143, 1177.82, -10.1886, 1217.57, -12.3272, 1271.61, 9.44011, 1278.95, -7.04321, 1329.91, 23.7809, 1354.57, -21.1595, 1391.85, -2.99096, 1430.86, 3.89732, 1430.85, -23.0699, 1494.53, 13.8557, 1536.29, -4.02786, 1553.25, -14.5637, 1580.22, -16.5883, 1627.53, 16.5132, 1644.08, -7.85828, 1683.85, 16.9562, 1704.28, -10.8931, 1743.39, 7.39856, 1789.89, -6.2229, 1862.12, 18.1512, 1885.41, 1.14737, 1920, 0)
-width = 8.0
-default_color = Color(1, 1, 0, 1)
-
-[node name="boss_name_bolt" parent="VBoxContainer/main" instance=ExtResource("6_ssos4")]
-visible = false
-position = Vector2(1920, 492.024)
-points = PackedVector2Array(0, 0, 51.5708, 29.3933, 72.2996, 19.3106, 127.874, -6.18851, 173.858, 17.3916, 199.263, 16.642, 248.625, 28.7576, 262.596, -12.0077, 290.458, -21.4343, 342.67, 29.7642, 354.663, -28.6466, 380.922, -8.99657, 428.055, 13.4705, 447.465, -20.8281, 470.085, -25.6492, 519.906, -2.10724, 572.61, -7.12476, 620.668, 17.9825, 646.359, 24.9891, 683.438, -6.5777, 731.743, -1.37267, 785.405, -7.12882, 817.517, -0.182622, 841.544, -4.80804, 878.958, -21.702, 936.981, 7.80914, 1000.75, 25.5918, 1006.86, 0.641134, 1069.06, 5.60243, 1076.01, -19.4409, 1145.62, 7.06361, 1163.45, -10.5368, 1194.77, -21.071, 1237.21, 16.7173, 1256.3, -15.1682, 1324.63, 3.33878, 1369.15, 18.0229, 1404.94, -11.6585, 1466.01, -6.77012, 1503.76, -3.16819, 1514.07, -21.5646, 1569.19, -0.00364352, 1628.26, 18.8823, 1675.5, 7.0705, 1691.51, -0.769614, 1752.81, 21.3049, 1753.29, -10.7026, 1796.29, 4.4573, 1858.15, 9.28121, 1879.93, 1.48908, 1920, 0)
-width = 8.0
-default_color = Color(1, 1, 0, 1)
-
-[node name="round_number" type="Node2D" parent="VBoxContainer/main"]
+[node name="round_number_old" type="Node2D" parent="VBoxContainer/main"]
 visible = false
 position = Vector2(959.5, 301.024)
 script = ExtResource("5_x76gp")
 font_size = 180
 outline = 12
+font = ExtResource("6_7nwrg")
 
-[node name="boss_name" type="Node2D" parent="VBoxContainer/main"]
+[node name="boss_name_old" type="Node2D" parent="VBoxContainer/main"]
 visible = false
 position = Vector2(959.5, 540.024)
 script = ExtResource("5_x76gp")
 font_size = 140
 outline = 12
+font = ExtResource("6_7nwrg")
 
 [node name="footer" type="MarginContainer" parent="VBoxContainer"]
 layout_mode = 2
@@ -163,6 +218,11 @@ tint_progress = Color(1, 0.14, 0.14, 1)
 [node name="Control" type="Control" parent="VBoxContainer/footer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="cut_power" type="Label" parent="VBoxContainer/footer/HBoxContainer"]
+visible = false
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
 
 [node name="HealthBarAnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://b8mbou70keqf4"]
+[gd_scene load_steps=9 format=3 uid="uid://b8mbou70keqf4"]
 
 [ext_resource type="Script" path="res://UI/TitleScreen.gd" id="1_ihht3"]
 [ext_resource type="Theme" uid="uid://bu7g0naukxglx" path="res://UI/ui_theme.tres" id="1_tvr7d"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://dwk2osnipsfju" path="res://Graphics/saw_blade_isolated.png" id="3_nfxrs"]
 [ext_resource type="PackedScene" uid="uid://f83mqw1l7iv" path="res://Player/GooglyEyes.tscn" id="4_xv8jp"]
 [ext_resource type="PackedScene" uid="uid://cerhctbexb5pp" path="res://Component/Destructor/destructor_sparks.tscn" id="5_irci0"]
+[ext_resource type="AudioStream" uid="uid://bacv10wpudqxk" path="res://Audio/Buzzsaws Loop.wav" id="8_f6ryy"]
 
 [node name="TitleScreen" type="Control"]
 layout_mode = 3
@@ -28,7 +29,7 @@ texture = ExtResource("2_l2kg0")
 
 [node name="saw_blade" type="Sprite2D" parent="."]
 position = Vector2(1430, 249)
-rotation = -80198.3
+rotation = -87627.2
 scale = Vector2(1.78117, 1.78117)
 texture = ExtResource("3_nfxrs")
 
@@ -80,5 +81,10 @@ text = "Show Tutorial"
 [node name="Control" type="Control" parent="VBoxContainer"]
 custom_minimum_size = Vector2(0, 260)
 layout_mode = 2
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_f6ryy")
+volume_db = -21.446
+autoplay = true
 
 [connection signal="pressed" from="VBoxContainer/VBoxContainer/Button" to="." method="_on_button_pressed"]
