@@ -13,6 +13,8 @@ var powerup_spawn_time: float = 3
 
 signal player_spawned
 signal boss_spawned
+signal phase_changed
+signal battle_beginning
 signal battle_begun
 signal battle_ended
 
@@ -29,6 +31,7 @@ func spawn_boss_to_arena(boss_name: String, to_arena: Arena):
 	battle_ended.connect(boss.controller._on_battle_ended)
 	battle_ended.connect(_on_battle_ended)
 	battle_begun.connect(boss.controller._on_battle_begun)
+	#boss.controller._on_spawn_to_arena()
 	#monsters.append(boss)
 
 func _ready() -> void:
@@ -51,6 +54,7 @@ func begin_battle(_foo = null):
 		powerup.queue_free()
 	if boss != null:
 		boss.queue_free()
+	battle_beginning.emit()
 	spawn_boss_to_arena(bosses[current_boss], arena)
 	if Player.entity != null:
 		Player.entity.queue_free()
@@ -84,6 +88,7 @@ func _on_battle_ended():
 		powerup_spawn.kill()
 	Player.player_defeated.disconnect(overlay._on_player_defeated)
 	Player.player_defeated.disconnect(_on_player_defeated)
+	Player.entity.set_deferred("process_mode", Node.PROCESS_MODE_DISABLED)
 	battle_ended.disconnect(boss.controller._on_battle_ended)
 	battle_ended.disconnect(_on_battle_ended)
 	battle_begun.disconnect(boss.controller._on_battle_begun)
@@ -100,6 +105,7 @@ func _on_boss_phase_changed(_phase):
 	boss.controller.process_mode = Node.PROCESS_MODE_DISABLED
 	Player.entity.set_deferred("process_mode", Node.PROCESS_MODE_DISABLED)
 	overlay.transition_finished.connect(_on_transition_finished, ConnectFlags.CONNECT_ONE_SHOT)
+	phase_changed.emit()
 	#overlay._on_boss_phase_changed()
 	
 func _on_transition_finished(_foo = null):

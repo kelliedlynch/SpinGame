@@ -1,4 +1,10 @@
-[gd_resource type="AnimationLibrary" load_steps=8 format=3 uid="uid://big34j5uxesj8"]
+[gd_resource type="AnimationLibrary" load_steps=13 format=3 uid="uid://big34j5uxesj8"]
+
+[ext_resource type="AudioStream" uid="uid://bdm6syh10l5by" path="res://Audio/laser_charge.ogg" id="1_t1k16"]
+[ext_resource type="AudioStream" uid="uid://cdsv7d3kmdjlq" path="res://Audio/laser1.ogg" id="2_sfxd0"]
+[ext_resource type="AudioStream" uid="uid://celqg6clucu14" path="res://Audio/missile_launch.ogg" id="3_1rwgt"]
+[ext_resource type="AudioStream" uid="uid://bmchoscngq8to" path="res://Audio/rustle_clank_2.ogg" id="4_o3ui6"]
+[ext_resource type="AudioStream" uid="uid://6ihr2wdm48oe" path="res://Audio/rustle_clank_1.ogg" id="4_w24fg"]
 
 [sub_resource type="Animation" id="Animation_n381f"]
 length = 0.001
@@ -162,6 +168,25 @@ tracks/8/keys = {
 "update": 0,
 "values": [Vector2(1, 1), Vector2(0.550411, 0.624485), Vector2(0.550411, 0.624485)]
 }
+tracks/9/type = "audio"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("AudioManager/AudioStreamPlayer")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"clips": [{
+"end_offset": 0.05,
+"start_offset": 0.0,
+"stream": ExtResource("1_t1k16")
+}, {
+"end_offset": 1.0,
+"start_offset": 0.07,
+"stream": ExtResource("2_sfxd0")
+}],
+"times": PackedFloat32Array(0.233333, 1.86667)
+}
+tracks/9/use_blend = true
 
 [sub_resource type="Animation" id="Animation_h7x58"]
 resource_name = "fire_missile"
@@ -262,6 +287,21 @@ tracks/7/keys = {
 "update": 1,
 "values": [true, true, false, false, true]
 }
+tracks/8/type = "audio"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("AudioManager/AudioStreamPlayer")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"clips": [{
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource("3_1rwgt")
+}],
+"times": PackedFloat32Array(1.43333)
+}
+tracks/8/use_blend = true
 
 [sub_resource type="Animation" id="Animation_y2csi"]
 resource_name = "idle"
@@ -367,6 +407,21 @@ tracks/5/keys = {
 "update": 0,
 "values": [Vector2(0.76981, 0.899234), Vector2(1, 1)]
 }
+tracks/6/type = "audio"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("AudioManager/AudioStreamPlayer")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"clips": [{
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource("4_o3ui6")
+}],
+"times": PackedFloat32Array(0.0333333)
+}
+tracks/6/use_blend = true
 
 [sub_resource type="Animation" id="Animation_g56qv"]
 resource_name = "jump_up"
@@ -443,6 +498,21 @@ tracks/5/keys = {
 "update": 0,
 "values": [Vector2(1, 1), Vector2(1, 1), Vector2(0.76981, 0.899234)]
 }
+tracks/6/type = "audio"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("AudioManager/AudioStreamPlayer")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"clips": [{
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource("4_w24fg")
+}],
+"times": PackedFloat32Array(0)
+}
+tracks/6/use_blend = true
 
 [sub_resource type="Animation" id="Animation_1bsfj"]
 resource_name = "wave_arm"

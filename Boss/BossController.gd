@@ -5,7 +5,7 @@ class_name BossController
 #@onready var animation_player: AnimationPlayer = $AnimationPlayer
 var atk_speed = 1
 var atk_timer: Tween
-var atk_perform: Tween
+#var atk_perform: Tween
 @onready var arena: Arena = boss.arena
 
 var attacks: Array[Node] = []
@@ -80,7 +80,7 @@ func _process(_delta: float) -> void:
 	if boss_state == BossState.IDLE:
 		#if boss.animation_player.is_playing() == false:
 			#boss.animation_player.play("idle")
-		atk_perform = null
+		#atk_perform = null
 		if atk_timer == null:
 			atk_timer = create_tween()
 			atk_timer.tween_interval(atk_speed)

@@ -1,9 +1,11 @@
-[gd_resource type="AudioStreamRandomizer" load_steps=3 format=3 uid="uid://biy7yiw2thuyb"]
+[gd_resource type="AudioStreamRandomizer" load_steps=4 format=3 uid="uid://biy7yiw2thuyb"]
 
-[ext_resource type="AudioStream" uid="uid://uf5uxuksdup1" path="res://Audio/Chainsaw_Rev_Up-01.wav" id="1_flg02"]
-[ext_resource type="AudioStream" uid="uid://dvfavltr6srv3" path="res://Audio/Chainsaw_Rev_Up-02.wav" id="2_vagyb"]
+[ext_resource type="AudioStream" uid="uid://dm0hqnl2s4vrd" path="res://Audio/Dewalt_Angle_Grinder_Startup-01.wav" id="1_8lcui"]
+[ext_resource type="AudioStream" uid="uid://brrfsrf1sa0nt" path="res://Audio/Dewalt_Angle_Grinder_Startup-02.wav" id="2_32fbq"]
+[ext_resource type="AudioStream" uid="uid://do2ouqg5l02t3" path="res://Audio/Dewalt_Angle_Grinder_Startup-03.wav" id="3_xcogj"]
 
 [resource]
-streams_count = 2
-stream_0/stream = ExtResource("1_flg02")
-stream_1/stream = ExtResource("2_vagyb")
+streams_count = 3
+stream_0/stream = ExtResource("1_8lcui")
+stream_1/stream = ExtResource("2_32fbq")
+stream_2/stream = ExtResource("3_xcogj")

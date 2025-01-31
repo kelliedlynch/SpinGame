@@ -18,7 +18,7 @@ func get_power() -> float:
 
 func _on_destroyed_destructible(node):
 	if target == node:
-		cut_state = CutState.READY
+		cut_state = CutState.END_CUT
 		target = null
 
 func _try_clip_destructible(state: PhysicsDirectBodyState2D) -> bool:

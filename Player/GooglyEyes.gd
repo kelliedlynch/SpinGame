@@ -13,7 +13,7 @@ var GRAVITY_THRESHOLD: int = 200
 var GRAVITY: float = 2
 
 func _init() -> void:
-	process_mode = ProcessMode.PROCESS_MODE_DISABLED
+	#process_mode = ProcessMode.PROCESS_MODE_DISABLED
 	z_index = RenderLayer.ARENA_ENTITIES + 1
 	z_as_relative = false
 	

@@ -8,6 +8,8 @@ var target_indicator: TargetIndicator
 var explosion: CPUParticles2D
 @onready var damage_area: Area2D = Area2D.new()
 
+signal missile_landed
+
 func _ready():
 	add_child(damage_area)
 
@@ -48,6 +50,7 @@ func _move_missile():
 	missile_tween.tween_property(missile, "global_position", target_position, .5)
 	missile_tween.tween_callback(_remove_target_indicator)
 	missile_tween.tween_callback(missile.queue_free)
+	missile_tween.tween_callback(missile_landed.emit)
 	missile_tween.tween_callback(_add_explosion)
 	missile_tween.tween_callback(_deal_damage)
 	missile_tween.tween_interval(.5)
