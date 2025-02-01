@@ -228,7 +228,7 @@ tracks/18/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(1.2572, 1.2572)]
+"values": [Vector2(1, 1)]
 }
 tracks/19/type = "value"
 tracks/19/imported = false
@@ -485,8 +485,8 @@ tracks/3/keys = {
 
 [resource]
 _data = {
-"RESET": SubResource("Animation_ro3pk"),
-"boss_intro": SubResource("Animation_3hjqc"),
-"fill_boss_health_bar": SubResource("Animation_owv6n"),
-"slam_transition_text": SubResource("Animation_xplde")
+&"RESET": SubResource("Animation_ro3pk"),
+&"boss_intro": SubResource("Animation_3hjqc"),
+&"fill_boss_health_bar": SubResource("Animation_owv6n"),
+&"slam_transition_text": SubResource("Animation_xplde")
 }

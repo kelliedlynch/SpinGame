@@ -23,7 +23,12 @@ signal move_state_changed
 
 var invincible_blink: Tween
 
-var input_vector := Vector2.ZERO
+var input_vector := Vector2.ZERO:
+	set(value):
+		if value != input_vector:
+			input_vector_changed.emit(input_vector, value)
+			input_vector = value
+signal input_vector_changed
 
 var spin_spark_threshold: float = .9
 
@@ -137,22 +142,22 @@ func _process(delta: float) -> void:
 	
 	if is_processing_input() == true:
 		var power = Player.move_power
-		if Input.is_action_pressed("ui_left"):
+		if Input.is_action_pressed("gameplay_move_left"):
 			if move_state == MoveState.DASH_CHARGING:
 				dash_charge_angle -= delta * 3.6
 			else:
 				input_vector += Vector2(-power * delta, 0)
-		if Input.is_action_pressed("ui_right"):
+		if Input.is_action_pressed("gameplay_move_right"):
 			if move_state == MoveState.DASH_CHARGING:
 				dash_charge_angle += delta * 3.6
 			else:
 				input_vector += Vector2(power * delta, 0)
-		if Input.is_action_pressed("ui_up"):
+		if Input.is_action_pressed("gameplay_move_up"):
 			if move_state == MoveState.DASH_CHARGING:
 				dash_charge_angle -= delta * 3.6
 			else:
 				input_vector += (Vector2(0, -power * delta))
-		if Input.is_action_pressed("ui_down"):
+		if Input.is_action_pressed("gameplay_move_down"):
 			if move_state == MoveState.DASH_CHARGING:
 				dash_charge_angle += delta * 3.6
 			else:

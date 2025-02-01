@@ -1,10 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://wp1jq2yr7g3m"]
+[gd_scene load_steps=7 format=3 uid="uid://wp1jq2yr7g3m"]
 
-[ext_resource type="Script" path="res://Arena/Arena.gd" id="1_hcsty"]
-[ext_resource type="Script" path="res://Arena/ArenaBorder.gd" id="2_6y0r2"]
+[ext_resource type="Script" uid="uid://cexrsvndsysoc" path="res://Arena/Arena.gd" id="1_hcsty"]
+[ext_resource type="Script" uid="uid://cqs0d5hx081au" path="res://Arena/ArenaBorder.gd" id="2_6y0r2"]
 [ext_resource type="PhysicsMaterial" uid="uid://dhvdkh1hnanpl" path="res://Arena/ArenaWallMaterial.tres" id="3_77gc3"]
-[ext_resource type="Script" path="res://Arena/ArenaAudioManager.gd" id="4_lusj7"]
-[ext_resource type="AudioStream" uid="uid://c51us7358gx1t" path="res://Audio/Sketchbook 2024-02-28_01.ogg" id="4_tu7e0"]
+[ext_resource type="Script" uid="uid://bp56gc126jqam" path="res://Arena/ArenaAudioManager.gd" id="4_lusj7"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_biwai"]
 size = Vector2(960, 3000)
@@ -41,5 +40,4 @@ shape = SubResource("RectangleShape2D_uocu7")
 script = ExtResource("4_lusj7")
 
 [node name="MusicPlayer" type="AudioStreamPlayer" parent="AudioManager"]
-stream = ExtResource("4_tu7e0")
 volume_db = -20.0

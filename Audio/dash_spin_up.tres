@@ -1,0 +1,9 @@
+[gd_resource type="AudioStreamRandomizer" load_steps=3 format=3 uid="uid://fu4ep3wdvnis"]
+
+[ext_resource type="AudioStream" uid="uid://biq8pwuxbk3ul" path="res://Audio/Chainsaw_Rev_Up-01.ogg" id="1_srtyw"]
+[ext_resource type="AudioStream" uid="uid://de522mi5187fd" path="res://Audio/Chainsaw_Rev_Up-02.ogg" id="2_bunmj"]
+
+[resource]
+streams_count = 2
+stream_0/stream = ExtResource("1_srtyw")
+stream_1/stream = ExtResource("2_bunmj")

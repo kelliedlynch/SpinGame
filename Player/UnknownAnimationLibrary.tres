@@ -105,6 +105,6 @@ tracks/3/keys = {
 
 [resource]
 _data = {
-"RESET": SubResource("Animation_wyd3m"),
-"hurt": SubResource("Animation_ovptv")
+&"RESET": SubResource("Animation_wyd3m"),
+&"hurt": SubResource("Animation_ovptv")
 }

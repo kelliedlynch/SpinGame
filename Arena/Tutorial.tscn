@@ -1,0 +1,1162 @@
+[gd_scene load_steps=30 format=3 uid="uid://doyg8m6668mvo"]
+
+[ext_resource type="Script" uid="uid://dqsrwdfdhrdat" path="res://Tutorial.gd" id="1_k2mf1"]
+[ext_resource type="PackedScene" uid="uid://wp1jq2yr7g3m" path="res://Arena/Arena.tscn" id="2_n7n60"]
+[ext_resource type="PackedScene" uid="uid://b7l060catm3gw" path="res://UI/BattleOverlay.tscn" id="3_4u54e"]
+[ext_resource type="Texture2D" uid="uid://bypqci3p57ts4" path="res://Graphics/Input/keyboard_arrow_down_outline.png" id="4_byh7h"]
+[ext_resource type="Texture2D" uid="uid://bpw6rvwhwrfaj" path="res://Graphics/Input/keyboard_arrow_left_outline.png" id="5_egpbt"]
+[ext_resource type="Texture2D" uid="uid://c1c4gwt556wfn" path="res://Graphics/Input/keyboard_arrow_right_outline.png" id="6_ce1b8"]
+[ext_resource type="Texture2D" uid="uid://b4agu5kmm04kj" path="res://Graphics/Input/keyboard_arrow_up_outline.png" id="7_vjyxr"]
+[ext_resource type="Texture2D" uid="uid://ddrm72gojqym5" path="res://Graphics/Input/keyboard_arrow_down.png" id="8_v77b3"]
+[ext_resource type="Texture2D" uid="uid://bxs5cdx007dx2" path="res://Graphics/Input/keyboard_arrow_left.png" id="9_76xlb"]
+[ext_resource type="Texture2D" uid="uid://d0pt10l4xjggd" path="res://Graphics/Input/keyboard_arrow_right.png" id="10_4vngt"]
+[ext_resource type="Texture2D" uid="uid://ea5hj1bhawst" path="res://Graphics/Input/keyboard_arrow_up.png" id="11_u77kr"]
+[ext_resource type="Texture2D" uid="uid://48logyab3ne4" path="res://Graphics/Input/keyboard_a_outline.png" id="12_s8gaf"]
+[ext_resource type="Texture2D" uid="uid://dh3y7c68bvsu6" path="res://Graphics/Input/keyboard_d_outline.png" id="13_5cd7q"]
+[ext_resource type="Texture2D" uid="uid://dg01v4ud83666" path="res://Graphics/Input/keyboard_s_outline.png" id="14_6rf4q"]
+[ext_resource type="Texture2D" uid="uid://bgwm0f77i36e" path="res://Graphics/Input/keyboard_w_outline.png" id="15_bu0l2"]
+[ext_resource type="Texture2D" uid="uid://mipggb1x6mpf" path="res://Graphics/Input/keyboard_a.png" id="16_3w4x1"]
+[ext_resource type="Texture2D" uid="uid://c8y0js5j743uv" path="res://Graphics/Input/keyboard_d.png" id="17_ajfdl"]
+[ext_resource type="Texture2D" uid="uid://dpeyvyrx83l5s" path="res://Graphics/Input/keyboard_s.png" id="18_grc4d"]
+[ext_resource type="Texture2D" uid="uid://dol7eeajnwttt" path="res://Graphics/Input/keyboard_w.png" id="19_q53o4"]
+[ext_resource type="Theme" uid="uid://bu7g0naukxglx" path="res://UI/ui_theme.tres" id="20_8gjyf"]
+[ext_resource type="Texture2D" uid="uid://b2x4g3do3f1x3" path="res://Graphics/Input/keyboard_space.png" id="21_ce1b8"]
+[ext_resource type="Texture2D" uid="uid://c280txu3x8kg5" path="res://Graphics/Input/keyboard_space_outline.png" id="22_vjyxr"]
+
+[sub_resource type="Animation" id="Animation_m77ws"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("movement_keys/wasd/KeyboardW:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("movement_keys/wasd/KeyboardWOutline:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("movement_keys/arrows/KeyboardArrowUp:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("movement_keys/arrows/KeyboardArrowUpOutline:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("dash_keys/LKeyboardSpace:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(916, 670)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("dash_keys/KeyboardArrowLeft:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("dash_keys/KeyboardArrowLeftOutline:visible")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("dash_keys/KeyboardArrowRight:visible")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("dash_keys/KeyboardArrowRightOutline:visible")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("dash_keys/RKeyboardSpaceOutline:visible")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("dash_keys/+ 1:visible")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("dash_keys/+ 1:position")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(725, 642)]
+}
+tracks/12/type = "value"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath("dash_keys/+ 2:visible")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/13/type = "value"
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/path = NodePath("dash_keys/LKeyboardSpaceOutline:visible")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/14/type = "value"
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/path = NodePath("dash_keys/LKeyboardSpace:visible")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/15/type = "value"
+tracks/15/imported = false
+tracks/15/enabled = true
+tracks/15/path = NodePath("dash_keys/RKeyboardSpace:visible")
+tracks/15/interp = 1
+tracks/15/loop_wrap = true
+tracks/15/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/16/type = "value"
+tracks/16/imported = false
+tracks/16/enabled = true
+tracks/16/path = NodePath("dash_keys/LKeyboardSpaceOutline:position")
+tracks/16/interp = 1
+tracks/16/loop_wrap = true
+tracks/16/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(916, 670)]
+}
+
+[sub_resource type="Animation" id="Animation_v77b3"]
+resource_name = "dash_aim_transition"
+length = 0.34
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("dash_keys/RKeyboardSpaceOutline:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("dash_keys/LKeyboardSpace:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.333333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("dash_keys/KeyboardArrowLeft:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.33774),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("dash_keys/KeyboardArrowLeftOutline:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.33774),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("dash_keys/KeyboardArrowRight:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.33774),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, false]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("dash_keys/KeyboardArrowRightOutline:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.33774),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("dash_keys/+ 1:visible")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.33774),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("dash_keys/+ 2:visible")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("dash_keys/LKeyboardSpace:position")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0, 0.33774),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(916, 669), Vector2(456, 669)]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("dash_keys/+ 1:position")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0, 0.336436),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(725, 642), Vector2(725, 642)]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("dash_keys/LKeyboardSpaceOutline:visible")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("dash_keys/LKeyboardSpaceOutline:position")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(953.423, 670)]
+}
+
+[sub_resource type="Animation" id="Animation_76xlb"]
+resource_name = "dash_release_transition"
+length = 5.7
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("dash_keys/RKeyboardSpaceOutline:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.433333, 1.23333, 4.33333, 5.33333),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [true, true, false, false, true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("dash_keys/LKeyboardSpace:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1.23333, 2.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [true, false, true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("dash_keys/KeyboardArrowLeft:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 3.13333, 3.7, 4.26667, 4.80228, 5.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [false, false, true, false, true, false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("dash_keys/KeyboardArrowLeftOutline:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 3.13333, 3.7, 4.26667, 4.80228, 5.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [true, true, false, true, false, true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("dash_keys/KeyboardArrowRight:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 3.13333, 3.69772, 4.26863, 4.8, 5.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [false, true, false, true, false, false]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("dash_keys/KeyboardArrowRightOutline:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 3.13333, 3.69772, 4.26863, 4.8, 5.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [true, false, true, false, true, true]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("dash_keys/+ 1:visible")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("dash_keys/+ 2:visible")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 1.23333, 5.33333, 6.76667),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [true, false, true, true]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("dash_keys/LKeyboardSpaceOutline:visible")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0, 1.23333, 2.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("dash_keys/RKeyboardSpace:visible")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0, 6.76667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, false]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("dash_keys/LKeyboardSpaceOutline:position")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(456, 670)]
+}
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("dash_keys/LKeyboardSpace:position")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(456, 670)]
+}
+
+[sub_resource type="Animation" id="Animation_vjyxr"]
+resource_name = "show_dash_aim"
+length = 1.15
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("dash_keys/LKeyboardSpace:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("dash_keys/RKeyboardSpaceOutline:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("dash_keys/KeyboardArrowLeft:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.566667, 1.13333),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("dash_keys/KeyboardArrowLeftOutline:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.566667, 1.13333),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [true, false, true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("dash_keys/KeyboardArrowRight:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.564382, 1.13529),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [true, false, true]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("dash_keys/KeyboardArrowRightOutline:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.564382, 1.13529),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("dash_keys/RKeyboardSpace:visible")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("dash_keys/LKeyboardSpaceOutline:visible")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("dash_keys/LKeyboardSpaceOutline:position")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(953.423, 670)]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("dash_keys/LKeyboardSpace:position")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(456, 669)]
+}
+
+[sub_resource type="Animation" id="Animation_ce1b8"]
+resource_name = "show_dash_button"
+length = 1.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("dash_keys/LKeyboardSpace:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.133333, 1.23333, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [false, true, false, false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("dash_keys/LKeyboardSpaceOutline:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.131161, 1.2384, 1.49157),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [true, false, true, true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("dash_keys/RKeyboardSpaceOutline:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("dash_keys/RKeyboardSpace:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("dash_keys/KeyboardArrowLeft:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("dash_keys/KeyboardArrowLeftOutline:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("dash_keys/KeyboardArrowRight:visible")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("dash_keys/KeyboardArrowRightOutline:visible")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("dash_keys/+ 1:visible")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("dash_keys/+ 2:visible")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_bq7h4"]
+resource_name = "show_movement_keys"
+length = 2.57
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("movement_keys/wasd/KeyboardW:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.6, 2.56667),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [false, true, false, false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("movement_keys/wasd/KeyboardAOutline:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1.33333, 1.63333, 1.93333, 2.56667),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [true, true, false, true, true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("movement_keys/wasd/KeyboardDOutline:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1.93333, 2.26667, 2.56667),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [true, true, false, true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("movement_keys/wasd/KeyboardSOutline:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.6, 0.966667, 1.33333, 2.56667),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [true, true, false, true, true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("movement_keys/wasd/KeyboardWOutline:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.6, 2.56667),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [true, false, true, true]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("movement_keys/wasd/KeyboardA:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 1.33333, 1.63333, 1.93333, 2.56667),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [false, false, true, false, false]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("movement_keys/wasd/KeyboardD:visible")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 1.93333, 2.26667, 2.56667),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [false, false, true, false]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("movement_keys/wasd/KeyboardS:visible")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 0.6, 0.966667, 1.33333, 2.56667),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [false, false, true, false, false]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("movement_keys/arrows/KeyboardArrowUp:visible")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.6, 2.56667),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [false, true, false, false]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("movement_keys/arrows/KeyboardArrowDownOutline:visible")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0, 0.6, 0.966667, 1.33333, 2.56667),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [true, true, false, true, true]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("movement_keys/arrows/KeyboardArrowLeftOutline:visible")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0, 1.33333, 1.63333, 1.93333, 2.56667),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [true, true, false, true, true]
+}
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("movement_keys/arrows/KeyboardArrowRightOutline:visible")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0, 1.93333, 2.26667, 2.56667),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [true, true, false, true]
+}
+tracks/12/type = "value"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath("movement_keys/arrows/KeyboardArrowUpOutline:visible")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.6, 2.56667),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [true, false, true, true]
+}
+tracks/13/type = "value"
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/path = NodePath("movement_keys/arrows/KeyboardArrowDown:visible")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/keys = {
+"times": PackedFloat32Array(0, 0.6, 0.966667, 1.33333, 2.56667),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [false, false, true, false, false]
+}
+tracks/14/type = "value"
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/path = NodePath("movement_keys/arrows/KeyboardArrowLeft:visible")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/keys = {
+"times": PackedFloat32Array(0, 1.33333, 1.63333, 1.93333, 2.56667),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [false, false, true, false, false]
+}
+tracks/15/type = "value"
+tracks/15/imported = false
+tracks/15/enabled = true
+tracks/15/path = NodePath("movement_keys/arrows/KeyboardArrowRight:visible")
+tracks/15/interp = 1
+tracks/15/loop_wrap = true
+tracks/15/keys = {
+"times": PackedFloat32Array(0, 1.93333, 2.26667, 2.56667),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [false, false, true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_godj0"]
+_data = {
+&"RESET": SubResource("Animation_m77ws"),
+&"dash_aim_transition": SubResource("Animation_v77b3"),
+&"dash_release_transition": SubResource("Animation_76xlb"),
+&"show_dash_aim": SubResource("Animation_vjyxr"),
+&"show_dash_button": SubResource("Animation_ce1b8"),
+&"show_movement_keys": SubResource("Animation_bq7h4")
+}
+
+[node name="Tutorial" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_k2mf1")
+
+[node name="Arena" parent="." instance=ExtResource("2_n7n60")]
+
+[node name="BattleOverlay" parent="." instance=ExtResource("3_4u54e")]
+layout_mode = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_godj0")
+}
+
+[node name="movement_keys" type="Node2D" parent="."]
+visible = false
+
+[node name="arrows" type="Node2D" parent="movement_keys"]
+position = Vector2(-159, 22)
+
+[node name="KeyboardArrowDownOutline" type="Sprite2D" parent="movement_keys/arrows"]
+position = Vector2(763, 417)
+texture = ExtResource("4_byh7h")
+
+[node name="KeyboardArrowLeftOutline" type="Sprite2D" parent="movement_keys/arrows"]
+position = Vector2(649, 417)
+texture = ExtResource("5_egpbt")
+
+[node name="KeyboardArrowRightOutline" type="Sprite2D" parent="movement_keys/arrows"]
+position = Vector2(877, 417)
+texture = ExtResource("6_ce1b8")
+
+[node name="KeyboardArrowUpOutline" type="Sprite2D" parent="movement_keys/arrows"]
+visible = false
+position = Vector2(763, 304)
+texture = ExtResource("7_vjyxr")
+
+[node name="KeyboardArrowDown" type="Sprite2D" parent="movement_keys/arrows"]
+visible = false
+position = Vector2(763, 417)
+texture = ExtResource("8_v77b3")
+
+[node name="KeyboardArrowLeft" type="Sprite2D" parent="movement_keys/arrows"]
+visible = false
+position = Vector2(649, 417)
+texture = ExtResource("9_76xlb")
+
+[node name="KeyboardArrowRight" type="Sprite2D" parent="movement_keys/arrows"]
+visible = false
+position = Vector2(877, 417)
+texture = ExtResource("10_4vngt")
+
+[node name="KeyboardArrowUp" type="Sprite2D" parent="movement_keys/arrows"]
+visible = false
+position = Vector2(763, 304)
+texture = ExtResource("11_u77kr")
+
+[node name="wasd" type="Node2D" parent="movement_keys"]
+position = Vector2(56, 23)
+
+[node name="KeyboardAOutline" type="Sprite2D" parent="movement_keys/wasd"]
+position = Vector2(1023, 417)
+texture = ExtResource("12_s8gaf")
+
+[node name="KeyboardDOutline" type="Sprite2D" parent="movement_keys/wasd"]
+position = Vector2(1246, 417)
+texture = ExtResource("13_5cd7q")
+
+[node name="KeyboardSOutline" type="Sprite2D" parent="movement_keys/wasd"]
+position = Vector2(1134, 417)
+texture = ExtResource("14_6rf4q")
+
+[node name="KeyboardWOutline" type="Sprite2D" parent="movement_keys/wasd"]
+visible = false
+position = Vector2(1134, 303)
+texture = ExtResource("15_bu0l2")
+
+[node name="KeyboardA" type="Sprite2D" parent="movement_keys/wasd"]
+visible = false
+position = Vector2(1023, 417)
+texture = ExtResource("16_3w4x1")
+
+[node name="KeyboardD" type="Sprite2D" parent="movement_keys/wasd"]
+visible = false
+position = Vector2(1246, 417)
+texture = ExtResource("17_ajfdl")
+
+[node name="KeyboardS" type="Sprite2D" parent="movement_keys/wasd"]
+visible = false
+position = Vector2(1134, 417)
+texture = ExtResource("18_grc4d")
+
+[node name="KeyboardW" type="Sprite2D" parent="movement_keys/wasd"]
+visible = false
+position = Vector2(1134, 303)
+texture = ExtResource("19_q53o4")
+
+[node name="or" type="Label" parent="movement_keys"]
+offset_left = 855.0
+offset_top = 359.0
+offset_right = 944.0
+offset_bottom = 420.0
+theme = ExtResource("20_8gjyf")
+theme_override_font_sizes/font_size = 60
+text = "or"
+
+[node name="dash_keys" type="Node2D" parent="."]
+position = Vector2(-16, -282)
+
+[node name="RKeyboardSpaceOutline" type="Sprite2D" parent="dash_keys"]
+visible = false
+position = Vector2(1450, 670)
+scale = Vector2(1.84705, 1.84705)
+texture = ExtResource("22_vjyxr")
+
+[node name="RKeyboardSpace" type="Sprite2D" parent="dash_keys"]
+visible = false
+modulate = Color(0.481524, 0.481524, 0.481524, 1)
+position = Vector2(1450, 670)
+scale = Vector2(1.84705, 1.84705)
+texture = ExtResource("21_ce1b8")
+
+[node name="LKeyboardSpaceOutline" type="Sprite2D" parent="dash_keys"]
+visible = false
+position = Vector2(916, 670)
+scale = Vector2(1.84705, 1.84705)
+texture = ExtResource("22_vjyxr")
+
+[node name="LKeyboardSpace" type="Sprite2D" parent="dash_keys"]
+visible = false
+position = Vector2(916, 670)
+scale = Vector2(1.84705, 1.84705)
+texture = ExtResource("21_ce1b8")
+
+[node name="KeyboardArrowLeft" type="Sprite2D" parent="dash_keys"]
+visible = false
+position = Vector2(886, 671)
+texture = ExtResource("9_76xlb")
+
+[node name="KeyboardArrowLeftOutline" type="Sprite2D" parent="dash_keys"]
+visible = false
+position = Vector2(886, 671)
+texture = ExtResource("5_egpbt")
+
+[node name="KeyboardArrowRight" type="Sprite2D" parent="dash_keys"]
+visible = false
+position = Vector2(998, 671)
+texture = ExtResource("10_4vngt")
+
+[node name="KeyboardArrowRightOutline" type="Sprite2D" parent="dash_keys"]
+visible = false
+position = Vector2(998, 671)
+texture = ExtResource("6_ce1b8")
+
+[node name="+ 1" type="Label" parent="dash_keys"]
+visible = false
+offset_left = 725.0
+offset_top = 642.0
+offset_right = 814.0
+offset_bottom = 703.0
+theme = ExtResource("20_8gjyf")
+theme_override_font_sizes/font_size = 60
+text = "+"
+
+[node name="+ 2" type="Label" parent="dash_keys"]
+visible = false
+offset_left = 1117.0
+offset_top = 641.0
+offset_right = 1206.0
+offset_bottom = 702.0
+theme = ExtResource("20_8gjyf")
+theme_override_font_sizes/font_size = 60
+text = "→"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]

@@ -1,6 +1,6 @@
 extends Node
 
-@onready var audio: AudioStreamPlayer = $AudioStreamPlayer
+@onready var audio: AudioStreamPlayer = $AnimationSounds
 var missile_explode: AudioStreamOggVorbis = load("res://Audio/explosionCrunch_003.ogg")
 
 func _on_missile_landed():

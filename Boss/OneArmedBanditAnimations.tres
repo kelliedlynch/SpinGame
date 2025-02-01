@@ -171,7 +171,7 @@ tracks/8/keys = {
 tracks/9/type = "audio"
 tracks/9/imported = false
 tracks/9/enabled = true
-tracks/9/path = NodePath("AudioManager/AudioStreamPlayer")
+tracks/9/path = NodePath("AudioManager/AnimationSounds")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/keys = {
@@ -290,7 +290,7 @@ tracks/7/keys = {
 tracks/8/type = "audio"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("AudioManager/AudioStreamPlayer")
+tracks/8/path = NodePath("AudioManager/AnimationSounds")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
@@ -410,7 +410,7 @@ tracks/5/keys = {
 tracks/6/type = "audio"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("AudioManager/AudioStreamPlayer")
+tracks/6/path = NodePath("AudioManager/AnimationSounds")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
@@ -501,7 +501,7 @@ tracks/5/keys = {
 tracks/6/type = "audio"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("AudioManager/AudioStreamPlayer")
+tracks/6/path = NodePath("AudioManager/AnimationSounds")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
@@ -592,11 +592,11 @@ tracks/5/keys = {
 
 [resource]
 _data = {
-"RESET": SubResource("Animation_n381f"),
-"extend_antenna": SubResource("Animation_1uw7d"),
-"fire_missile": SubResource("Animation_h7x58"),
-"idle": SubResource("Animation_y2csi"),
-"jump_landing": SubResource("Animation_wj7qt"),
-"jump_up": SubResource("Animation_g56qv"),
-"wave_arm": SubResource("Animation_1bsfj")
+&"RESET": SubResource("Animation_n381f"),
+&"extend_antenna": SubResource("Animation_1uw7d"),
+&"fire_missile": SubResource("Animation_h7x58"),
+&"idle": SubResource("Animation_y2csi"),
+&"jump_landing": SubResource("Animation_wj7qt"),
+&"jump_up": SubResource("Animation_g56qv"),
+&"wave_arm": SubResource("Animation_1bsfj")
 }

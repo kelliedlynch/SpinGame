@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://b6nn7lipp4f25"
+path="res://.godot/imported/Buzzsaws Loop.ogg-9fb957f5189db8661cf0285f6a09b85b.oggvorbisstr"
+
+[deps]
+
+source_file="res://Audio/Buzzsaws Loop.ogg"
+dest_files=["res://.godot/imported/Buzzsaws Loop.ogg-9fb957f5189db8661cf0285f6a09b85b.oggvorbisstr"]
+
+[params]
+
+loop=true
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -3,7 +3,7 @@ extends Node
 @onready var music: AudioStreamPlayer = $MusicPlayer
 
 var phase1: AudioStreamOggVorbis = load("res://Audio/Ludum Dare 28 08.ogg")
-var phase2: AudioStreamOggVorbis = load("res://Audio/Ludum Dare 32 04.ogg")
+var phase2: AudioStreamOggVorbis = load("res://Audio/VGMA Challenge 20.ogg")
 
 
 func _ready() -> void:

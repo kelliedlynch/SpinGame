@@ -1,13 +1,13 @@
 [gd_scene load_steps=25 format=3 uid="uid://c6gjlw2ovn1pp"]
 
-[ext_resource type="Script" path="res://Boss/OneArmedBandit.gd" id="1_salgv"]
+[ext_resource type="Script" uid="uid://kjgbft4cr3c4" path="res://Boss/OneArmedBandit.gd" id="1_salgv"]
 [ext_resource type="Texture2D" uid="uid://dl8h3mfcqqnep" path="res://Graphics/robo_parts_sprite_sheet.png" id="2_i2rqr"]
 [ext_resource type="Texture2D" uid="uid://bysihkuh51bjw" path="res://Graphics/laser_dot.tres" id="3_m8cmj"]
 [ext_resource type="PackedScene" uid="uid://cluulgc5hgdrb" path="res://Playground/LightningBolt.tscn" id="4_a1x6e"]
-[ext_resource type="Script" path="res://Boss/BossHeart.gd" id="5_cx43m"]
-[ext_resource type="Script" path="res://Component/SGCollisionPoly.gd" id="6_7d2mt"]
+[ext_resource type="Script" uid="uid://degjam2k7kfgn" path="res://Boss/BossHeart.gd" id="5_cx43m"]
+[ext_resource type="Script" uid="uid://cvmpjttqefknx" path="res://Component/SGCollisionPoly.gd" id="6_7d2mt"]
 [ext_resource type="AnimationLibrary" uid="uid://b6u0p2qags3gq" path="res://Boss/HeartAnimations.tres" id="7_4kcen"]
-[ext_resource type="Script" path="res://Component/Destructible/DestructibleHitbox.gd" id="8_100vh"]
+[ext_resource type="Script" uid="uid://bblskjhnl2s8b" path="res://Component/Destructible/DestructibleHitbox.gd" id="8_100vh"]
 [ext_resource type="Resource" uid="uid://hudkc6si2258" path="res://Component/Destructible/Materials/MaterialSoftwood.tres" id="9_0vd4q"]
 [ext_resource type="Texture2D" uid="uid://dwwvwtj3ntr1q" path="res://Graphics/robo_arm_1.png" id="10_xn47u"]
 [ext_resource type="Resource" uid="uid://b2crsx5ipyaol" path="res://Component/Destructible/Materials/MaterialHardwood.tres" id="11_ytkgk"]
@@ -15,8 +15,8 @@
 [ext_resource type="Resource" uid="uid://djov4pn3fgrxx" path="res://Component/Destructible/Materials/MaterialMetal.tres" id="13_j404i"]
 [ext_resource type="Texture2D" uid="uid://eiqpr8h4r6tc" path="res://Graphics/robo_body_1.png" id="14_w5cts"]
 [ext_resource type="AnimationLibrary" uid="uid://big34j5uxesj8" path="res://Boss/OneArmedBanditAnimations.tres" id="15_w5uds"]
-[ext_resource type="Script" path="res://Boss/OneArmedBanditController.gd" id="16_umfap"]
-[ext_resource type="Script" path="res://Boss/OneArmedBanditAudio.gd" id="17_hk8cy"]
+[ext_resource type="Script" uid="uid://dyg33ppxb7l1h" path="res://Boss/OneArmedBanditController.gd" id="16_umfap"]
+[ext_resource type="Script" uid="uid://dla73w1q6ht0f" path="res://Boss/OneArmedBanditAudio.gd" id="17_hk8cy"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_66ykw"]
 bounce = 0.46
@@ -62,7 +62,7 @@ tracks/2/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_i6x7e"]
 _data = {
-"RESET": SubResource("Animation_0h341")
+&"RESET": SubResource("Animation_0h341")
 }
 
 [sub_resource type="SkeletonModification2DCCDIK" id="SkeletonModification2DCCDIK_nxhb5"]
@@ -112,7 +112,6 @@ visible = false
 self_modulate = Color(1, 5.88204e-09, 5.88204e-09, 0)
 position = Vector2(2.83808, 10.6262)
 rotation = 0.0258593
-scale = Vector2(0.550411, 0.624485)
 texture = ExtResource("3_m8cmj")
 
 [node name="beam_origin" type="Marker2D" parent="antenna/laser_beam"]
@@ -124,13 +123,13 @@ modulate = Color(0.0941176, 0.772549, 0.941176, 1)
 position = Vector2(-42.943, -36.2654)
 rotation = 0.20132
 scale = Vector2(0.999868, 0.999868)
-points = PackedVector2Array(-5.81909, -0.378855, -20.2875, -8.03617, -25.0372, -13.96, -34.7172, -38.0172, -41.9573, -56.8619, -46.7762, -71.3261, -58.8619, -84.168, -71.3533, -73.5872, -81.419, -106.439, -85.6389, -116.871, -100.223, -129.429, -114.782, -147.871, -124.747, -150.849)
+points = PackedVector2Array(-5.81909, -0.378855, -24.7328, -16.7628, -34.3601, -42.194, -46.8176, -40.6031, -52.8378, -50.7015, -64.7385, -58.8284, -70.8789, -67.4472, -79.1837, -85.9331, -92.0586, -111.275, -100.673, -119.012, -115.823, -133.86, -120.772, -160.655, -124.747, -150.849)
 
 [node name="left_lower_bolt" parent="ElectricBones" instance=ExtResource("4_a1x6e")]
 position = Vector2(-201.842, -272.413)
 rotation = -2.66148
 scale = Vector2(0.999756, 0.999756)
-points = PackedVector2Array(-93.6142, -30.6694, -93.1468, -42.7801, -91.6125, -60.5159, -93.1173, -68.3127, -91.7852, -80.7174, -91.3543, -92.4991, -85.2497, -122.994, -93.6798, -133.508, -94.344, -158.665, -101.573, -164.164, -100.851, -189.6, -94.6572, -220.811, -99.2564, -228.687, -96.796, -244.543, -94.9873, -249.847)
+points = PackedVector2Array(-93.6142, -30.6694, -102.271, -39.7162, -84.5191, -56.1233, -87.1658, -64.7828, -104.961, -78.5272, -84.8739, -111.229, -85.0207, -138.692, -94.8332, -148.805, -100.688, -157.78, -88.2884, -194.503, -100.33, -185.947, -91.7216, -211.324, -95.9263, -214.863, -95.7462, -235.736, -94.9873, -249.847)
 
 [node name="body_bolts" type="Node2D" parent="ElectricBones"]
 position = Vector2(1, 24)
@@ -141,37 +140,37 @@ scale = Vector2(0.999968, 0.999968)
 position = Vector2(1.89648, 22.9436)
 rotation = 0.03902
 scale = Vector2(0.999996, 0.999996)
-points = PackedVector2Array(46.9755, -91.9428, 37.4364, -83.7573, 23.2486, -85.2728, 14.7183, -81.4449, 4.79241, -99.9499, -15.2509, -82.3735, -38.8855, -96.7658, -49.7945, -84.3962)
+points = PackedVector2Array(46.9755, -91.9428, 30.1802, -99.429, 16.6848, -90.0316, 7.30054, -80.2845, -5.97474, -81.779, -24.3604, -89.3643, -28.7104, -74.0274, -48.5067, -89.3124, -49.7945, -84.3962)
 
 [node name="body_bolt2" parent="ElectricBones/body_bolts" instance=ExtResource("4_a1x6e")]
 position = Vector2(1, 24)
 rotation = 0.03902
 scale = Vector2(0.999996, 0.999996)
-points = PackedVector2Array(78.4619, -9.16551, 64.3009, -20.0478, 64.1186, -44.427, 67.9916, -61.847, 51.5256, -71.3302, 44.3595, -77.5179, 47.986, -91.0395)
+points = PackedVector2Array(78.4619, -9.16551, 77.061, -30.1577, 69.8087, -48.5163, 52.135, -64.2797, 52.4601, -77.808, 57.1106, -96.4245, 47.986, -91.0395)
 
 [node name="body_bolt3" parent="ElectricBones/body_bolts" instance=ExtResource("4_a1x6e")]
 position = Vector2(1, 24)
 rotation = 0.03902
 scale = Vector2(0.999996, 0.999996)
-points = PackedVector2Array(60.8945, 48.3797, 66.942, 37.7254, 73.7564, 30.8673, 75.3135, 11.9256, 70.1985, -3.47602, 79.8322, -17.2971)
+points = PackedVector2Array(60.8945, 48.3797, 66.6389, 35.0925, 64.5731, 10.9009, 85.9454, 1.8826, 72.9337, -14.7616, 79.8322, -17.2971)
 
 [node name="body_bolt4" parent="ElectricBones/body_bolts" instance=ExtResource("4_a1x6e")]
 position = Vector2(-1.0364, 39.8178)
 rotation = 0.03902
 scale = Vector2(0.971612, 0.550062)
-points = PackedVector2Array(66.2691, 52.9747, 60.8948, 44.3026, 44.8665, 42.2553, 20.1642, 48.3352, 1.21751, 37.0248, -13.0593, 50.1751, -27.6877, 37.1096)
+points = PackedVector2Array(66.2691, 52.9747, 56.0454, 46.2459, 32.8389, 54.6444, 16.7435, 48.4472, 5.83475, 32.9271, -12.2232, 48.974, -27.1631, 34.0174, -27.6877, 37.1096)
 
 [node name="body_bolt5" parent="ElectricBones/body_bolts" instance=ExtResource("4_a1x6e")]
 position = Vector2(-23.7957, 56.9719)
 rotation = 0.03902
 scale = Vector2(0.999996, 0.999996)
-points = PackedVector2Array(0.0780182, 1.99849, -3.91857, -18.4297, -24.4933, -13.8539, -29.1759, -47.0724, -34.7695, -44.6778)
+points = PackedVector2Array(0.0780182, 1.99849, -12.5282, -4.6139, -18.2498, -28.1108, -29.2269, -36.102, -34.7695, -44.6778)
 
 [node name="body_bolt6" parent="ElectricBones/body_bolts" instance=ExtResource("4_a1x6e")]
 position = Vector2(1, 24)
 rotation = 0.03902
 scale = Vector2(0.999996, 0.999996)
-points = PackedVector2Array(-60.4446, -15.3552, -46.7599, -30.4641, -57.8496, -33.9386, -50.7462, -46.539, -45.7969, -62.5421, -36.4529, -83.2943, -37.675, -83.3378)
+points = PackedVector2Array(-60.4446, -15.3552, -56.9642, -24.6551, -54.4737, -39.1404, -42.4404, -66.8125, -36.3255, -84.5219, -37.675, -83.3378)
 
 [node name="Heart" type="AnimatableBody2D" parent="."]
 position = Vector2(1, 24)
@@ -198,8 +197,8 @@ uv = PackedVector2Array(89.3019, 319.473, 82.4151, 303.604, 82.9142, 292.126, 96
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Heart"]
 libraries = {
-"": SubResource("AnimationLibrary_i6x7e"),
-"HeartAnimations": ExtResource("7_4kcen")
+&"": SubResource("AnimationLibrary_i6x7e"),
+&"HeartAnimations": ExtResource("7_4kcen")
 }
 
 [node name="Destructibles" type="Node2D" parent="."]
@@ -230,7 +229,7 @@ sprite_texture = ExtResource("14_w5cts")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": ExtResource("15_w5uds")
+&"": ExtResource("15_w5uds")
 }
 autoplay = "wave_arm"
 
@@ -317,8 +316,11 @@ bone_angle = 0.0
 [node name="AudioManager" type="Node" parent="."]
 script = ExtResource("17_hk8cy")
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="AudioManager"]
+[node name="AnimationSounds" type="AudioStreamPlayer" parent="AudioManager"]
 volume_db = -10.0
+
+[node name="HurtSounds" type="AudioStreamPlayer" parent="AudioManager"]
+volume_db = -6.603
 
 [connection signal="heart_revealed_changed" from="Heart" to="Heart" method="_on_heart_revealed_changed"]
 [connection signal="heart_revealed_changed" from="Heart" to="BossController" method="_on_heart_revealed_changed"]

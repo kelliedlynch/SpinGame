@@ -2,6 +2,7 @@ extends Node2D
 class_name Arena
 
 @onready var bounds: ArenaBorder = $ArenaBorder
+@onready var audio: Node = $AudioManager
 var spawn_point: Vector2
 var GRID_COLUMNS = 16
 var size: Vector2

@@ -1,0 +1,9 @@
+[gd_resource type="AudioStreamRandomizer" load_steps=3 format=3 uid="uid://djggf5egmc0oi"]
+
+[ext_resource type="AudioStream" uid="uid://mkobgiqw70cs" path="res://Audio/Chainsaw_Run_Loop-01.ogg" id="1_tax1s"]
+[ext_resource type="AudioStream" uid="uid://dphlnj51xscjw" path="res://Audio/Chainsaw_Run_Loop-02.ogg" id="2_sxadw"]
+
+[resource]
+streams_count = 3
+stream_0/stream = ExtResource("1_tax1s")
+stream_1/stream = ExtResource("2_sxadw")

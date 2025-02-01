@@ -83,6 +83,8 @@ func _on_cut_state_changed(prev: Destructor.CutState, curr: Destructor.CutState)
 			#rev_player.finished.disconnect(_rev_down_if_done)
 		if (run_player.stream == run and run_player.playing == true) \
 				or (rev_player.stream == rev_up and rev_player.playing == true):
+			if rev_player.finished.is_connected(_rev_down_if_done):
+				rev_player.finished.disconnect(_rev_down_if_done)
 			pass
 		else:
 			if rev_player.finished.is_connected(_rev_down_if_done):

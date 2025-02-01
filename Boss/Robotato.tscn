@@ -1,14 +1,14 @@
 [gd_scene load_steps=18 format=3 uid="uid://ufsh7v2h74ia"]
 
-[ext_resource type="Script" path="res://Boss/Robotato.gd" id="1_g57mn"]
+[ext_resource type="Script" uid="uid://ci16dg7e0ni5o" path="res://Boss/Robotato.gd" id="1_g57mn"]
 [ext_resource type="Texture2D" uid="uid://dl8h3mfcqqnep" path="res://Graphics/robo_parts_sprite_sheet.png" id="2_w78ol"]
 [ext_resource type="PackedScene" uid="uid://cluulgc5hgdrb" path="res://Playground/LightningBolt.tscn" id="4_d5ti6"]
-[ext_resource type="Script" path="res://Boss/BossHeart.gd" id="5_h0kbh"]
-[ext_resource type="Script" path="res://Component/SGCollisionPoly.gd" id="6_exhe6"]
+[ext_resource type="Script" uid="uid://degjam2k7kfgn" path="res://Boss/BossHeart.gd" id="5_h0kbh"]
+[ext_resource type="Script" uid="uid://cvmpjttqefknx" path="res://Component/SGCollisionPoly.gd" id="6_exhe6"]
 [ext_resource type="AnimationLibrary" uid="uid://b6u0p2qags3gq" path="res://Boss/HeartAnimations.tres" id="7_0bkl3"]
-[ext_resource type="Script" path="res://Component/Destructible/DestructibleHitbox.gd" id="8_ioxun"]
+[ext_resource type="Script" uid="uid://bblskjhnl2s8b" path="res://Component/Destructible/DestructibleHitbox.gd" id="8_ioxun"]
 [ext_resource type="Texture2D" uid="uid://cu54puc6fvr7y" path="res://Graphics/Boss/robotato.png" id="9_4uf2e"]
-[ext_resource type="Script" path="res://Boss/RobotatoController.gd" id="11_v03b4"]
+[ext_resource type="Script" uid="uid://dit5pnxxbiivc" path="res://Boss/RobotatoController.gd" id="11_v03b4"]
 [ext_resource type="Resource" uid="uid://djov4pn3fgrxx" path="res://Component/Destructible/Materials/MaterialMetal.tres" id="13_urjth"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_66ykw"]
@@ -55,7 +55,7 @@ tracks/2/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_i6x7e"]
 _data = {
-"RESET": SubResource("Animation_0h341")
+&"RESET": SubResource("Animation_0h341")
 }
 
 [sub_resource type="SkeletonModification2DCCDIK" id="SkeletonModification2DCCDIK_nxhb5"]
@@ -161,8 +161,8 @@ uv = PackedVector2Array(89.3019, 319.473, 82.4151, 303.604, 82.9142, 292.126, 96
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Heart"]
 libraries = {
-"": SubResource("AnimationLibrary_i6x7e"),
-"HeartAnimations": ExtResource("7_0bkl3")
+&"": SubResource("AnimationLibrary_i6x7e"),
+&"HeartAnimations": ExtResource("7_0bkl3")
 }
 
 [node name="Destructibles" type="Node2D" parent="."]

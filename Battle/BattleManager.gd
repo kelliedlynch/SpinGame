@@ -96,8 +96,8 @@ func _on_battle_ended():
 func spawn_player_to_arena(to_arena: Arena):
 	arena = to_arena
 	Player.spawn_to_arena(arena)
-	Player.player_defeated.connect(overlay._on_player_defeated)
-	Player.player_defeated.connect(_on_player_defeated)
+	Player.player_defeated.connect(overlay._on_player_defeated, ConnectFlags.CONNECT_ONE_SHOT)
+	Player.player_defeated.connect(_on_player_defeated, ConnectFlags.CONNECT_ONE_SHOT)
 	player_spawned.emit()
 	#Player.player_health_changed.connect(overlay._on_player_health_changed)
 

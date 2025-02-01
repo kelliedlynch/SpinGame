@@ -1,12 +1,12 @@
 [gd_scene load_steps=31 format=3 uid="uid://bxvqiabjlg7g3"]
 
-[ext_resource type="Script" path="res://Boss/SpiderBot.gd" id="1_oq5g6"]
+[ext_resource type="Script" uid="uid://ckb0tpgpost4c" path="res://Boss/SpiderBot.gd" id="1_oq5g6"]
 [ext_resource type="Texture2D" uid="uid://dl8h3mfcqqnep" path="res://Graphics/robo_parts_sprite_sheet.png" id="2_x6vst"]
 [ext_resource type="PackedScene" uid="uid://cluulgc5hgdrb" path="res://Playground/LightningBolt.tscn" id="4_0dv21"]
-[ext_resource type="Script" path="res://Boss/BossHeart.gd" id="5_debxm"]
-[ext_resource type="Script" path="res://Component/SGCollisionPoly.gd" id="6_exqvw"]
+[ext_resource type="Script" uid="uid://degjam2k7kfgn" path="res://Boss/BossHeart.gd" id="5_debxm"]
+[ext_resource type="Script" uid="uid://cvmpjttqefknx" path="res://Component/SGCollisionPoly.gd" id="6_exqvw"]
 [ext_resource type="AnimationLibrary" uid="uid://b6u0p2qags3gq" path="res://Boss/HeartAnimations.tres" id="7_jvo32"]
-[ext_resource type="Script" path="res://Component/Destructible/DestructibleHitbox.gd" id="8_j6w5p"]
+[ext_resource type="Script" uid="uid://bblskjhnl2s8b" path="res://Component/Destructible/DestructibleHitbox.gd" id="8_j6w5p"]
 [ext_resource type="Texture2D" uid="uid://b1ycvjuku2v6l" path="res://Graphics/Boss/SpiderBot/robo_leg_1.png" id="9_3ff6c"]
 [ext_resource type="Resource" uid="uid://hudkc6si2258" path="res://Component/Destructible/Materials/MaterialSoftwood.tres" id="9_hy7u1"]
 [ext_resource type="Texture2D" uid="uid://c10bi4wmwt30j" path="res://Graphics/Boss/SpiderBot/robo_arm_1.png" id="10_swcac"]
@@ -19,7 +19,7 @@
 [ext_resource type="Texture2D" uid="uid://bb3d52j64ouq4" path="res://Graphics/Boss/SpiderBot/robo_arm_4.png" id="15_4rgvf"]
 [ext_resource type="Texture2D" uid="uid://b11aqntpf60ax" path="res://Graphics/Boss/SpiderBot/robo_arm_short_1.png" id="16_4umwq"]
 [ext_resource type="Texture2D" uid="uid://iyo1qq4qoah7" path="res://Graphics/robo_body_2.png" id="16_xok6h"]
-[ext_resource type="Script" path="res://Boss/SpiderBotController.gd" id="17_m5qkw"]
+[ext_resource type="Script" uid="uid://bc3hi28xwxr8g" path="res://Boss/SpiderBotController.gd" id="17_m5qkw"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_66ykw"]
 bounce = 0.46
@@ -65,7 +65,7 @@ tracks/2/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_i6x7e"]
 _data = {
-"RESET": SubResource("Animation_0h341")
+&"RESET": SubResource("Animation_0h341")
 }
 
 [sub_resource type="Animation" id="Animation_tlxnt"]
@@ -1091,12 +1091,12 @@ tracks/14/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_qlx21"]
 _data = {
-"RESET": SubResource("Animation_tlxnt"),
-"curl_up": SubResource("Animation_a5ypf"),
-"fire_missile": SubResource("Animation_no6lj"),
-"idle": SubResource("Animation_6v1me"),
-"roll": SubResource("Animation_7hmr6"),
-"uncurl": SubResource("Animation_j807k")
+&"RESET": SubResource("Animation_tlxnt"),
+&"curl_up": SubResource("Animation_a5ypf"),
+&"fire_missile": SubResource("Animation_no6lj"),
+&"idle": SubResource("Animation_6v1me"),
+&"roll": SubResource("Animation_7hmr6"),
+&"uncurl": SubResource("Animation_j807k")
 }
 
 [node name="SpiderBot" type="Node2D" node_paths=PackedStringArray("heart_location")]
@@ -1233,8 +1233,8 @@ uv = PackedVector2Array(89.3019, 319.473, 82.4151, 303.604, 82.9142, 292.126, 96
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Heart"]
 libraries = {
-"": SubResource("AnimationLibrary_i6x7e"),
-"HeartAnimations": ExtResource("7_jvo32")
+&"": SubResource("AnimationLibrary_i6x7e"),
+&"HeartAnimations": ExtResource("7_jvo32")
 }
 
 [node name="Destructibles" type="Node2D" parent="."]
@@ -1329,7 +1329,7 @@ sprite_texture = ExtResource("16_xok6h")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_qlx21")
+&"": SubResource("AnimationLibrary_qlx21")
 }
 autoplay = "wave_arm"
 

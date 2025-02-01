@@ -1,15 +1,15 @@
 [gd_scene load_steps=14 format=3 uid="uid://dmbienyglkltx"]
 
-[ext_resource type="Script" path="res://Player/PlayerEntity.gd" id="1_5veut"]
-[ext_resource type="Script" path="res://Player/PlayerHitbox.gd" id="2_fwe6s"]
+[ext_resource type="Script" uid="uid://djqoklws05jph" path="res://Player/PlayerEntity.gd" id="1_5veut"]
+[ext_resource type="Script" uid="uid://r8rdh03lgw3y" path="res://Player/PlayerHitbox.gd" id="2_fwe6s"]
 [ext_resource type="Texture2D" uid="uid://dwk2osnipsfju" path="res://Graphics/saw_blade_isolated.png" id="2_ghaw7"]
 [ext_resource type="Texture2D" uid="uid://g2qfcmanid4n" path="res://Graphics/spark_particle_1.png" id="3_5edmp"]
 [ext_resource type="PackedScene" uid="uid://f83mqw1l7iv" path="res://Player/GooglyEyes.tscn" id="5_txnaa"]
-[ext_resource type="Script" path="res://Component/Destructor/PlayerDestructor.gd" id="6_f2o1g"]
+[ext_resource type="Script" uid="uid://d2fhqc6x7c4i1" path="res://Component/Destructor/PlayerDestructor.gd" id="6_f2o1g"]
 [ext_resource type="AnimationLibrary" uid="uid://dhtth3isor6w3" path="res://Player/UnknownAnimationLibrary.tres" id="7_5hore"]
-[ext_resource type="AudioStream" uid="uid://lckbvwt1rlbn" path="res://Audio/saw_idle.tres" id="8_vio6s"]
-[ext_resource type="Script" path="res://Player/SawNoisePlayer.gd" id="9_275rt"]
-[ext_resource type="AudioStream" uid="uid://biy7yiw2thuyb" path="res://Audio/saw_rev_up.tres" id="10_748fd"]
+[ext_resource type="AudioStream" uid="uid://c50splh1rseet" path="res://Audio/saw_idle.tres" id="8_vio6s"]
+[ext_resource type="Script" uid="uid://qttnktgy72xw" path="res://Player/SawNoisePlayer.gd" id="9_275rt"]
+[ext_resource type="AudioStream" uid="uid://b8r204tw7pmkk" path="res://Audio/saw_rev_up.tres" id="10_748fd"]
 [ext_resource type="AudioStream" uid="uid://fu4ep3wdvnis" path="res://Audio/dash_spin_up.tres" id="11_1fgad"]
 
 [sub_resource type="Gradient" id="Gradient_konno"]
@@ -40,12 +40,12 @@ script = ExtResource("2_fwe6s")
 [node name="charge_sparks" type="CPUParticles2D" parent="Hitbox"]
 emitting = false
 amount = 24
+texture = ExtResource("3_5edmp")
 lifetime = 0.7
 speed_scale = 3.14
 explosiveness = 0.19
 randomness = 0.11
 lifetime_randomness = 0.34
-texture = ExtResource("3_5edmp")
 emission_shape = 5
 emission_points = PackedVector2Array(0, -60, -45, 35, 45, 35)
 emission_normals = PackedVector2Array(0, -1, -0.5, 0.5, 0.5, 0.5)
@@ -88,7 +88,7 @@ polygon = PackedVector2Array(45, 1, 43, 3, 42, 3, 45, 9, 45, 10, 39, 7, 32, 7, 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": ExtResource("7_5hore")
+&"": ExtResource("7_5hore")
 }
 
 [node name="AudioManager" type="Node" parent="."]

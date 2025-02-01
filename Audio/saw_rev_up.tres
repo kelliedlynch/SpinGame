@@ -1,4 +1,4 @@
-[gd_resource type="AudioStreamRandomizer" load_steps=4 format=3 uid="uid://biy7yiw2thuyb"]
+[gd_resource type="AudioStreamRandomizer" load_steps=4 format=3 uid="uid://b8r204tw7pmkk"]
 
 [ext_resource type="AudioStream" uid="uid://dm0hqnl2s4vrd" path="res://Audio/Dewalt_Angle_Grinder_Startup-01.wav" id="1_8lcui"]
 [ext_resource type="AudioStream" uid="uid://brrfsrf1sa0nt" path="res://Audio/Dewalt_Angle_Grinder_Startup-02.wav" id="2_32fbq"]
